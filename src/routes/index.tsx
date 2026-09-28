@@ -252,10 +252,7 @@ function ProjectPreviewCard({
 
       {/* Content Details */}
       <div className="flex flex-col gap-2.5 pt-4">
-        <div className="flex items-center justify-between text-xs text-muted">
-          <span className="font-semibold uppercase tracking-[0.2em] text-accent">
-            {tagStr}
-          </span>
+        <div className="flex items-center justify-end text-xs text-muted">
           <span className="font-mono text-[11px] text-muted">{project.year}</span>
         </div>
 

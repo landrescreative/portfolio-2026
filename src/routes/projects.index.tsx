@@ -214,10 +214,7 @@ function ProjectsPage() {
                             </div>
                           </div>
 
-                          <div className="flex flex-col gap-2.5 pt-4">
-                            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-                              {tagStr}
-                            </span>
+                          <div className="flex flex-col gap-2 pt-4">
                             <h3 className="font-serif text-2xl md:text-3xl tracking-tight text-ink transition-transform duration-300 group-hover:translate-x-1">
                               {titleStr}
                             </h3>
