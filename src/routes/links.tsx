@@ -186,11 +186,8 @@ function LinkBioPage() {
           </div>
 
           {/* Name & Title */}
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-ink flex items-center gap-2">
-            <span>Luis Andrés</span>
-            <span className="text-accent font-sans text-xs uppercase px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 font-semibold tracking-wider">
-              PRO
-            </span>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-ink">
+            Luis Andrés
           </h1>
 
           <p className="mt-1 font-serif text-lg italic text-ink/75">
