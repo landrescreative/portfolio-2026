@@ -6,9 +6,7 @@ import { getProjectById, getAdjacentProjects, projectsData, ProjectDetail } from
 import { ExternalLink, Play, ArrowLeft, ArrowRight, Check, X, ChevronLeft, ChevronRight, Maximize2, Sparkles, RefreshCw } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 
-const LazyModelViewer3D = lazy(() =>
-  import("@/components/ModelViewer3D").then((m) => ({ default: m.ModelViewer3D }))
-);
+const LazyModelViewer3D = lazy(() => import("@/components/ModelViewer3D"));
 
 export const Route = createFileRoute("/projects/$projectId")({
   head: ({ params }) => {

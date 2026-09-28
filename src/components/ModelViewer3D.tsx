@@ -420,3 +420,6 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
     </section>
   );
 }
+
+export default ModelViewer3D;
+
