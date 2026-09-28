@@ -296,6 +296,7 @@ export const projectsData: Record<string, ProjectDetail> = {
       es: "Diseñador UI/UX & Dirección de Arte",
       en: "UI/UX Designer & Art Director"
     },
+    liveUrl: "https://veravitalize.vercel.app/",
     coverImage: "/uploads/veravitalize-portada.jpg",
     techStack: [
       "Figma",
