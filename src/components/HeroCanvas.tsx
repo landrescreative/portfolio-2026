@@ -274,25 +274,23 @@ function LiquidBlob() {
 
 export function HeroCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const checkDesktop = () => {
+      setIsDesktop(typeof window !== "undefined" && window.innerWidth >= 768);
+    };
+
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop, { passive: true });
+    return () => window.removeEventListener("resize", checkDesktop);
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!isDesktop) return;
     
     const updateVisuals = () => {
       if (!containerRef.current) return;
-      const isMobile = window.innerWidth < 768;
-
-      if (isMobile) {
-        // Constant ambient glow & blur on mobile
-        containerRef.current.style.filter = "blur(32px)";
-        containerRef.current.style.opacity = "0.5";
-        return;
-      }
 
       // Desktop: crisp in hero, blurs as user scrolls down
       const startScroll = 50;
@@ -308,15 +306,14 @@ export function HeroCanvas() {
     };
     
     window.addEventListener("scroll", updateVisuals, { passive: true });
-    window.addEventListener("resize", updateVisuals, { passive: true });
     updateVisuals(); 
     return () => {
       window.removeEventListener("scroll", updateVisuals);
-      window.removeEventListener("resize", updateVisuals);
     };
-  }, [mounted]);
+  }, [isDesktop]);
 
-  if (!mounted) return null;
+  // Completely deactivated on mobile (<768px) to keep background clean and eliminate WebGL overhead
+  if (!isDesktop) return null;
 
   // Render via portal to escape CSS transform contexts from router layout
   // which otherwise breaks 'fixed' positioning.
