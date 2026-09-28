@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import React, { useState, useEffect, useMemo, Suspense, lazy } from "react";
+import { createPortal } from "react-dom";
 import { useI18n } from "@/lib/i18n";
 import { getProjectById, getAdjacentProjects, projectsData, ProjectDetail } from "@/data/projectsData";
 import { ExternalLink, Play, ArrowLeft, ArrowRight, Check, X, ChevronLeft, ChevronRight, Maximize2, Sparkles, RefreshCw } from "lucide-react";
@@ -37,6 +38,17 @@ function ProjectDetailPage() {
   const { lang, t } = useI18n();
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  // Lock body scroll and prevent background jumping when lightbox is open
+  useEffect(() => {
+    if (lightboxIndex !== null) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [lightboxIndex]);
 
   const initialProject = getProjectById(projectId);
   const [liveProject, setLiveProject] = useState<ProjectDetail | undefined>(initialProject);
@@ -484,10 +496,10 @@ function ProjectDetailPage() {
           </section>
         )}
 
-        {/* Fullscreen Lightbox Modal */}
-        {lightboxIndex !== null && project.gallery && project.gallery[lightboxIndex] && (
+        {/* Fullscreen Lightbox Modal rendered via Portal to escape parent scroll offset */}
+        {lightboxIndex !== null && project.gallery && project.gallery[lightboxIndex] && typeof document !== "undefined" && createPortal(
           <div
-            className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-ink/95 p-4 md:p-8 backdrop-blur-xl animate-in fade-in duration-200"
+            className="fixed inset-0 z-[999999] flex flex-col items-center justify-between bg-ink/95 p-4 md:p-8 backdrop-blur-xl animate-in fade-in duration-200"
             onClick={() => setLightboxIndex(null)}
           >
             {/* Header / Controls */}
@@ -550,7 +562,8 @@ function ProjectDetailPage() {
                   : project.gallery[lightboxIndex].caption}
               </div>
             )}
-          </div>
+          </div>,
+          document.body
         )}
 
         {/* Related Projects Section */}

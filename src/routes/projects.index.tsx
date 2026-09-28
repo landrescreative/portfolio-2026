@@ -185,12 +185,11 @@ function ProjectsPage() {
                   </span>
                 </div>
 
-                {/* Projects Grid for this Category */}
-                <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+                {/* Projects Grid for this Category - 2 Columns for Large Visual Impact */}
+                <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:gap-14">
                   {items.map((item) => {
                     const titleStr = typeof item.title === "object" ? (item.title[lang] || item.title.es) : item.title;
                     const subtitleStr = typeof item.subtitle === "object" ? (item.subtitle[lang] || item.subtitle.es) : item.subtitle;
-                    const tagStr = typeof item.tag === "object" ? (item.tag[lang] || item.tag.es) : item.tag;
                     const catLabelStr = typeof item.categoryLabel === "object" ? (item.categoryLabel[lang] || item.categoryLabel.es) : item.categoryLabel;
 
                     return (
@@ -202,23 +201,24 @@ function ProjectsPage() {
                         className="group flex flex-col justify-between cursor-pointer"
                       >
                         <article className="flex flex-col justify-between h-full">
-                          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[min(1vw,14px)] bg-surface ring-1 ring-ink/5">
+                          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-surface ring-1 ring-ink/5 shadow-sm transition-all duration-500 group-hover:shadow-xl">
                             <img
                               src={item.coverImage}
                               alt={titleStr}
                               loading="lazy"
-                              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                              decoding="async"
+                              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
                             />
-                            <div className="absolute left-3 top-3 rounded-full bg-canvas/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-ink backdrop-blur-sm">
+                            <div className="absolute left-4 top-4 rounded-full bg-canvas/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-ink backdrop-blur-md shadow-sm">
                               {catLabelStr}
                             </div>
                           </div>
 
-                          <div className="flex flex-col gap-2 pt-4">
-                            <h3 className="font-serif text-2xl md:text-3xl tracking-tight text-ink transition-transform duration-300 group-hover:translate-x-1">
+                          <div className="flex flex-col gap-2.5 pt-5">
+                            <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-tight text-ink transition-transform duration-300 group-hover:translate-x-1 font-medium">
                               {titleStr}
                             </h3>
-                            <p className="line-clamp-2 text-sm font-normal leading-relaxed text-ink/75">
+                            <p className="line-clamp-2 text-base font-light leading-relaxed text-ink/80 md:text-lg">
                               {subtitleStr}
                             </p>
                           </div>
