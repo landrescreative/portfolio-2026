@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 import { projectsData, ProjectDetail } from "@/data/projectsData";
-import { ArrowRight, Sparkles, Layers, Box, Film, Camera, ExternalLink } from "lucide-react";
+import { ArrowRight, Sparkles, Layers, Box, Film, Camera, ExternalLink, Code2, ArrowUpRight } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 
 export const Route = createFileRoute("/design")({
@@ -102,15 +102,16 @@ export function DesignPortfolioPage() {
                 {lang === "es" ? "← Inicio" : "← Home"}
               </Link>
 
-              {/* Quick switch badge */}
+              {/* Premium Switch Button */}
               <Link
                 to="/web"
-                className="group inline-flex items-center gap-2 rounded-full border border-ink/10 bg-surface/80 px-4 py-1.5 text-xs font-medium text-muted hover:border-accent hover:text-ink transition-all"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-ink/15 bg-surface/90 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink shadow-sm backdrop-blur-md transition-all duration-300 hover:border-accent hover:bg-surface hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
               >
-                <span>{lang === "es" ? "¿Buscas desarrollo web?" : "Looking for Web Dev?"}</span>
-                <span className="text-accent font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  {lang === "es" ? "Ver portafolio Web & UI" : "View Web & UI portfolio"} →
+                <span className="flex size-5 items-center justify-center rounded-full bg-accent/15 text-accent transition-colors group-hover:bg-accent group-hover:text-canvas">
+                  <Code2 className="size-3" />
                 </span>
+                <span>{lang === "es" ? "Portafolio Web & UI" : "Web & UI Portfolio"}</span>
+                <ArrowUpRight className="size-3 text-muted transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
               </Link>
             </div>
 

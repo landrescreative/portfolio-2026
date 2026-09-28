@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 import { projectsData, ProjectDetail } from "@/data/projectsData";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Code2, Box, ArrowUpRight } from "lucide-react";
 
 type ProjectsSearch = {
   category?: string;
@@ -90,18 +90,27 @@ function ProjectsPage() {
                 {t.projectsPage.backToHome}
               </Link>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <Link
                   to="/web"
-                  className="rounded-full border border-ink/10 bg-surface/80 px-3.5 py-1 text-xs font-medium text-muted hover:border-accent hover:text-ink transition-all"
+                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-ink/15 bg-surface/90 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink shadow-sm backdrop-blur-md transition-all duration-300 hover:border-accent hover:bg-surface hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
                 >
-                  💻 {lang === "es" ? "Portafolio Web" : "Web Portfolio"}
+                  <span className="flex size-5 items-center justify-center rounded-full bg-accent/15 text-accent transition-colors group-hover:bg-accent group-hover:text-canvas">
+                    <Code2 className="size-3" />
+                  </span>
+                  <span>{lang === "es" ? "Portafolio Web" : "Web Portfolio"}</span>
+                  <ArrowUpRight className="size-3 text-muted transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
                 </Link>
+
                 <Link
                   to="/design"
-                  className="rounded-full border border-ink/10 bg-surface/80 px-3.5 py-1 text-xs font-medium text-muted hover:border-accent hover:text-ink transition-all"
+                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-ink/15 bg-surface/90 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink shadow-sm backdrop-blur-md transition-all duration-300 hover:border-accent hover:bg-surface hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
                 >
-                  🎨 {lang === "es" ? "Portafolio 3D & Diseño" : "3D & Design Portfolio"}
+                  <span className="flex size-5 items-center justify-center rounded-full bg-accent/15 text-accent transition-colors group-hover:bg-accent group-hover:text-canvas">
+                    <Box className="size-3" />
+                  </span>
+                  <span>{lang === "es" ? "Portafolio 3D & Diseño" : "3D & Design Portfolio"}</span>
+                  <ArrowUpRight className="size-3 text-muted transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
                 </Link>
               </div>
             </div>
