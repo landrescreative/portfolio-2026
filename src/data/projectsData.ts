@@ -1378,41 +1378,43 @@ export const projectsData: Record<string, ProjectDetail> = {
     year: "2024",
     role: { es: "Modelador 3D, Diseñador de Juego & Especialista STL", en: "3D Modeler, Tabletop Game Designer & STL Specialist" },
     coverImage: "/uploads/aforeaventura-personaje-4.png",
-    techStack: ["Blender", "Modelado 3D", "Impresión 3D (STL)", "Adobe Illustrator", "Diseño de Juego de Mesa", "Malla Estanca (Manifold)", "Slicing 3D"],
-    industry: { es: "Juegos de Mesa & Educación Financiera", en: "Tabletop Games & Financial Education" },
+    techStack: ["Blender", "Modelado 3D", "Impresión 3D (STL)", "Adobe Illustrator", "Diseño Editorial", "Diseño de Juego de Mesa", "Malla Estanca (Manifold)"],
+    industry: { es: "Juegos de Mesa, Diseño Editorial & Educación Financiera", en: "Tabletop Games, Editorial Design & Financial Education" },
     overview: {
-      es: "AforeAventura es un juego de mesa interactivo y formativo concebido para transformar el aprendizaje sobre el ahorro para el retiro (AFORE) en una experiencia dinámica, inclusiva y entretenida. El proyecto abarcó desde la conceptualización de las mecánicas lúdicas (dados de color y numéricos, tarjetas de preguntas de opción múltiple, verdadero/falso y retos) hasta el diseño gráfico vectorial del tablero hexagonal de 75 casillas en Illustrator y el modelado 3D en Blender de personajes con diversas identidades y corporalidades, optimizados para impresión 3D en resina (SLA) y filamento (FDM).",
-      en: "AforeAventura is an interactive educational board game designed to turn retirement savings and AFORE financial literacy into an engaging, gamified experience. The project encompassed complete tabletop game design (movement dice, category dice, trivia challenge cards on retirement) alongside the vector layout of a 75-hexagonal-space board and the custom 3D modeling of inclusive character pawns optimized for 3D printing (STL)."
+      es: "AforeAventura es un proyecto integral de diseño lúdico y educativo concebido para transformar el aprendizaje sobre el ahorro para el retiro (AFORE) en una experiencia dinámica, inclusiva y visualmente atractiva. El proyecto abarcó desde el diseño de manuales de instrucciones y reglas de juego impresas en formato editorial, el diseño de tarjetas temáticas y tablas comparativas de comisiones/rendimientos, hasta la diagramación vectorial del tablero concéntrico de 75 casillas y el modelado 3D en Blender de 4 personajes con identidades diversas optimizados para impresión 3D (STL).",
+      en: "AforeAventura is an all-inclusive tabletop and educational design project built to gamify financial literacy and retirement planning (AFORE). The project encompassed full editorial layout for the game manual and rulebook, thematic card decks and return/commission comparison tables, alongside the vector artwork of the 75-space hexagonal board and the custom 3D modeling of 4 diverse character tokens optimized for 3D printing (STL)."
     },
     challenge: {
-      es: "El proyecto presentaba dos desafíos clave: por un lado, sintetizar conceptos financieros formales sobre pensiones y retiro en mecánicas de juego comprensibles y motivadoras; por el otro, diseñar miniaturas 3D con topología estanca (manifold/watertight), espesores de pared seguros y bases de estabilidad circular que garantizaran una impresión 3D limpia sin fragilidad en miembros ni necesidad de soportes excesivos.",
-      en: "The project faced two core challenges: translating technical financial topics into intuitive, fun tabletop mechanics for all ages; and engineering 3D character pawns with watertight (manifold) topology, reinforced load points, and stable circular bases to ensure reliable, clean 3D printing without fragile extremities or excessive support structures."
+      es: "Sintetizar conceptos financieros complejos (SIEFORES, comisiones, rendimientos, cotización temprana y cálculo de jubilación) en mecánicas de juego ágiles, redactando y diagramando manuales impresos legibles con jerarquía gráfica limpia, a la vez que se diseñaban miniaturas 3D con topología estanca (manifold/watertight) preparadas para fabricación aditiva.",
+      en: "Synthesizing complex financial retirement principles into engaging tabletop game mechanics, formatting readable print-ready rule manuals and comparison charts, while engineering 3D character miniatures with watertight topology ready for additive manufacturing."
     },
     solution: {
-      es: "Diseñamos un sistema concéntrico de 75 casillas hexagonales organizadas por niveles de dificultad y color. En Blender, esculpimos y modelamos una alineación de personajes estilizados con identidad inclusiva (destacando el diseño del personaje en silla de ruedas con proporciones reforzadas para impresión), optimizando mallas poligonales cerradas y exportando archivos STL de alta fidelidad validados para corte y fabricación aditiva.",
-      en: "We structured a concentric 75-tile hexagonal board organized by color categories and progression. In Blender, we modeled and sculpted a lineup of stylized, diverse character tokens (highlighting an inclusive wheelchair character design with structural reinforcement for printing), optimizing closed polygonal meshes and delivering verified, print-ready STL files for slicing and additive fabrication."
+      es: "Desarrollamos un kit de juego completo: manual de instrucciones paso a paso, folleto de reglas con guía de selección del cajero y flujo por turnos, tabla comparativa de rendimientos ('AdmiFácil', 'GranAhorro', 'Futuros en Concreto'), glosario de términos financieros, y el modelado 3D de personajes estilizados con base circular para impresión STL.",
+      en: "Delivered a complete board game kit: step-by-step instruction booklet, official rulebook with turn flow and banker guidelines, yield comparison charts, financial glossary, and 3D character miniatures with stable bases for STL printing."
     },
     deliverables: {
       es: [
-        "Modelado 3D completo de personajes en Blender (.blend)",
-        "Optimización de malla poligonal y exportación de archivos STL estancos (Watertight)",
-        "Diseño gráfico vectorial y arte del tablero de 75 casillas en Illustrator (.ai / .png)",
-        "Sistema de mecánicas lúdicas (dados de color, dados numéricos y categorías de cartas)",
-        "Renders de estudio con iluminación y materiales para visualización del juego"
+        "Modelado 3D de 4 personajes en Blender con base circular (.blend / .stl)",
+        "Diseño gráfico editorial del manual de instrucciones y componentes",
+        "Diseño y maquetación de folleto de reglas y fases de juego",
+        "Tabla comparativa de rendimientos y comisiones para el retiro",
+        "Glosario financiero y sistema de tarjetas por categorías",
+        "Arte vectorial del tablero hexagonal concéntrico de 75 casillas"
       ],
       en: [
-        "Complete 3D character modeling in Blender (.blend)",
-        "Polygonal mesh optimization and watertight STL export for 3D printing",
-        "Vector graphic layout for the 75-space hexagonal game board in Illustrator",
-        "Game mechanics system (colored dice, movement dice, trivia challenge cards)",
-        "Studio renders with materials and lighting for game visualization"
+        "3D character token modeling in Blender with circular stability bases (.blend / .stl)",
+        "Editorial graphic design for instruction booklet and game components",
+        "Complete rulebook layout and gameplay phase guide",
+        "Yield and commission comparative tables for retirement savings",
+        "Financial glossary and color-coded card system",
+        "Vector artwork for the 75-space concentric hexagonal board"
       ]
     },
     metrics: [
       { label: { es: "Personajes 3D", en: "3D Characters" }, value: "4 Miniaturas" },
-      { label: { es: "Formato de Impresión", en: "Printing Format" }, value: "STL Watertight" },
+      { label: { es: "Manual Editorial", en: "Manual Pages" }, value: "6 Páginas" },
       { label: { es: "Casillas de Tablero", en: "Board Spaces" }, value: "75 Casillas" },
-      { label: { es: "Malla Verificada", en: "Mesh Integrity" }, value: "100% Manifold" }
+      { label: { es: "Tarjetas de Juego", en: "Game Cards" }, value: "114 Tarjetas" }
     ],
     has3DViewer: true,
     gallery: [
@@ -1426,6 +1428,30 @@ export const projectsData: Record<string, ProjectDetail> = {
         src: "/uploads/aforeaventura-tablero.png",
         alt: "AforeAventura — Tablero Hexagonal de Juego",
         caption: { es: "Diseño gráfico y diagramación vectorial del tablero hexagonal con 75 casillas y sistema de dados", en: "Vector layout of the 75-space hexagonal game board with dice and card mechanics" },
+        span: "half"
+      },
+      {
+        src: "/uploads/aforeaventura-manual-intro.jpg",
+        alt: "AforeAventura — Portada e Introducción del Manual",
+        caption: { es: "Diseño editorial de la introducción del manual: jugadores (3-5), duración (30-60 min) y público objetivo (18+)", en: "Editorial layout of manual intro: player count (3-5), duration (30-60 min), and target age (18+)" },
+        span: "half"
+      },
+      {
+        src: "/uploads/aforeaventura-manual-componentes.jpg",
+        alt: "AforeAventura — Componentes del Juego",
+        caption: { es: "Desglose de componentes: 4 personajes 3D, tablero, 150 monedas Jubipesos, alcancías, temporizadores y 114 tarjetas", en: "Game component breakdown: 4 3D character pawns, board, 150 Jubipesos coins, piggy banks, timers, and 114 cards" },
+        span: "half"
+      },
+      {
+        src: "/uploads/aforeaventura-manual-rendimientos.jpg",
+        alt: "AforeAventura — Tabla Comparativa de Rendimientos",
+        caption: { es: "Diseño de tabla comparativa de rendimientos y comisiones entre administradoras financieras", en: "Yield and commission comparative table across financial administrators" },
+        span: "half"
+      },
+      {
+        src: "/uploads/aforeaventura-manual-glosario.jpg",
+        alt: "AforeAventura — Glosario de Términos Financieros",
+        caption: { es: "Glosario interactivo para el cajero con términos clave: AFORE, Retiro, Jubilación, Cotización y Rendimiento", en: "Interactive banker glossary with key financial terms: AFORE, Retirement, Pension, and Yield" },
         span: "half"
       },
       {
