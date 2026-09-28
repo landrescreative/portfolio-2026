@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense, lazy } from "react";
 import { useI18n } from "@/lib/i18n";
 import { getProjectById, getAdjacentProjects, projectsData, ProjectDetail } from "@/data/projectsData";
-import { ExternalLink, Play, ArrowLeft, ArrowRight, Check, Settings, X, ChevronLeft, ChevronRight, Maximize2, Sparkles } from "lucide-react";
+import { ExternalLink, Play, ArrowLeft, ArrowRight, Check, Settings, X, ChevronLeft, ChevronRight, Maximize2, Sparkles, RefreshCw } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 import { ProjectAdminModal } from "@/components/ProjectAdminModal";
-import { ModelViewer3D } from "@/components/ModelViewer3D";
+
+const LazyModelViewer3D = lazy(() =>
+  import("@/components/ModelViewer3D").then((m) => ({ default: m.ModelViewer3D }))
+);
 
 export const Route = createFileRoute("/projects/$projectId")({
   head: ({ params }) => {
@@ -279,6 +282,8 @@ function ProjectDetailPage() {
           <img
             src={project.coverImage}
             alt={titleText}
+            fetchPriority="high"
+            decoding="async"
             className="h-auto w-full object-cover max-h-[750px]"
           />
         </section>
@@ -300,7 +305,18 @@ function ProjectDetailPage() {
 
         {/* Interactive 3D Model Viewer for 3D Print / Mesh Projects */}
         {(project.has3DViewer || projectId === "aforeaventura-3d" || projectId === "art-toy-conejo") && (
-          <ModelViewer3D projectId={projectId} />
+          <Suspense
+            fallback={
+              <div className="mb-24 flex h-[560px] w-full flex-col items-center justify-center gap-3 rounded-3xl border border-ink/10 bg-[#18191c] text-canvas shadow-2xl">
+                <RefreshCw className="size-8 animate-spin text-accent" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-canvas/70">
+                  {lang === "es" ? "Cargando motor 3D interactivo..." : "Loading interactive 3D engine..."}
+                </span>
+              </div>
+            }
+          >
+            <LazyModelViewer3D projectId={projectId} />
+          </Suspense>
         )}
 
         {/* Story Sections: Overview, Challenge, Solution */}
@@ -479,6 +495,7 @@ function ProjectDetailPage() {
                         src={img.src}
                         alt={img.alt}
                         loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       />
                       <div className="absolute right-3 top-3 rounded-full bg-ink/70 p-2 text-canvas opacity-0 backdrop-blur-md transition-opacity duration-300 group-hover:opacity-100">

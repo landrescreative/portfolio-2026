@@ -74,13 +74,6 @@ export const POWERKICK_MODELS: ModelOption[] = [
   },
 ];
 
-// Preload models for instantaneous switching
-if (typeof window !== "undefined") {
-  AFORE_MODELS.forEach((m) => useGLTF.preload(m.url));
-  CONEJO_MODELS.forEach((m) => useGLTF.preload(m.url));
-  POWERKICK_MODELS.forEach((m) => useGLTF.preload(m.url));
-}
-
 interface FinishConfig {
   id: string;
   name: { es: string; en: string };
