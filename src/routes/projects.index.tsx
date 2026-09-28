@@ -82,13 +82,28 @@ function ProjectsPage() {
       <section className="px-6 pb-12 pt-32 md:pt-40">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col gap-6 border-b border-ink/10 pb-12">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <Link
                 to="/"
                 className="story-link text-xs font-semibold uppercase tracking-[0.25em] text-muted w-fit"
               >
                 {t.projectsPage.backToHome}
               </Link>
+
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/web"
+                  className="rounded-full border border-ink/10 bg-surface/80 px-3.5 py-1 text-xs font-medium text-muted hover:border-accent hover:text-ink transition-all"
+                >
+                  💻 {lang === "es" ? "Portafolio Web" : "Web Portfolio"}
+                </Link>
+                <Link
+                  to="/design"
+                  className="rounded-full border border-ink/10 bg-surface/80 px-3.5 py-1 text-xs font-medium text-muted hover:border-accent hover:text-ink transition-all"
+                >
+                  🎨 {lang === "es" ? "Portafolio 3D & Diseño" : "3D & Design Portfolio"}
+                </Link>
+              </div>
             </div>
 
             <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
