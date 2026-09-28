@@ -1,9 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 import { projectsData, ProjectDetail } from "@/data/projectsData";
-import { ProjectAdminModal } from "@/components/ProjectAdminModal";
-import { Plus, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 type ProjectsSearch = {
   category?: string;
@@ -36,10 +35,6 @@ function ProjectsPage() {
       setActiveTab(search.category === "ui" ? "web" : search.category);
     }
   }, [search.category]);
-
-  // New project creation state
-  const [newProjectModalOpen, setNewProjectModalOpen] = useState(false);
-  const [createdProject, setCreatedProject] = useState<ProjectDetail | null>(null);
 
   useEffect(() => {
     setAllProjects(Object.values(projectsData));
@@ -81,59 +76,8 @@ function ProjectsPage() {
     { key: "photo", keys: ["photo"], label: t.projectsPage.tabs.photo },
     { key: "devops", keys: ["devops"], label: t.projectsPage.tabs.devops },
   ];
-
-  const handleCreateNewProject = () => {
-    const newId = `proyecto-${Date.now().toString().slice(-4)}`;
-    const template: ProjectDetail = {
-      id: newId,
-      title: { es: "Nuevo Proyecto", en: "New Project Showcase" },
-      subtitle: { es: "Descripción corta del nuevo proyecto.", en: "Short description of the new project." },
-      category: "web",
-      categoryLabel: { es: "Desarrollo Web", en: "Web Development" },
-      tag: { es: "Diseño UI/UX · Desarrollo Web", en: "UI/UX Design · Web Dev" },
-      client: "Cliente Ejemplo",
-      year: new Date().getFullYear().toString(),
-      role: { es: "Desarrollador Lead & UI Designer", en: "Lead Developer & UI Designer" },
-      coverImage: "/uploads/cover-placeholder.jpg",
-      techStack: ["React", "TypeScript", "Tailwind CSS"],
-      overview: {
-        es: "Visión general sobre los objetivos y alcance del proyecto.",
-        en: "Overview of the project goals and scope."
-      },
-      challenge: {
-        es: "El problema principal o desafío técnico a resolver.",
-        en: "The core challenge or technical problem solved."
-      },
-      solution: {
-        es: "Estrategia de diseño e implementación técnica utilizada.",
-        en: "Design strategy and technical implementation used."
-      },
-      deliverables: {
-        es: ["Diseño UI/UX", "Desarrollo Web Frontend"],
-        en: ["UI/UX Design", "Frontend Web Dev"]
-      },
-      gallery: []
-    };
-
-    setCreatedProject(template);
-    setNewProjectModalOpen(true);
-  };
-
   return (
     <main className="grain bg-canvas text-ink min-h-screen">
-      {/* Modal for Creating New Project */}
-      {createdProject && (
-        <ProjectAdminModal
-          project={createdProject}
-          isOpen={newProjectModalOpen}
-          onClose={() => setNewProjectModalOpen(false)}
-          onUpdate={(updated) => {
-            setCreatedProject(updated);
-            navigate({ to: "/projects/$projectId", params: { projectId: updated.id } });
-          }}
-        />
-      )}
-
       {/* Header Section */}
       <section className="px-6 pb-12 pt-32 md:pt-40">
         <div className="mx-auto max-w-7xl">
@@ -145,16 +89,6 @@ function ProjectsPage() {
               >
                 {t.projectsPage.backToHome}
               </Link>
-
-              {/* Action Button: Create New Project */}
-              <button
-                type="button"
-                onClick={handleCreateNewProject}
-                className="group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-canvas shadow-lg transition-all duration-300 hover:scale-105 hover:bg-accent"
-              >
-                <Plus className="size-4 transition-transform group-hover:rotate-90" />
-                <span>{lang === "es" ? "Crear Nuevo Proyecto" : "Add New Project"}</span>
-              </button>
             </div>
 
             <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">

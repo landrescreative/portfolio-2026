@@ -2,9 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import React, { useState, useEffect, useMemo, Suspense, lazy } from "react";
 import { useI18n } from "@/lib/i18n";
 import { getProjectById, getAdjacentProjects, projectsData, ProjectDetail } from "@/data/projectsData";
-import { ExternalLink, Play, ArrowLeft, ArrowRight, Check, Settings, X, ChevronLeft, ChevronRight, Maximize2, Sparkles, RefreshCw } from "lucide-react";
+import { ExternalLink, Play, ArrowLeft, ArrowRight, Check, X, ChevronLeft, ChevronRight, Maximize2, Sparkles, RefreshCw } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
-import { ProjectAdminModal } from "@/components/ProjectAdminModal";
 
 const LazyModelViewer3D = lazy(() =>
   import("@/components/ModelViewer3D").then((m) => ({ default: m.ModelViewer3D }))
@@ -37,7 +36,6 @@ function ProjectDetailPage() {
   const { projectId } = Route.useParams();
   const { lang, t } = useI18n();
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const initialProject = getProjectById(projectId);
@@ -154,26 +152,6 @@ function ProjectDetailPage() {
 
   return (
     <main className="grain bg-canvas text-ink pt-28 md:pt-36">
-      {/* Floating Action Button for Visual Editor */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <button
-          type="button"
-          onClick={() => setIsEditorOpen(true)}
-          className="group flex items-center gap-2.5 rounded-full border border-canvas/20 bg-ink px-5 py-3 text-xs font-semibold uppercase tracking-wider text-canvas shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:bg-accent"
-        >
-          <Settings className="size-4 transition-transform duration-500 group-hover:rotate-90" />
-          <span>Editar Proyecto</span>
-        </button>
-      </div>
-
-      {/* Visual Admin Modal */}
-      <ProjectAdminModal
-        project={project}
-        isOpen={isEditorOpen}
-        onClose={() => setIsEditorOpen(false)}
-        onUpdate={(updated) => setLiveProject(updated)}
-      />
-
       <article className="mx-auto max-w-7xl px-6 pb-24">
         {/* Back Link */}
         <div className="reveal mb-12 flex items-center justify-between">
@@ -184,15 +162,6 @@ function ProjectDetailPage() {
             <ArrowLeft className="size-4" />
             <span>{staticTexts.backToGallery}</span>
           </Link>
-
-          <button
-            type="button"
-            onClick={() => setIsEditorOpen(true)}
-            className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-surface px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent transition-transform hover:scale-105"
-          >
-            <Settings className="size-3.5" />
-            <span>⚙️ Modo Editor</span>
-          </button>
         </div>
 
         {/* Hero Header */}
