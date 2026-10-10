@@ -45,6 +45,11 @@ if (missing.length === 0) {
 }
 
 console.log(`ensure-native-bindings: installing ${missing.join(", ")}`);
-execSync(`npm install --no-save ${missing.map((m) => `"${m}"`).join(" ")}`, {
-  stdio: "inherit",
-});
+try {
+  execSync(`npm install --no-save --no-audit --no-fund ${missing.map((m) => `"${m}"`).join(" ")}`, {
+    stdio: "inherit",
+  });
+} catch (err) {
+  // Never fail the whole build because of this optional self-heal step.
+  console.warn("ensure-native-bindings: install failed, continuing:", err?.message ?? err);
+}

@@ -29,21 +29,26 @@ function walk(dir) {
   return out;
 }
 
-const map = {};
-for (const abs of walk(PUB)) {
-  const rel = "/" + path.relative(PUB, abs).split(path.sep).join("/");
-  try {
-    const meta = await sharp(abs, { failOn: "none" }).metadata();
-    if (meta.width && meta.height) map[rel] = { w: meta.width, h: meta.height };
-  } catch {
-    /* ignore unreadable files */
+try {
+  const map = {};
+  for (const abs of walk(PUB)) {
+    const rel = "/" + path.relative(PUB, abs).split(path.sep).join("/");
+    try {
+      const meta = await sharp(abs, { failOn: "none" }).metadata();
+      if (meta.width && meta.height) map[rel] = { w: meta.width, h: meta.height };
+    } catch {
+      /* ignore unreadable files */
+    }
   }
-}
 
-const sorted = Object.fromEntries(
-  Object.keys(map)
-    .sort()
-    .map((k) => [k, map[k]]),
-);
-fs.writeFileSync(OUT, JSON.stringify(sorted, null, 0) + "\n", "utf8");
-console.log(`imageSizes.json written: ${Object.keys(sorted).length} entries`);
+  const sorted = Object.fromEntries(
+    Object.keys(map)
+      .sort()
+      .map((k) => [k, map[k]]),
+  );
+  fs.writeFileSync(OUT, JSON.stringify(sorted, null, 0) + "\n", "utf8");
+  console.log(`imageSizes.json written: ${Object.keys(sorted).length} entries`);
+} catch (err) {
+  // Keep the committed imageSizes.json instead of failing the build.
+  console.warn("generate-image-sizes: skipped, keeping committed imageSizes.json:", err?.message ?? err);
+}
