@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Mail, MapPin, Clock, Sparkles } from "lucide-react";
 
 import { useI18n, tx } from "@/lib/i18n";
@@ -73,14 +73,6 @@ function ContactPage() {
       <section className="px-6 pb-16 pt-36 md:pt-44">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col gap-6 border-b border-ink/10 pb-16">
-            <Link
-              to="/$lang"
-              params={{ lang }}
-              className="story-link w-fit text-xs font-semibold uppercase tracking-[0.25em] text-muted"
-            >
-              ← {t.ui.home}
-            </Link>
-
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-accent">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />

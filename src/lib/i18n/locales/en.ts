@@ -42,8 +42,6 @@ export const en = {
   projectsPage: {
     backToHome: "← Back to Home",
     title: "Project Gallery",
-    subtitle:
-      "Explore the full collection of web development, UI/UX interface design, 3D modeling & Linux cloud infrastructure.",
     searchPlaceholder: "Search projects by name, client, tech or discipline...",
     filterByTech: "Filter by technology:",
     allTechs: "All Technologies",

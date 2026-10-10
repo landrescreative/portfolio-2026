@@ -140,39 +140,12 @@ function ProjectsPage() {
                 <h1 className="font-serif text-5xl tracking-tight text-ink md:text-7xl">
                   {t.projectsPage.title}
                 </h1>
-                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted md:text-base">
-                  {t.projectsPage.subtitle}
-                </p>
               </div>
 
               {/* Filter Tabs - Modern Brutalist Segmented Filter */}
               <div className="w-full lg:w-auto">
-                <div className="flex max-w-full items-center gap-1.5 overflow-x-auto p-1 no-scrollbar rounded-xl border border-ink/10 bg-surface/80 shadow-sm backdrop-blur-md">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab("all");
-                      navigate({
-                        to: "/$lang/projects",
-                        params: { lang },
-                        search: { category: undefined },
-                      });
-                    }}
-                    className={`group relative flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-200 active:scale-95 ${
-                      activeTab === "all"
-                        ? "bg-ink text-canvas shadow-sm"
-                        : "text-muted hover:bg-ink/5 hover:text-ink"
-                    }`}
-                  >
-                    <span
-                      className={`size-1.5 rounded-full transition-colors ${
-                        activeTab === "all" ? "bg-accent" : "bg-muted/40 group-hover:bg-accent"
-                      }`}
-                    />
-                    <span>{t.projectsPage.tabs.all}</span>
-                  </button>
-
-                  {categories.map((cat) => {
+                <div className="flex max-w-full items-center gap-2 overflow-x-auto no-scrollbar lg:flex-wrap lg:overflow-visible">
+                  {[{ key: "all", label: t.projectsPage.tabs.all }, ...categories].map((cat) => {
                     const isActive = activeTab === cat.key;
                     return (
                       <button
@@ -183,20 +156,21 @@ function ProjectsPage() {
                           navigate({
                             to: "/$lang/projects",
                             params: { lang },
-                            search: { category: cat.key },
+                            search: { category: cat.key === "all" ? undefined : cat.key },
                           });
                         }}
-                        className={`group relative flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-200 active:scale-95 ${
+                        className={`flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium uppercase tracking-wider transition-all duration-200 active:scale-95 ${
                           isActive
-                            ? "bg-ink text-canvas shadow-sm"
-                            : "text-muted hover:bg-ink/5 hover:text-ink"
+                            ? "border-ink bg-ink font-semibold text-canvas shadow-md"
+                            : "border-ink/10 bg-surface/70 text-muted backdrop-blur-md hover:border-ink/25 hover:bg-surface hover:text-ink"
                         }`}
                       >
-                        <span
-                          className={`size-1.5 rounded-full transition-colors ${
-                            isActive ? "bg-accent" : "bg-muted/40 group-hover:bg-accent"
-                          }`}
-                        />
+                        {isActive && (
+                          <span className="relative flex size-1.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                            <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
+                          </span>
+                        )}
                         <span>{cat.label}</span>
                       </button>
                     );
@@ -293,8 +267,18 @@ function ProjectsPage() {
         </div>
       </section>
 
-      {/* Footer Contact */}
-      <ContactSection showForm={false} showContactInfo={false} />
+      {/* Footer CTA */}
+      <ContactSection
+        badge={t.ui.availableForProjects2026}
+        titleLine1={tx(lang, "¿Te gustó algún proyecto?", "Liked a project?")}
+        titleLine2={tx(lang, "Hagamos el tuyo.", "Let's build yours.")}
+        subtitle={tx(
+          lang,
+          "Cuéntame tu idea y te propongo el mejor camino: diseño UI/UX, desarrollo web, 3D y motion o infraestructura en la nube.",
+          "Tell me your idea and I'll suggest the best path: UI/UX design, web development, 3D and motion, or cloud infrastructure.",
+        )}
+        formContainerClassName="w-full max-w-2xl text-left"
+      />
     </main>
   );
 }

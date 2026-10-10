@@ -44,8 +44,6 @@ export const es: Translations = {
   projectsPage: {
     backToHome: "← Volver al Inicio",
     title: "Galería de Proyectos",
-    subtitle:
-      "Explora la colección completa de desarrollo web, diseño de interfaces UI/UX, animación 3D e infraestructura en la nube Linux.",
     searchPlaceholder: "Buscar proyectos por nombre, cliente, tecnología o disciplina...",
     filterByTech: "Filtrar por tecnología:",
     allTechs: "Todas las Tecnologías",
