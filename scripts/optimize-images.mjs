@@ -87,9 +87,12 @@ for (const abs of assets) {
   const outAbs = path.join(PUB, webpRel.replace(/^\//, ""));
   mkdirp(outAbs);
 
+  // Cap on width only: ultra-tall full-page screenshots keep their native
+  // width. A square fit box would shrink their width far below the rendered
+  // size (e.g. a 1400x4354 master became 772x2400) and look pixelated.
   const buf = await sharp(abs, { failOn: "none" })
     .rotate()
-    .resize({ width: 2400, height: 2400, fit: "inside", withoutEnlargement: true })
+    .resize({ width: 2400, withoutEnlargement: true })
     .webp({ quality: 80, effort: 5 })
     .toBuffer();
 
