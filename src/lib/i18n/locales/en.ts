@@ -385,7 +385,7 @@ export const en = {
           description: "Tell me about your project in a few lines, or book a slot directly.",
         },
         {
-          title: "Free 20-min call",
+          title: "Free 30-min call",
           description: "We review goals, scope and timing. No commitment.",
         },
         {
@@ -456,7 +456,7 @@ export const en = {
         number: "01",
         title: "Listen & understand",
         description:
-          "A free 20-minute call to understand your business, your goal and your audience. I listen first: I understand the need before proposing anything.",
+          "A free 30-minute call to understand your business, your goal and your audience. I listen first: I understand the need before proposing anything.",
       },
       {
         number: "02",
@@ -479,7 +479,7 @@ export const en = {
     ],
     ctaTitle: "Ready to start?",
     ctaSubtitle:
-      "Book a free 20-minute call, no commitment. We'll define scope, timeline and next steps.",
+      "Book a free 30-minute call, no commitment. We'll define scope, timeline and next steps.",
     ctaButton: "Book a free call",
   },
   idCard: {

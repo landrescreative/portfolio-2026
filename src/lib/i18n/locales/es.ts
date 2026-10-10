@@ -386,7 +386,7 @@ export const es: Translations = {
           description: "Cuéntame tu proyecto en unas líneas, o reserva un hueco directamente.",
         },
         {
-          title: "Llamada gratis de 20 min",
+          title: "Llamada gratis de 30 min",
           description: "Revisamos objetivos, alcance y tiempos. Sin compromiso.",
         },
         {
@@ -457,7 +457,7 @@ export const es: Translations = {
         number: "01",
         title: "Escuchar y entender",
         description:
-          "Una llamada gratis de 20 minutos para entender tu negocio, tu objetivo y tu público. Primero escucho: entiendo la necesidad antes de proponer nada.",
+          "Una llamada gratis de 30 minutos para entender tu negocio, tu objetivo y tu público. Primero escucho: entiendo la necesidad antes de proponer nada.",
       },
       {
         number: "02",
@@ -480,7 +480,7 @@ export const es: Translations = {
     ],
     ctaTitle: "¿Listo para empezar?",
     ctaSubtitle:
-      "Agenda una llamada gratis de 20 minutos, sin compromiso. Definimos alcance, plazos y siguientes pasos.",
+      "Agenda una llamada gratis de 30 minutos, sin compromiso. Definimos alcance, plazos y siguientes pasos.",
     ctaButton: "Agendar llamada gratis",
   },
   idCard: {

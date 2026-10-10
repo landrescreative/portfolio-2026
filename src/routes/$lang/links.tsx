@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useI18n, tx } from "@/lib/i18n";
 import { imageSize } from "@/lib/image";
+import { CALENDLY_URL } from "@/lib/links";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { buildSeo, type Locale } from "@/lib/seo";
 
@@ -121,13 +122,13 @@ function LinkBioPage() {
       icon: FileText,
     },
     {
-      title: { es: "Agendar Llamada / Contacto Directo", en: "Book a Call / Get in Touch" },
+      title: { es: "Agendar Llamada Gratis (30 min)", en: "Book a Free Call (30 min)" },
       subtitle: {
-        es: "1ª Consulta de asesoría 100% gratuita",
-        en: "1st consultation call 100% free",
+        es: "Elige día y hora en el calendario. Videollamada gratuita, sin compromiso.",
+        en: "Pick a day and time on the calendar. Free video call, no commitment.",
       },
-      href: "/contact",
-      isInternal: true,
+      href: CALENDLY_URL,
+      isInternal: false,
       badge: { es: "Disponible", en: "Available" },
       icon: Send,
     },

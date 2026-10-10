@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
-import { Video } from "lucide-react";
+import { CalendarClock, Video } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { CALENDLY_URL } from "@/lib/links";
 
 export function ContactForm() {
   const { t, lang } = useI18n();
@@ -154,12 +155,22 @@ export function ContactForm() {
             />
           </div>
 
-          {/* Free 1st Consultation Banner */}
-          <div className="flex justify-center sm:justify-start">
+          {/* Free 1st Consultation Banner + direct booking */}
+          <div className="flex flex-col items-center gap-3 sm:items-start">
             <div className="inline-flex items-center gap-2.5 rounded-2xl border border-accent/40 bg-accent/10 px-5 py-3 text-xs font-medium tracking-wide text-canvas shadow-sm backdrop-blur-md">
               <Video className="size-4 shrink-0 text-accent" />
               <span>{t.contact.freeCallBadge}</span>
             </div>
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-canvas/70 transition-colors hover:text-accent"
+            >
+              <CalendarClock className="size-4 shrink-0" />
+              {t.process.ctaButton}
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </a>
           </div>
 
           {/* Service Selector Pills */}

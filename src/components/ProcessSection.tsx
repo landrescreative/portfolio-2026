@@ -1,14 +1,14 @@
-import { Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { CALENDLY_URL } from "@/lib/links";
 
 /**
- * "How I work", a clear 4-step process plus the entry point (a free 20-minute
+ * "How I work", a clear 4-step process plus the entry point (a free 30-minute
  * call). Reduces friction for potential clients: they always know what happens
  * next and how to start. Relies on the page's scroll-reveal observer (`.reveal`).
  */
 export function ProcessSection() {
-  const { t, lang } = useI18n();
+  const { t } = useI18n();
 
   return (
     <section id="process" className="border-t border-ink/10 px-6 py-24 md:py-32">
@@ -56,14 +56,15 @@ export function ProcessSection() {
                 <h3 className="font-serif text-2xl tracking-tight text-ink">{step.title}</h3>
                 <p className="text-sm leading-relaxed text-ink/70">{step.description}</p>
                 {isEntry && (
-                  <Link
-                    to="/$lang/contact"
-                    params={{ lang }}
+                  <a
+                    href={CALENDLY_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-accent px-4 py-2 text-xs font-bold uppercase tracking-wider text-canvas shadow-md transition-transform duration-300 hover:scale-105"
                   >
                     {t.process.ctaButton}
                     <ArrowRight className="size-3.5" />
-                  </Link>
+                  </a>
                 )}
               </div>
             );
@@ -80,9 +81,10 @@ export function ProcessSection() {
               {t.process.ctaSubtitle}
             </p>
           </div>
-          <Link
-            to="/$lang/contact"
-            params={{ lang }}
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="group relative inline-flex shrink-0 items-center gap-3 overflow-hidden rounded-full bg-ink px-8 py-4 text-sm font-medium text-canvas ring-1 ring-ink/10 transition-transform duration-300 hover:scale-105"
           >
             <span className="absolute inset-0 translate-y-full bg-accent transition-transform duration-300 ease-out group-hover:translate-y-0" />
@@ -91,7 +93,7 @@ export function ProcessSection() {
               {t.process.ctaButton}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </span>
-          </Link>
+          </a>
         </div>
       </div>
     </section>

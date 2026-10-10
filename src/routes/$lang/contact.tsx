@@ -26,7 +26,7 @@ const FAQ = {
     items: [
       {
         q: "¿Cuánto cuesta un proyecto?",
-        a: "Cada proyecto es distinto, por eso no doy un precio genérico. Tras la llamada gratis de 20 minutos recibes una propuesta con el alcance, los plazos y el precio claros, sin sorpresas.",
+        a: "Cada proyecto es distinto, por eso no doy un precio genérico. Tras la llamada gratis de 30 minutos recibes una propuesta con el alcance, los plazos y el precio claros, sin sorpresas.",
       },
       {
         q: "¿Trabajas con clientes de otros países?",
@@ -48,7 +48,7 @@ const FAQ = {
     items: [
       {
         q: "How much does a project cost?",
-        a: "Every project is different, so I don't quote a generic price. After the free 20-minute call you get a clear proposal with the scope, timeline and price, no surprises.",
+        a: "Every project is different, so I don't quote a generic price. After the free 30-minute call you get a clear proposal with the scope, timeline and price, no surprises.",
       },
       {
         q: "Do you work with clients from other countries?",
