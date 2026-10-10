@@ -11,9 +11,9 @@ import { onHeroModelReady } from "@/lib/heroModel";
  * safety timeout guarantees it never becomes a wall. On any other route it does
  * not render at all.
  */
-const SAFETY_TIMEOUT_MS = 7000;
+const SAFETY_TIMEOUT_MS = 4500;
 const EXIT_MS = 800;
-const SKIP_REVEAL_MS = 1200;
+const SKIP_REVEAL_MS = 700;
 
 const isHomePath = (pathname: string) => /^\/(es|en)?\/?$/.test(pathname);
 

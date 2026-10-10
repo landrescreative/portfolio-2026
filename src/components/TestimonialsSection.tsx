@@ -123,7 +123,7 @@ export function TestimonialsSection() {
           <div className="flex flex-col items-start gap-4 md:items-end">
             <div className="flex items-center gap-2 text-accent">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="size-4 sm:size-5 fill-current" />
+                <Star key={i} className="size-4 sm:size-5 fill-current" aria-hidden="true" />
               ))}
               <span className="ml-2 font-serif text-base sm:text-lg italic text-ink font-semibold">
                 5.0 / 5.0 {t.ui.verifiedRating}
@@ -196,12 +196,16 @@ export function TestimonialsSection() {
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex items-center gap-1 text-accent">
                           {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="size-3.5 fill-current" />
+                            <Star key={i} className="size-3.5 fill-current" aria-hidden="true" />
                           ))}
                         </div>
 
                         <div className="flex items-center gap-1.5">
-                          {flag && <span className="text-sm">{flag}</span>}
+                          {flag && (
+                            <span className="text-sm" aria-hidden="true">
+                              {flag}
+                            </span>
+                          )}
                           {item.tag && (
                             <span className="rounded-full border border-ink/10 bg-canvas/90 px-2.5 py-0.5 text-[9px] uppercase tracking-wider text-muted font-bold">
                               {item.tag}

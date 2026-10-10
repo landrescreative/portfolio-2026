@@ -255,6 +255,76 @@ export function breadcrumbJsonLd(
   };
 }
 
+/**
+ * `ItemList` of `Service` entries mirroring the Services section. Gives search
+ * engines a machine-readable catalogue of what is offered and by whom.
+ */
+export function servicesJsonLd(lang: Locale): Record<string, unknown> {
+  const services =
+    lang === "en"
+      ? [
+          {
+            name: "Web & UI Design",
+            description: "Aesthetic, functional interfaces tailored to your brand identity.",
+          },
+          {
+            name: "Web Development",
+            description:
+              "Fast, secure front-end and back-end development optimised for SEO and conversion.",
+          },
+          {
+            name: "UX Design",
+            description:
+              "Research, information architecture and user flows optimised for conversion.",
+          },
+          {
+            name: "3D & Motion Graphics",
+            description: "3D animation, motion graphics and video post-production.",
+          },
+        ]
+      : [
+          {
+            name: "Diseño Web y UI",
+            description: "Interfaces estéticas y funcionales adaptadas a la identidad de tu marca.",
+          },
+          {
+            name: "Desarrollo Web",
+            description:
+              "Programación frontend y backend rápida, segura y optimizada para SEO y conversión.",
+          },
+          {
+            name: "Diseño UX",
+            description:
+              "Investigación, arquitectura de información y flujos de usuario optimizados.",
+          },
+          {
+            name: "3D y Motion Graphics",
+            description: "Animación 3D, gráficos en movimiento y postproducción de video.",
+          },
+        ];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: lang === "en" ? "Services" : "Servicios",
+    itemListElement: services.map((service, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Service",
+        name: service.name,
+        description: service.description,
+        serviceType: service.name,
+        areaServed: {
+          "@type": "Place",
+          name: lang === "en" ? "Worldwide (remote)" : "Todo el mundo (remoto)",
+        },
+        provider: { "@id": `${SITE_URL}/#person` },
+      },
+    })),
+  };
+}
+
 /** Site-wide JSON-LD (Person + WebSite). Emitted once from the root route. */ export function siteJsonLd(): Array<
   Record<string, unknown>
 > {

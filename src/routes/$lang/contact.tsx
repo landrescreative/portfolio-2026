@@ -18,6 +18,54 @@ const CONTACT_SEO = {
   },
 } as const;
 
+/** Shared by the rendered FAQ block and its `FAQPage` structured data. */
+const FAQ = {
+  es: {
+    title: "Preguntas frecuentes",
+    subtitle: "Lo que suelen preguntar antes de empezar un proyecto.",
+    items: [
+      {
+        q: "¿Cuánto cuesta un proyecto?",
+        a: "Cada proyecto es distinto, por eso no doy un precio genérico. Tras la llamada gratis de 20 minutos recibes una propuesta con el alcance, los plazos y el precio claros, sin sorpresas.",
+      },
+      {
+        q: "¿Trabajas con clientes de otros países?",
+        a: "Sí. Trabajo 100% en remoto con clientes de España, México, Estados Unidos y Latinoamérica, con comunicación en español e inglés.",
+      },
+      {
+        q: "¿Cuánto tarda un proyecto?",
+        a: "Un sitio web suele tomar entre 2 y 6 semanas según su tamaño. Las piezas de 3D y motion dependen del alcance. Siempre acordamos un calendario antes de empezar.",
+      },
+      {
+        q: "¿Qué necesito para empezar?",
+        a: "Solo una idea y una llamada. Te acompaño en todo lo demás: contenido, diseño, desarrollo, publicación y mantenimiento.",
+      },
+    ],
+  },
+  en: {
+    title: "Frequently asked questions",
+    subtitle: "What people usually ask before starting a project.",
+    items: [
+      {
+        q: "How much does a project cost?",
+        a: "Every project is different, so I don't quote a generic price. After the free 20-minute call you get a clear proposal with the scope, timeline and price, no surprises.",
+      },
+      {
+        q: "Do you work with clients from other countries?",
+        a: "Yes. I work fully remotely with clients in Spain, Mexico, the United States and Latin America, communicating in both Spanish and English.",
+      },
+      {
+        q: "How long does a project take?",
+        a: "A website usually takes 2 to 6 weeks depending on its size. 3D and motion pieces depend on the scope. We always agree on a schedule before we start.",
+      },
+      {
+        q: "What do I need to get started?",
+        a: "Just an idea and a call. I guide you through everything else: content, design, development, launch and maintenance.",
+      },
+    ],
+  },
+} as const;
+
 export const Route = createFileRoute("/$lang/contact")({
   head: ({ params }) => {
     const lang = params.lang as Locale;
@@ -33,6 +81,15 @@ export const Route = createFileRoute("/$lang/contact")({
           url: absoluteUrl(`/${lang}/contact`),
           inLanguage: lang,
           mainEntity: { "@id": "https://www.landrescreative.com/#person" },
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQ[lang].items.map((item) => ({
+            "@type": "Question",
+            name: item.q,
+            acceptedAnswer: { "@type": "Answer", text: item.a },
+          })),
         },
       ],
     });
@@ -121,6 +178,38 @@ function ContactPage() {
                 );
               })}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ, answers common objections and powers the FAQPage structured data */}
+      <section className="border-t border-ink/10 px-6 py-24">
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-10 flex flex-col gap-3 text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+              {FAQ[lang].title}
+            </span>
+            <h2 className="font-serif text-3xl tracking-tight text-ink md:text-4xl">
+              {FAQ[lang].subtitle}
+            </h2>
+          </div>
+          <div className="flex flex-col gap-3">
+            {FAQ[lang].items.map((item) => (
+              <details
+                key={item.q}
+                className="group rounded-2xl border border-ink/10 bg-surface/60 px-6 py-5 transition-colors open:border-accent/40 hover:border-accent/30"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left">
+                  <span className="font-serif text-lg tracking-tight text-ink md:text-xl">
+                    {item.q}
+                  </span>
+                  <span className="text-xl leading-none text-accent transition-transform duration-300 group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-4 text-sm leading-relaxed text-ink/75 md:text-base">{item.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

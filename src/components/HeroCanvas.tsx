@@ -1086,6 +1086,8 @@ export function HeroCanvas() {
   // `null` until the breakpoint is known on the client, so the WebGL canvas is
   // never part of the server-rendered markup.
   const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+  // `null` until we can probe the device. When false, the 3D hero is skipped.
+  const [canRender3D, setCanRender3D] = useState<boolean | null>(null);
   // When true the render loop stops (canvas scrolled out of view). Shared by the
   // desktop (scroll progress) and mobile (IntersectionObserver) paths.
   const [paused, setPaused] = useState(false);
@@ -1105,6 +1107,27 @@ export function HeroCanvas() {
     window.addEventListener("resize", checkDesktop, { passive: true });
     return () => window.removeEventListener("resize", checkDesktop);
   }, []);
+
+  // Skip the WebGL hero on constrained devices and connections. The page still
+  // reads fine without the character, and we release the preloader immediately
+  // so it never waits on a model that will not load.
+  useEffect(() => {
+    const nav = navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string };
+      deviceMemory?: number;
+    };
+    const reducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const saveData = nav.connection?.saveData === true;
+    const slowNetwork = ["slow-2g", "2g", "3g"].includes(nav.connection?.effectiveType ?? "");
+    const lowMemory = typeof nav.deviceMemory === "number" && nav.deviceMemory <= 2;
+    setCanRender3D(!(reducedMotion || saveData || slowNetwork || lowMemory));
+  }, []);
+
+  useEffect(() => {
+    if (canRender3D === false) markHeroModelReady();
+  }, [canRender3D]);
 
   useEffect(() => {
     if (!isDesktop) return;
@@ -1147,7 +1170,8 @@ export function HeroCanvas() {
     return () => observer.disconnect();
   }, [isDesktop]);
 
-  if (isDesktop === null) return null;
+  if (isDesktop === null || canRender3D === null) return null;
+  if (!canRender3D) return null;
 
   // Dev tuner is portaled too, so `fixed` works regardless of the router's
   // transform context (it lives inside the hero on mobile).

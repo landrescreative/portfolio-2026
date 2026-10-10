@@ -134,6 +134,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "shortcut icon", href: "/favicon.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
+    // Vercel Web Analytics + Speed Insights (privacy-friendly, no cookies).
+    // Enable both in the Vercel dashboard (Project · Analytics / Speed Insights);
+    // until then these paths 404 harmlessly.
+    scripts: [
+      { src: "/_vercel/insights/script.js", defer: true },
+      { src: "/_vercel/speed-insights/script.js", defer: true },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,

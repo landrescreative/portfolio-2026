@@ -23,7 +23,7 @@ export const AFORE_MODELS: ModelOption[] = [
     role: { es: "Peón Miniatura en Silla de Ruedas", en: "Wheelchair Miniature Token" },
     url: "/models/personaje-4.glb",
     originalSize: "49.7 MB (STL)",
-    optimizedSize: "1.13 MB (GLB)",
+    optimizedSize: "0.26 MB (GLB)",
   },
   {
     id: "personaje-1",
@@ -31,7 +31,7 @@ export const AFORE_MODELS: ModelOption[] = [
     role: { es: "Peón Miniatura con Sudadera", en: "Hoodie Miniature Token" },
     url: "/models/personaje-1.glb",
     originalSize: "71.4 MB (STL)",
-    optimizedSize: "1.12 MB (GLB)",
+    optimizedSize: "0.26 MB (GLB)",
   },
   {
     id: "personaje-2",
@@ -39,7 +39,7 @@ export const AFORE_MODELS: ModelOption[] = [
     role: { es: "Peón Miniatura con Abrigo", en: "Overcoat Miniature Token" },
     url: "/models/personaje-2.glb",
     originalSize: "145.0 MB (STL)",
-    optimizedSize: "1.13 MB (GLB)",
+    optimizedSize: "0.26 MB (GLB)",
   },
   {
     id: "personaje-3",
@@ -47,7 +47,7 @@ export const AFORE_MODELS: ModelOption[] = [
     role: { es: "Peón Miniatura de Aventura", en: "Adventure Miniature Token" },
     url: "/models/personaje-3.glb",
     originalSize: "133.5 MB (STL)",
-    optimizedSize: "1.12 MB (GLB)",
+    optimizedSize: "0.26 MB (GLB)",
   },
 ];
 
@@ -58,7 +58,7 @@ export const CONEJO_MODELS: ModelOption[] = [
     role: { es: "Escultura 3D Coleccionable", en: "Collectible 3D Sculpture" },
     url: "/models/conejomodelo.glb",
     originalSize: "9.9 MB",
-    optimizedSize: "9.9 MB (GLB)",
+    optimizedSize: "2.3 MB (GLB)",
     isColored: true,
   },
 ];
@@ -70,7 +70,7 @@ export const POWERKICK_MODELS: ModelOption[] = [
     role: { es: "Sneaker 3D Interactivo", en: "Interactive 3D Sneaker" },
     url: "/models/sneaker.glb",
     originalSize: "3.6 MB",
-    optimizedSize: "3.6 MB (GLB)",
+    optimizedSize: "1.0 MB (GLB)",
     isColored: true,
   },
 ];

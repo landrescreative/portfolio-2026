@@ -12,7 +12,7 @@ import { ShowreelSection } from "@/components/ShowreelSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { HeroCanvas } from "@/components/HeroCanvas";
 import { SafeBoundary } from "@/components/SafeBoundary";
-import { buildSeo, absoluteUrl, type Locale } from "@/lib/seo";
+import { buildSeo, absoluteUrl, servicesJsonLd, type Locale } from "@/lib/seo";
 
 const HOME_SEO = {
   es: {
@@ -43,6 +43,7 @@ export const Route = createFileRoute("/$lang/")({
           inLanguage: lang,
           mainEntity: { "@id": "https://www.landrescreative.com/#person" },
         },
+        servicesJsonLd(lang),
       ],
     });
   },

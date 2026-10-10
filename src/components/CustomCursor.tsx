@@ -11,17 +11,23 @@ export function CustomCursor() {
   const viewProjectText = t.ui.viewProject;
 
   useEffect(() => {
-    // Strictly enable ONLY on desktop devices with fine pointer (mouse)
-    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-    setIsDesktop(mediaQuery.matches);
+    // Strictly enable ONLY on desktop devices with a fine pointer (mouse), and
+    // never for visitors who asked for reduced motion.
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setIsDesktop(e.matches);
-    };
+    const syncEnabled = () => setIsDesktop(finePointer.matches && !reducedMotion.matches);
 
-    mediaQuery.addEventListener("change", handleMediaChange);
+    syncEnabled();
+    finePointer.addEventListener("change", syncEnabled);
+    reducedMotion.addEventListener("change", syncEnabled);
 
-    if (!mediaQuery.matches) return;
+    if (!(finePointer.matches && !reducedMotion.matches)) {
+      return () => {
+        finePointer.removeEventListener("change", syncEnabled);
+        reducedMotion.removeEventListener("change", syncEnabled);
+      };
+    }
 
     const handleMouseMove = (e: MouseEvent) => {
       setPos({ x: e.clientX, y: e.clientY });
@@ -46,7 +52,8 @@ export function CustomCursor() {
     window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      mediaQuery.removeEventListener("change", handleMediaChange);
+      finePointer.removeEventListener("change", syncEnabled);
+      reducedMotion.removeEventListener("change", syncEnabled);
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [viewProjectText]);

@@ -3,7 +3,7 @@ import { Video } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
 export function ContactForm() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,6 +18,13 @@ export function ContactForm() {
   const mountedAt = useRef(Date.now());
 
   const directEmail = "landres.creative@gmail.com";
+
+  // Auto-reply sent to the person who writes. Keeps the conversation warm even
+  // if the reply from Luis takes a few hours.
+  const autoReply =
+    lang === "en"
+      ? "Thanks for reaching out! I received your message and will get back to you within 24 hours. In the meantime, feel free to browse my work at https://www.landrescreative.com\n\nLuis Andrés · LANDRES"
+      : "¡Gracias por escribirme! Recibí tu mensaje y te responderé en menos de 24 horas. Mientras tanto, puedes ver mi trabajo en https://www.landrescreative.com\n\nLuis Andrés · LANDRES";
 
   const serviceOptions: { key: "web" | "ui" | "devops" | "other"; label: string }[] = [
     { key: "web", label: t.contact.services.web },
@@ -58,6 +65,7 @@ export function ContactForm() {
           _subject: `Nuevo mensaje de ${name} · Portafolio`,
           _template: "table",
           _captcha: "false",
+          _autoresponse: autoReply,
           Nombre: name,
           Email: email,
           Servicios: servicesText,
