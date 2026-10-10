@@ -50,5 +50,8 @@ try {
   console.log(`imageSizes.json written: ${Object.keys(sorted).length} entries`);
 } catch (err) {
   // Keep the committed imageSizes.json instead of failing the build.
-  console.warn("generate-image-sizes: skipped, keeping committed imageSizes.json:", err?.message ?? err);
+  console.warn(
+    "generate-image-sizes: skipped, keeping committed imageSizes.json:",
+    err?.message ?? err,
+  );
 }
