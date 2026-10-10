@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 .output
+# Original (unoptimised) image masters, kept locally out of the deploy.
+_source-images/
 .vinxi
 .tanstack/**
 .nitro

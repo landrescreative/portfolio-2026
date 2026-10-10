@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, Suspense } from "react";
+import type { ComponentRef } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Center, useGLTF, ContactShadows } from "@react-three/drei";
@@ -18,7 +19,7 @@ export interface ModelOption {
 export const AFORE_MODELS: ModelOption[] = [
   {
     id: "personaje-4",
-    name: { es: "Personaje 4 — Inclusivo", en: "Character 4 — Inclusive" },
+    name: { es: "Personaje 4 · Inclusivo", en: "Character 4 · Inclusive" },
     role: { es: "Peón Miniatura en Silla de Ruedas", en: "Wheelchair Miniature Token" },
     url: "/models/personaje-4.glb",
     originalSize: "49.7 MB (STL)",
@@ -26,7 +27,7 @@ export const AFORE_MODELS: ModelOption[] = [
   },
   {
     id: "personaje-1",
-    name: { es: "Personaje 1 — Juventud", en: "Character 1 — Youth" },
+    name: { es: "Personaje 1 · Juventud", en: "Character 1 · Youth" },
     role: { es: "Peón Miniatura con Sudadera", en: "Hoodie Miniature Token" },
     url: "/models/personaje-1.glb",
     originalSize: "71.4 MB (STL)",
@@ -34,7 +35,7 @@ export const AFORE_MODELS: ModelOption[] = [
   },
   {
     id: "personaje-2",
-    name: { es: "Personaje 2 — Ejecutiva", en: "Character 2 — Professional" },
+    name: { es: "Personaje 2 · Ejecutiva", en: "Character 2 · Professional" },
     role: { es: "Peón Miniatura con Abrigo", en: "Overcoat Miniature Token" },
     url: "/models/personaje-2.glb",
     originalSize: "145.0 MB (STL)",
@@ -42,7 +43,7 @@ export const AFORE_MODELS: ModelOption[] = [
   },
   {
     id: "personaje-3",
-    name: { es: "Personaje 3 — Explorador", en: "Character 3 — Explorer" },
+    name: { es: "Personaje 3 · Explorador", en: "Character 3 · Explorer" },
     role: { es: "Peón Miniatura de Aventura", en: "Adventure Miniature Token" },
     url: "/models/personaje-3.glb",
     originalSize: "133.5 MB (STL)",
@@ -53,7 +54,7 @@ export const AFORE_MODELS: ModelOption[] = [
 export const CONEJO_MODELS: ModelOption[] = [
   {
     id: "conejo-art-toy",
-    name: { es: "Conejo Jardinero — Art Toy", en: "Gardener Rabbit — Art Toy" },
+    name: { es: "Conejo Jardinero · Art Toy", en: "Gardener Rabbit · Art Toy" },
     role: { es: "Escultura 3D Coleccionable", en: "Collectible 3D Sculpture" },
     url: "/models/conejomodelo.glb",
     originalSize: "9.9 MB",
@@ -203,15 +204,17 @@ function LoaderIndicator() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#121316] z-20">
       <RefreshCw className="size-8 animate-spin text-accent" />
-      <span className="text-xs uppercase tracking-widest text-white/70">Cargando malla 3D optimizada...</span>
+      <span className="text-xs uppercase tracking-widest text-white/70">
+        Cargando malla 3D optimizada...
+      </span>
     </div>
   );
 }
 
 export function ModelViewer3D({ projectId }: { projectId?: string }) {
-  const { lang } = useI18n();
+  const { lang, t } = useI18n();
   const [mounted, setMounted] = useState(false);
-  
+
   const isRabbitProject = projectId === "art-toy-conejo";
   const isPowerkickProject = projectId === "powerkick";
   const hasColoredModel = isRabbitProject || isPowerkickProject;
@@ -234,10 +237,10 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
   }, [hasColoredModel]);
 
   const [selectedFinish, setSelectedFinish] = useState<FinishConfig>(
-    hasColoredModel ? FINISHES[0] : FINISHES[1]
+    hasColoredModel ? FINISHES[0] : FINISHES[1],
   );
   const [autoRotate, setAutoRotate] = useState(true);
-  const controlsRef = useRef<any>(null);
+  const controlsRef = useRef<ComponentRef<typeof OrbitControls> | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -268,16 +271,19 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
             className={`flex size-8 items-center justify-center rounded-full text-xs transition-colors ${
               autoRotate ? "bg-accent text-white" : "text-white/60 hover:text-white"
             }`}
-            title={lang === "es" ? "Alternar auto-rotación" : "Toggle auto-rotation"}
+            title={t.ui.toggleAutoRotate}
           >
-            <RotateCw className={`size-3.5 ${autoRotate ? "animate-spin" : ""}`} style={{ animationDuration: "8s" }} />
+            <RotateCw
+              className={`size-3.5 ${autoRotate ? "animate-spin" : ""}`}
+              style={{ animationDuration: "8s" }}
+            />
           </button>
 
           <button
             type="button"
             onClick={handleResetCamera}
             className="flex size-8 items-center justify-center rounded-full text-white/60 hover:text-white transition-colors"
-            title={lang === "es" ? "Centrar vista" : "Reset camera"}
+            title={t.ui.resetCamera}
           >
             <ZoomIn className="size-3.5" />
           </button>
@@ -299,7 +305,7 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
 
         {/* Orbit Instructions Cue (Bottom-Center) */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 pointer-events-none rounded-full border border-white/10 bg-black/40 px-4 py-1 text-[10px] font-medium tracking-wider text-white/60 backdrop-blur-md uppercase">
-          {lang === "es" ? "Arrastra para rotar · Rueda para zoom" : "Drag to orbit · Scroll to zoom"}
+          {t.ui.dragToOrbit}
         </div>
 
         {/* Three.js Canvas */}
@@ -334,13 +340,7 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
               />
 
               {/* Soft Contact Shadows on Floor */}
-              <ContactShadows
-                position={[0, -1.15, 0]}
-                opacity={0.7}
-                scale={4}
-                blur={2}
-                far={3}
-              />
+              <ContactShadows position={[0, -1.15, 0]} opacity={0.7} scale={4} blur={2} far={3} />
 
               <OrbitControls
                 ref={controlsRef}
@@ -375,7 +375,9 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
                       : "border-ink/10 bg-surface text-ink hover:border-ink/30"
                   }`}
                 >
-                  <Box className={`size-3.5 transition-transform group-hover:scale-110 ${isSelected ? "text-canvas" : "text-accent"}`} />
+                  <Box
+                    className={`size-3.5 transition-transform group-hover:scale-110 ${isSelected ? "text-canvas" : "text-accent"}`}
+                  />
                   <span className="font-semibold">{model.name[lang] || model.name.es}</span>
                   <span className={`text-[10px] ${isSelected ? "text-canvas/80" : "text-muted"}`}>
                     ({model.optimizedSize})
@@ -386,7 +388,9 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
           ) : (
             <div className="inline-flex items-center gap-2.5 rounded-2xl border border-ink/10 bg-surface px-4 py-2.5 text-xs">
               <Box className="size-3.5 text-accent" />
-              <span className="font-semibold text-ink">{activeModel.name[lang] || activeModel.name.es}</span>
+              <span className="font-semibold text-ink">
+                {activeModel.name[lang] || activeModel.name.es}
+              </span>
               <span className="text-[10px] text-muted">({activeModel.optimizedSize})</span>
             </div>
           )}
@@ -395,7 +399,7 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
         {/* Finish Selector Pills (Col 9-12) */}
         <div className="flex items-center justify-start md:justify-end gap-2 md:col-span-4">
           <span className="text-[11px] uppercase tracking-wider text-muted font-medium mr-1">
-            {lang === "es" ? "Acabado / Material:" : "Finish / Material:"}
+            {t.ui.finishMaterial}
           </span>
           {availableFinishes.map((finish) => {
             const isSelected = selectedFinish.id === finish.id;
@@ -422,4 +426,3 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
 }
 
 export default ModelViewer3D;
-

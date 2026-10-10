@@ -2,14 +2,13 @@ import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 
 export function CustomCursor() {
-  const { language } = useI18n();
+  const { t } = useI18n();
   const [pos, setPos] = useState({ x: -100, y: -100 });
   const [isHovered, setIsHovered] = useState(false);
   const [cursorText, setCursorText] = useState<string | null>(null);
   const [isDesktop, setIsDesktop] = useState(false);
 
-  const activeLang = language || "es";
-  const viewProjectText = activeLang === "es" ? "VER PROYECTO ↗" : "VIEW PROJECT ↗";
+  const viewProjectText = t.ui.viewProject;
 
   useEffect(() => {
     // Strictly enable ONLY on desktop devices with fine pointer (mouse)
@@ -53,6 +52,13 @@ export function CustomCursor() {
   }, [viewProjectText]);
 
   // Do NOT render anything on touch/mobile devices to protect mobile UX
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDesktop) root.classList.add("has-custom-cursor");
+    else root.classList.remove("has-custom-cursor");
+    return () => root.classList.remove("has-custom-cursor");
+  }, [isDesktop]);
+
   if (!isDesktop) return null;
 
   return (
@@ -68,14 +74,12 @@ export function CustomCursor() {
           cursorText
             ? "h-10 px-4 bg-accent text-canvas font-sans text-[10px] font-bold tracking-widest uppercase shadow-2xl scale-100"
             : isHovered
-            ? "size-10 bg-ink/30 border border-ink/40 backdrop-blur-sm scale-125"
-            : "size-4 bg-accent/70 border border-canvas/80 shadow-sm"
+              ? "size-10 bg-ink/30 border border-ink/40 backdrop-blur-sm scale-125"
+              : "size-4 bg-accent/70 border border-canvas/80 shadow-sm"
         }`}
       >
         {cursorText ? (
-          <span className="flex items-center gap-1 whitespace-nowrap">
-            {cursorText}
-          </span>
+          <span className="flex items-center gap-1 whitespace-nowrap">{cursorText}</span>
         ) : null}
       </div>
     </div>

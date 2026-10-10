@@ -6,7 +6,19 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", ".output", ".vinxi"] },
+  {
+    ignores: [
+      "dist",
+      ".output",
+      ".vinxi",
+      ".vercel",
+      ".tanstack",
+      ".wrangler",
+      "node_modules",
+      "_source-images",
+      "public",
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
@@ -37,4 +49,10 @@ export default tseslint.config(
     },
   },
   eslintPluginPrettier,
+  {
+    // Dev-only Vite plugin glue (mock save/upload middlewares) intentionally
+    // types the raw connect middleware loosely.
+    files: ["vite.config.ts"],
+    rules: { "@typescript-eslint/no-explicit-any": "off" },
+  },
 );

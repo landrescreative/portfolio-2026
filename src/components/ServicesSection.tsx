@@ -2,38 +2,48 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { imageSize } from "@/lib/image";
 
 interface ServiceProjectPreview {
   projectId: string;
   projectTitle: { es: string; en: string };
   projectTag: { es: string; en: string };
   image: string;
+  video?: { youtubeId?: string; mp4Url?: string };
 }
 
 const serviceProjects: ServiceProjectPreview[] = [
   {
     projectId: "art-of-flavors",
-    projectTitle: { es: "Art of Flavors — Luxury Dining", en: "Art of Flavors — Luxury Dining" },
+    projectTitle: { es: "Art of Flavors · Luxury Dining", en: "Art of Flavors · Luxury Dining" },
     projectTag: { es: "Diseño UI/UX & Dirección de Arte", en: "UI/UX Design & Art Direction" },
     image: "/uploads/art-of-flavors-mockup.webp",
   },
   {
     projectId: "naxine",
-    projectTitle: { es: "NAXINE — Marketplace & SaaS", en: "NAXINE — Marketplace & SaaS" },
+    projectTitle: { es: "NAXINE · Marketplace & SaaS", en: "NAXINE · Marketplace & SaaS" },
     projectTag: { es: "Desarrollo Full Stack Next.js", en: "Full Stack Next.js Development" },
-    image: "/uploads/entregable01desarrollo.jpg",
+    image: "/uploads/entregable01desarrollo.webp",
   },
   {
     projectId: "remedy-pain-spine",
-    projectTitle: { es: "Remedy Pain & Spine — Salud & SEO", en: "Remedy Pain & Spine — Health & SEO" },
-    projectTag: { es: "Arquitectura UX & Optimización CRO", en: "UX Architecture & CRO Optimization" },
-    image: "/uploads/remedy-pain-spine.png",
+    projectTitle: {
+      es: "Remedy Pain & Spine · Salud & SEO",
+      en: "Remedy Pain & Spine · Health & SEO",
+    },
+    projectTag: {
+      es: "Arquitectura UX & Optimización CRO",
+      en: "UX Architecture & CRO Optimization",
+    },
+    image: "/uploads/remedy-pain-spine.webp",
   },
   {
     projectId: "casa-tonala",
-    projectTitle: { es: "Casa Tonalá — Animación 3D", en: "Casa Tonalá — 3D Animation" },
+    projectTitle: { es: "Casa Tonalá · Animación 3D", en: "Casa Tonalá · 3D Animation" },
     projectTag: { es: "Blender 3D & Motion Graphics", en: "Blender 3D & Motion Graphics" },
-    image: "/uploads/casa-tonala-cover.jpg",
+    image: "/uploads/casa-tonala-cover.webp",
+    // Self-hosted 3D render, muted and looping, fills the frame via object-cover.
+    video: { mp4Url: "/uploads/service-3d-motion.mp4" },
   },
 ];
 
@@ -55,7 +65,7 @@ export function ServicesSection() {
             }
           });
         },
-        { threshold: 0.35, rootMargin: "-10% 0px -25% 0px" }
+        { threshold: 0.35, rootMargin: "-10% 0px -25% 0px" },
       );
       obs.observe(el);
       observers.push(obs);
@@ -122,9 +132,7 @@ export function ServicesSection() {
                           {item.title}
                         </h3>
                       </div>
-                      <span className="text-sm font-serif italic text-accent/90 sm:text-base pl-9">
-                        {item.tagline}
-                      </span>
+                      <span className="pl-9 text-base font-medium text-accent">{item.tagline}</span>
                     </div>
 
                     {/* Brutalist Action Arrow */}
@@ -172,8 +180,12 @@ export function ServicesSection() {
           <div className="sticky top-28 z-20 self-start hidden lg:block lg:col-span-5">
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border-2 border-canvas/20 bg-ink p-3 shadow-2xl">
               {/* Corner Frame Markers */}
-              <span className="absolute top-2 left-2 z-30 font-mono text-[9px] text-canvas/40">[SPEC_IMG_0{activeIdx + 1}]</span>
-              <span className="absolute bottom-2 right-2 z-30 font-mono text-[9px] text-canvas/40">[DISCIPLINE_CORE]</span>
+              <span className="absolute top-2 left-2 z-30 font-mono text-[9px] text-canvas/40">
+                [SPEC_0{activeIdx + 1}]
+              </span>
+              <span className="absolute bottom-2 right-2 z-30 font-mono text-[9px] text-canvas/40">
+                [DISCIPLINE_CORE]
+              </span>
 
               {serviceProjects.map((preview, idx) => {
                 const isActive = activeIdx === idx;
@@ -189,36 +201,59 @@ export function ServicesSection() {
                         : "opacity-0 scale-105 z-0 pointer-events-none"
                     }`}
                   >
-                    <img
-                      src={preview.image}
-                      alt={projectTitle}
-                      className="h-full w-full object-cover transition-all duration-700 hover:scale-105"
-                    />
+                    {preview.video && isActive ? (
+                      preview.video.mp4Url ? (
+                        <video
+                          src={preview.video.mp4Url}
+                          poster={preview.image}
+                          className="h-full w-full object-cover"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                        />
+                      ) : (
+                        <iframe
+                          className="h-full w-full"
+                          src={`https://www.youtube-nocookie.com/embed/${preview.video.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${preview.video.youtubeId}&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3`}
+                          title={projectTitle}
+                          allow="autoplay; encrypted-media; picture-in-picture"
+                          allowFullScreen
+                        />
+                      )
+                    ) : (
+                      <img
+                        src={preview.image}
+                        alt={projectTitle}
+                        loading="lazy"
+                        decoding="async"
+                        {...imageSize(preview.image)}
+                        className="h-full w-full object-cover transition-all duration-700 hover:scale-105"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
 
                     {/* Bottom Floating Tag Card with Case Study Link */}
                     <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-2 rounded-xl border border-canvas/20 bg-ink/90 p-5 backdrop-blur-md text-canvas shadow-2xl">
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-[10px] uppercase tracking-widest text-accent font-bold">
-                          // {lang === "es" ? "SERVICIO" : "SERVICE"} 0{idx + 1}
+                          // {t.ui.service} 0{idx + 1}
                         </span>
-                        <span className="font-mono text-[10px] text-canvas/50">
-                          {projectTag}
-                        </span>
+                        <span className="font-mono text-[10px] text-canvas/50">{projectTag}</span>
                       </div>
                       <span className="font-sans text-xl font-black uppercase tracking-tight">
                         {t.services.items[idx]?.title}
                       </span>
-                      <span className="text-xs font-serif italic text-canvas/80">
+                      <span className="text-xs font-medium text-canvas/85">
                         {t.services.items[idx]?.tagline}
                       </span>
 
                       <Link
-                        to="/projects/$projectId"
-                        params={{ projectId: preview.projectId }}
+                        to="/$lang/projects/$projectId"
+                        params={{ lang, projectId: preview.projectId }}
                         className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-2 text-xs font-bold uppercase tracking-wider text-canvas shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-canvas hover:text-ink w-fit"
                       >
-                        <span>{lang === "es" ? "Explorar Proyecto" : "Explore Project"}</span>
+                        <span>{t.ui.exploreProject}</span>
                         <ArrowUpRight className="size-3.5" />
                       </Link>
                     </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Star, Quote, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
+import { Star, Quote, ChevronLeft, ChevronRight, CheckCircle2, Pause, Play } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
 const countryFlags: Record<string, string> = {
@@ -22,6 +22,7 @@ export function TestimonialsSection() {
   const { t, lang } = useI18n();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
   const [cardsPerView, setCardsPerView] = useState(3);
   const touchStartX = useRef<number | null>(null);
 
@@ -61,14 +62,21 @@ export function TestimonialsSection() {
     setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
-  // Auto-slide rotation for carousel
+  // Auto-slide rotation for carousel. Pauses on hover, on keyboard focus, when
+  // the visitor explicitly pauses it, and for reduced-motion users.
   useEffect(() => {
-    if (isPaused || items.length === 0) return;
+    if (isPaused || userPaused || items.length === 0) return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
     const timer = setInterval(() => {
       handleNext();
     }, 5000);
     return () => clearInterval(timer);
-  }, [items.length, isPaused, maxIndex]);
+  }, [items.length, isPaused, userPaused, maxIndex]);
 
   // Touch Swipe for Mobile UX
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -89,7 +97,10 @@ export function TestimonialsSection() {
   };
 
   return (
-    <section id="testimonials" className="border-t border-ink/10 px-6 py-28 md:py-36 overflow-hidden">
+    <section
+      id="testimonials"
+      className="border-t border-ink/10 px-6 py-28 md:py-36 overflow-hidden"
+    >
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="reveal mb-14 flex flex-col justify-between gap-6 border-b border-ink/10 pb-8 md:flex-row md:items-end">
@@ -115,7 +126,7 @@ export function TestimonialsSection() {
                 <Star key={i} className="size-4 sm:size-5 fill-current" />
               ))}
               <span className="ml-2 font-serif text-base sm:text-lg italic text-ink font-semibold">
-                5.0 / 5.0 {lang === "es" ? "Excelencia Verificada" : "Verified Rating"}
+                5.0 / 5.0 {t.ui.verifiedRating}
               </span>
             </div>
 
@@ -123,9 +134,18 @@ export function TestimonialsSection() {
             <div className="flex items-center gap-2.5">
               <button
                 type="button"
+                onClick={() => setUserPaused((p) => !p)}
+                className="flex size-11 items-center justify-center rounded-full border border-ink/15 bg-surface text-ink transition-all duration-300 hover:scale-105 hover:bg-ink hover:text-canvas active:scale-95 shadow-sm"
+                aria-label={userPaused ? t.ui.resumeRotation : t.ui.pauseRotation}
+                aria-pressed={userPaused}
+              >
+                {userPaused ? <Play className="size-4" /> : <Pause className="size-4" />}
+              </button>
+              <button
+                type="button"
                 onClick={handlePrev}
                 className="flex size-11 items-center justify-center rounded-full border border-ink/15 bg-surface text-ink transition-all duration-300 hover:scale-105 hover:bg-ink hover:text-canvas active:scale-95 shadow-sm"
-                aria-label="Testimonio anterior"
+                aria-label={t.ui.prevTestimonial}
               >
                 <ChevronLeft className="size-5" />
               </button>
@@ -133,7 +153,7 @@ export function TestimonialsSection() {
                 type="button"
                 onClick={handleNext}
                 className="flex size-11 items-center justify-center rounded-full border border-ink/15 bg-surface text-ink transition-all duration-300 hover:scale-105 hover:bg-ink hover:text-canvas active:scale-95 shadow-sm"
-                aria-label="Siguiente testimonio"
+                aria-label={t.ui.nextTestimonial}
               >
                 <ChevronRight className="size-5" />
               </button>
@@ -146,6 +166,8 @@ export function TestimonialsSection() {
           className="relative overflow-hidden py-4 -mx-3"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          onFocusCapture={() => setIsPaused(true)}
+          onBlurCapture={() => setIsPaused(false)}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
@@ -156,7 +178,7 @@ export function TestimonialsSection() {
             }}
           >
             {items.map((item, idx) => {
-              const quoteText = item.content || (item as any).quote || "";
+              const quoteText = item.content ?? "";
               const flag = item.country ? countryFlags[item.country] : null;
               const initials = getInitials(item.name);
 
@@ -189,7 +211,7 @@ export function TestimonialsSection() {
                       </div>
 
                       {/* Review Quote */}
-                      <blockquote className="font-serif text-base sm:text-lg leading-relaxed tracking-tight text-ink/90 italic">
+                      <blockquote className="text-base leading-relaxed text-ink/90 sm:text-lg">
                         "{quoteText}"
                       </blockquote>
                     </div>
@@ -204,7 +226,10 @@ export function TestimonialsSection() {
                           <span className="font-serif text-base font-bold tracking-tight text-ink truncate">
                             {item.name}
                           </span>
-                          <CheckCircle2 className="size-3.5 text-accent shrink-0" aria-label="Verified Client" />
+                          <CheckCircle2
+                            className="size-3.5 text-accent shrink-0"
+                            aria-hidden="true"
+                          />
                         </div>
                         <span className="text-[11px] uppercase tracking-wider text-muted font-medium truncate">
                           {item.role}
@@ -227,16 +252,14 @@ export function TestimonialsSection() {
                 type="button"
                 onClick={() => setCurrentIndex(idx)}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  currentIndex === idx
-                    ? "w-8 bg-accent"
-                    : "w-2 bg-ink/20 hover:bg-ink/40"
+                  currentIndex === idx ? "w-8 bg-accent" : "w-2 bg-ink/20 hover:bg-ink/40"
                 }`}
-                aria-label={`Ir al slide ${idx + 1}`}
+                aria-label={`${t.ui.goToSlide} ${idx + 1}`}
               />
             ))}
           </div>
           <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
-            {currentIndex + 1} / {maxIndex + 1} · {items.length} {lang === "es" ? "Reseñas Verificadas" : "Verified Reviews"}
+            {currentIndex + 1} / {maxIndex + 1} · {items.length} {t.ui.verifiedReviews}
           </span>
         </div>
       </div>

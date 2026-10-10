@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Video } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
@@ -12,6 +12,10 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  // Spam mitigation without a third-party captcha: an off-screen honeypot field
+  // plus a minimum time-on-form check (bots submit almost instantly).
+  const [honeypot, setHoneypot] = useState("");
+  const mountedAt = useRef(Date.now());
 
   const directEmail = "landres.creative@gmail.com";
 
@@ -32,11 +36,16 @@ export function ContactForm() {
     e.preventDefault();
     if (!name || !email || !message) return;
 
+    // Silently accept (and drop) obvious bot submissions.
+    if (honeypot.trim() !== "" || Date.now() - mountedAt.current < 2500) {
+      setIsSubmitted(true);
+      return;
+    }
+
     setIsSubmitting(true);
     const servicesText =
-      selectedServices
-        .map((k) => serviceOptions.find((s) => s.key === k)?.label || k)
-        .join(", ") || "General";
+      selectedServices.map((k) => serviceOptions.find((s) => s.key === k)?.label || k).join(", ") ||
+      "General";
 
     try {
       const response = await fetch("https://formsubmit.co/ajax/landres.creative@gmail.com", {
@@ -46,7 +55,7 @@ export function ContactForm() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          _subject: `Nuevo mensaje de ${name} — Portafolio`,
+          _subject: `Nuevo mensaje de ${name} · Portafolio`,
           _template: "table",
           _captcha: "false",
           Nombre: name,
@@ -61,18 +70,18 @@ export function ContactForm() {
       } else {
         // Fallback: abrir cliente de correo directamente si el endpoint falla
         const mailtoLink = `mailto:landres.creative@gmail.com?subject=${encodeURIComponent(
-          `Nuevo Proyecto / Consulta - ${name}`
+          `Nuevo Proyecto / Consulta - ${name}`,
         )}&body=${encodeURIComponent(
-          `Nombre: ${name}\nEmail: ${email}\nServicios: ${servicesText}\n\nMensaje:\n${message}`
+          `Nombre: ${name}\nEmail: ${email}\nServicios: ${servicesText}\n\nMensaje:\n${message}`,
         )}`;
         window.location.href = mailtoLink;
         setIsSubmitted(true);
       }
     } catch {
       const mailtoLink = `mailto:landres.creative@gmail.com?subject=${encodeURIComponent(
-        `Nuevo Proyecto / Consulta - ${name}`
+        `Nuevo Proyecto / Consulta - ${name}`,
       )}&body=${encodeURIComponent(
-        `Nombre: ${name}\nEmail: ${email}\nServicios: ${servicesText}\n\nMensaje:\n${message}`
+        `Nombre: ${name}\nEmail: ${email}\nServicios: ${servicesText}\n\nMensaje:\n${message}`,
       )}`;
       window.location.href = mailtoLink;
       setIsSubmitted(true);
@@ -123,6 +132,20 @@ export function ContactForm() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-8 text-left">
+          {/* Honeypot: invisible to humans, tempting to bots. */}
+          <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+            <label htmlFor="company-website">Company</label>
+            <input
+              id="company-website"
+              type="text"
+              name="company-website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
+
           {/* Free 1st Consultation Banner */}
           <div className="flex justify-center sm:justify-start">
             <div className="inline-flex items-center gap-2.5 rounded-2xl border border-accent/40 bg-accent/10 px-5 py-3 text-xs font-medium tracking-wide text-canvas shadow-sm backdrop-blur-md">

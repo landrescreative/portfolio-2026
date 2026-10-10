@@ -19,8 +19,10 @@ import "@fontsource/work-sans/500.css";
 import "@fontsource/work-sans/600.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider } from "../lib/i18n";
+import { absoluteUrl, jsonLdMeta, localeFromPathname, siteJsonLd, SITE_NAME } from "../lib/seo";
 import { Navbar } from "../components/Navbar";
 import { PageTransition } from "../components/PageTransition";
+import { Preloader } from "../components/Preloader";
 import { CustomCursor } from "../components/CustomCursor";
 import { ScrollProgress } from "../components/ScrollProgress";
 
@@ -29,7 +31,9 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-canvas px-6 text-ink">
       <div className="max-w-md text-center">
         <h1 className="font-serif text-8xl font-bold tracking-tight text-accent">404</h1>
-        <h2 className="mt-4 font-serif text-3xl font-semibold">Página no encontrada / Page not found</h2>
+        <h2 className="mt-4 font-serif text-3xl font-semibold">
+          Página no encontrada / Page not found
+        </h2>
         <p className="mt-3 text-sm text-muted leading-relaxed">
           La página que buscas no existe o ha sido movida.
         </p>
@@ -90,31 +94,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Luis Andrés — Creative Developer & UI/UX Designer" },
+      { name: "theme-color", content: "#141414" },
+      // Fallbacks: every page overrides these through `buildSeo()`.
+      { title: `${SITE_NAME} · Creative Developer & UI/UX Designer` },
       {
         name: "description",
         content:
           "Portfolio of Luis Andrés, Creative Developer and UI/UX Designer specializing in React, Next.js, Webflow, Astro and DevOps Linux.",
       },
-      { property: "og:title", content: "Luis Andrés (LANDRES) — Creative Developer & 3D Artist" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:title", content: "Luis Andrés (LANDRES) · Creative Developer & 3D Artist" },
       {
         property: "og:description",
         content:
           "Portfolio of Luis Andrés, Creative Developer and 3D Animator specializing in Web Development, Motion Graphics and Interactive Experiences.",
       },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: "/uploads/landres-banner.jpg" },
-      { property: "og:image:width", content: "1920" },
-      { property: "og:image:height", content: "1080" },
-      { property: "og:image:alt", content: "LANDRES — Creative Direction & Digital Portfolio" },
+      { property: "og:image", content: absoluteUrl("/uploads/landres-banner.jpg") },
+      { property: "og:image:alt", content: "LANDRES · Creative Direction & Digital Portfolio" },
+      { property: "og:locale", content: "es_MX" },
+      { property: "og:locale:alternate", content: "en_US" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Luis Andrés (LANDRES) — Creative Developer & 3D Artist" },
+      { name: "twitter:title", content: "Luis Andrés (LANDRES) · Creative Developer & 3D Artist" },
       {
         name: "twitter:description",
         content:
           "Portfolio of Luis Andrés, Creative Developer and 3D Animator specializing in Web Development, Motion Graphics and Interactive Experiences.",
       },
-      { name: "twitter:image", content: "/uploads/landres-banner.jpg" },
+      { name: "twitter:image", content: absoluteUrl("/uploads/landres-banner.jpg") },
+      ...jsonLdMeta(siteJsonLd()),
     ],
     links: [
       {
@@ -133,8 +142,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const lang = localeFromPathname(pathname);
+
   return (
-    <html lang="en">
+    <html lang={lang}>
       <head>
         <HeadContent />
       </head>
@@ -159,12 +171,15 @@ function AnimatedOutlet() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const lang = localeFromPathname(pathname);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <I18nProvider>
+      <I18nProvider initialLanguage={lang}>
         <ScrollProgress />
         <CustomCursor />
+        <Preloader />
         <PageTransition>
           <Navbar />
           {/* Required: nested routes render here with page transition animations */}

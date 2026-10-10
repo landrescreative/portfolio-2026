@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
+import { imageSize } from "@/lib/image";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Menu, X, FileText } from "lucide-react";
 
 export function Navbar() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
 
   // Prevent background scrolling when menu is open
@@ -20,11 +21,15 @@ export function Navbar() {
     };
   }, [isOpen]);
 
-  const links = [
-    { name: t.nav.projects, to: "/projects" },
-    { name: t.nav.services, href: "/#services" },
-    { name: t.nav.about, to: "/about" },
-    { name: t.nav.contact, href: "/#contact" },
+  const links: Array<{
+    name: string;
+    to: "/$lang" | "/$lang/projects" | "/$lang/about" | "/$lang/contact";
+    hash?: string;
+  }> = [
+    { name: t.nav.projects, to: "/$lang/projects" },
+    { name: t.nav.services, to: "/$lang", hash: "services" },
+    { name: t.nav.about, to: "/$lang/about" },
+    { name: t.nav.contact, to: "/$lang/contact" },
   ];
 
   return (
@@ -33,14 +38,17 @@ export function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:py-6">
           {/* Logo / Name */}
           <Link
-            to="/"
+            to="/$lang"
+            params={{ lang }}
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-2.5 transition-opacity hover:opacity-85"
-            aria-label="Luis Andrés — Inicio"
+            aria-label="Luis Andrés · Inicio"
           >
             <img
-              src="/uploads/logo-black-and-orange.png"
+              src="/uploads/logo-black-and-orange.webp"
               alt="LANDRES Logo"
+              decoding="async"
+              {...imageSize("/uploads/logo-black-and-orange.webp")}
               className="h-9 w-auto md:h-10 object-contain"
             />
           </Link>
@@ -49,25 +57,17 @@ export function Navbar() {
           <div className="flex items-center gap-4 md:gap-8">
             {/* Desktop Links */}
             <div className="hidden items-center gap-8 md:flex">
-              {links.map((link) =>
-                link.to ? (
-                  <Link
-                    key={link.name}
-                    to={link.to}
-                    className="story-link text-xs font-medium uppercase tracking-[0.2em] text-ink/80 transition-colors hover:text-ink"
-                  >
-                    {link.name}
-                  </Link>
-                ) : (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="story-link text-xs font-medium uppercase tracking-[0.2em] text-ink/80 transition-colors hover:text-ink"
-                  >
-                    {link.name}
-                  </a>
-                )
-              )}
+              {links.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.to}
+                  params={{ lang }}
+                  hash={link.hash}
+                  className="story-link text-xs font-medium uppercase tracking-[0.2em] text-ink/80 transition-colors hover:text-ink"
+                >
+                  {link.name}
+                </Link>
+              ))}
             </div>
 
             {/* Direct CV Download Link */}
@@ -100,7 +100,9 @@ export function Navbar() {
                 />
                 <X
                   className={`absolute inset-0 size-6 transition-all duration-300 ease-out ${
-                    isOpen ? "rotate-0 opacity-100 scale-100 text-canvas" : "-rotate-90 opacity-0 scale-75"
+                    isOpen
+                      ? "rotate-0 opacity-100 scale-100 text-canvas"
+                      : "-rotate-90 opacity-0 scale-75"
                   }`}
                 />
               </div>
@@ -125,18 +127,17 @@ export function Navbar() {
           {/* Home Link */}
           <div
             className={`transition-all duration-500 ease-out ${
-              isOpen
-                ? "translate-y-0 opacity-100 delay-100"
-                : "translate-y-8 opacity-0 delay-0"
+              isOpen ? "translate-y-0 opacity-100 delay-100" : "translate-y-8 opacity-0 delay-0"
             }`}
           >
             <Link
-              to="/"
+              to="/$lang"
+              params={{ lang }}
               onClick={() => setIsOpen(false)}
               className="group font-serif text-4xl tracking-tight text-canvas/90 transition-colors hover:text-accent sm:text-5xl"
             >
               <span className="inline-block transition-transform duration-300 group-hover:scale-105">
-                {t.nav.work === "Trabajo" ? "Inicio" : "Home"}
+                {t.ui.home}
               </span>
             </Link>
           </div>
@@ -159,36 +160,24 @@ export function Navbar() {
                     : "translate-y-8 opacity-0 delay-0"
                 }`}
               >
-                {link.to ? (
-                  <Link
-                    to={link.to}
-                    onClick={() => setIsOpen(false)}
-                    className="group font-serif text-4xl tracking-tight text-canvas/90 transition-colors hover:text-accent sm:text-5xl"
-                  >
-                    <span className="inline-block transition-transform duration-300 group-hover:scale-105">
-                      {link.name}
-                    </span>
-                  </Link>
-                ) : (
-                  <a
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="group font-serif text-4xl tracking-tight text-canvas/90 transition-colors hover:text-accent sm:text-5xl"
-                  >
-                    <span className="inline-block transition-transform duration-300 group-hover:scale-105">
-                      {link.name}
-                    </span>
-                  </a>
-                )}
+                <Link
+                  to={link.to}
+                  params={{ lang }}
+                  hash={link.hash}
+                  onClick={() => setIsOpen(false)}
+                  className="group font-serif text-4xl tracking-tight text-canvas/90 transition-colors hover:text-accent sm:text-5xl"
+                >
+                  <span className="inline-block transition-transform duration-300 group-hover:scale-105">
+                    {link.name}
+                  </span>
+                </Link>
               </div>
             );
           })}
           {/* Mobile Direct CV Download Button & Language Switcher */}
           <div
             className={`flex items-center gap-4 transition-all duration-500 ease-out ${
-              isOpen
-                ? "translate-y-0 opacity-100 delay-[320ms]"
-                : "translate-y-8 opacity-0 delay-0"
+              isOpen ? "translate-y-0 opacity-100 delay-[320ms]" : "translate-y-8 opacity-0 delay-0"
             }`}
           >
             <a
@@ -210,9 +199,7 @@ export function Navbar() {
         {/* Footer Contact Info */}
         <div
           className={`relative z-10 flex flex-col items-center gap-2 border-t border-canvas/10 pt-6 text-center transition-all duration-500 ease-out ${
-            isOpen
-              ? "translate-y-0 opacity-100 delay-[350ms]"
-              : "translate-y-8 opacity-0 delay-0"
+            isOpen ? "translate-y-0 opacity-100 delay-[350ms]" : "translate-y-8 opacity-0 delay-0"
           }`}
         >
           <span className="text-xs uppercase tracking-[0.25em] text-accent font-semibold">

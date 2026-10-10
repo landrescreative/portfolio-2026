@@ -35,6 +35,10 @@ export function ShowreelSection() {
                   (e.target as HTMLImageElement).src = workVitreous;
                 }}
                 alt="Intro Video Poster"
+                loading="lazy"
+                decoding="async"
+                width={1280}
+                height={720}
                 className="absolute inset-0 h-full w-full object-cover opacity-60 transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/20" />
@@ -56,7 +60,7 @@ export function ShowreelSection() {
             <iframe
               className="h-full w-full"
               src="https://www.youtube-nocookie.com/embed/nY0MLClNavQ?autoplay=1&rel=0"
-              title="Luis Andrés — Intro Video"
+              title="Luis Andrés · Intro Video"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />

@@ -1,9 +1,7 @@
 export const en = {
   nav: {
-    work: "Work",
     projects: "Projects",
     services: "Services",
-    testimonials: "Testimonials",
     about: "About Me",
     contact: "Contact",
     cv: "Resume",
@@ -12,15 +10,14 @@ export const en = {
     name: "Luis Andrés",
     role: "Creative Developer & UI/UX Designer",
     available: "Available for work",
-    selectedWorks: "Selected Works — 2026",
+    selectedWorks: "Selected Works · 2026",
     titleLine1: "Hey, I’m",
-    titleLine2: "Alex.",
+    titleLine2: "Luis Andrés.",
     downloadCv: "Download CV",
     exploreProjects: "Explore Work",
-    bioPart1:
-      "UI/UX Designer and Creative Web Developer specializing in React, Next.js, Webflow, Astro, WordPress & Linux ",
-    bioHighlight: "DevOps & SysAdmin",
-    bioPart2: " to turn ideas into fast, high-converting digital products.",
+    bioPart1: "I design and build digital products for ",
+    bioHighlight: "startups and agencies",
+    bioPart2: ", from Figma to server, with UI/UX, web development and 3D.",
     experienceLabel: "Experience",
     experienceValue: "6 Years",
     locationLabel: "Location",
@@ -28,7 +25,7 @@ export const en = {
   },
   work: {
     title: "Featured Projects",
-    counter: "001 — 004",
+    counter: "001 - 004",
     featuredBadge: "Featured",
     vitreousTitle: "Next Era Developments",
     vitreousTag: "UI/UX Design · Web Development",
@@ -124,46 +121,29 @@ export const en = {
       },
       {
         id: "art-toy-conejo",
-        title: "Rabbit Art Toy — 3D Character Sculpture",
+        title: "Rabbit Art Toy · 3D Character Sculpture",
         category: "3d",
         categoryLabel: "3D & Modeling",
         tag: "3D Modeling · Art Toy & Character Design",
         description:
           "Character design, 3D modeling in Blender, and studio rendering for a collectible spring gardener art toy.",
-        image: "/uploads/art-toy-conejo-cover.jpg",
+        image: "/uploads/art-toy-conejo-cover.webp",
       },
     ],
   },
-  projectDetailPage: {
-    backToGallery: "Back to Project Gallery",
-    clientLabel: "Client",
-    roleLabel: "Role / Service",
-    yearLabel: "Year",
-    liveSite: "Live Website",
-    privateProject: "Private Showcase",
-    techStackLabel: "Tech Stack & Tools:",
-    overviewLabel: "Overview",
-    challengeLabel: "The Challenge",
-    solutionLabel: "The Solution",
-    deliverablesLabel: "Key Deliverables",
-    metricsLabel: "Impact & Metrics",
-    galleryLabel: "Visual Gallery & Details",
-    prevProject: "Previous Project",
-    nextProject: "Next Project",
-    playVideo: "Play Project Showcase Video",
-    notFoundTitle: "Project Not Found",
-    notFoundSubtitle: "The project you are looking for does not exist or has been moved.",
-    backToProjects: "Back to Projects",
-  },
   ticker: {
-    webgl: "React & Next.js",
-    visualIdentity: "UI/UX Design",
-    reactjs: "TypeScript",
-    motionDesign: "DevOps & Linux",
-    cinema4d: "Webflow & Framer",
-    interactiveUX: "Astro & WordPress",
-    threejs: "Figma",
-    designSystems: "GoHighLevel",
+    items: [
+      "UI/UX Design",
+      "Web Development",
+      "React & Next.js",
+      "3D & Motion",
+      "Linux DevOps",
+      "Astro & WordPress",
+      "Webflow & Framer",
+      "SEO & Performance",
+      "Branding & Identity",
+      "SaaS & Platforms",
+    ],
   },
   services: {
     title: "Services",
@@ -309,7 +289,7 @@ export const en = {
     statementHighlight: "reliable cloud infrastructure.",
     devLabel: "Web & Frontend",
     devCopy:
-      "React, Next.js, TypeScript, Astro, Webflow, Framer and WordPress — engineered for speed, SEO, and conversions.",
+      "React, Next.js, TypeScript, Astro, Webflow, Framer and WordPress, engineered for speed, SEO, and conversions.",
     interfaceLabel: "UI/UX & Design",
     interfaceCopy:
       "Product and interface design in Figma focused on clarity, design systems, and conversion-oriented user flows.",
@@ -321,21 +301,22 @@ export const en = {
     backToHome: "← Back to Home",
     title: "About Me & Journey",
     subtitle:
-      "UI/UX Designer, Creative Web Developer & Linux DevOps Specialist with over 6 years of experience delivering high-converting digital platforms.",
+      "I design and build digital products for startups and agencies, from Figma to server. UI/UX, web development, 3D and Linux DevOps, with 6+ years of experience.",
     storyTitle: "My Story & Approach",
     storyP1:
       "I am a UI/UX designer and web developer experienced with WordPress, Webflow, React, Next.js, Node.js, Expo, Astro, Framer, and GHL (GoHighLevel). I adapt seamlessly between static sites, modern web applications, and CMS platforms depending on project requirements.",
     storyP2:
-      "Beyond frontend engineering, I specialize in DevOps and SysAdmin—focusing on Linux servers, NGINX reverse proxies, automated deployments, cloud maintenance, and monitoring. This end-to-end capability ensures that every application I build is not only visually stunning and intuitive, but also fast, secure, and resilient.",
+      "Beyond frontend engineering, I specialize in DevOps and SysAdmin, focusing on Linux servers, NGINX reverse proxies, automated deployments, cloud maintenance, and monitoring. This end-to-end capability ensures that every application I build is not only visually stunning and intuitive, but also fast, secure, and resilient.",
     experienceTitle: "Work Experience",
-    trustedSubtitle: "These companies have trusted my services. Passionate about building connections with multiple companies.",
+    trustedSubtitle:
+      "These companies have trusted my services. Passionate about building connections with multiple companies.",
     partnerCta: "Let's Partner Up!",
     experiences: [
       {
         role: "Full Stack Web Developer",
         company: "NEEXIS",
         location: "Spain",
-        period: "2026 — Present",
+        period: "2026 - Present",
         description:
           "Developing full stack web applications and scalable platforms with modern web technologies, focusing on efficiency and performance.",
         achievements: [
@@ -347,7 +328,7 @@ export const en = {
         role: "Web Designer & SEO Manager",
         company: "CORNERSTONE MEDIA",
         location: "USA",
-        period: "2024 — 2026",
+        period: "2024 - 2026",
         description:
           "In charge of planning, designing, and configuring websites for multiple clients, focusing on user experience, SEO, lead generation, and conversions.",
         achievements: [
@@ -359,36 +340,13 @@ export const en = {
         role: "Web Designer & Developer",
         company: "FREELANCE",
         location: "Remote",
-        period: "2020 — Present",
+        period: "2020 - Present",
         description:
           "Over the years I have worked on web design, web development, and graphic design projects focused mostly on social media.",
         achievements: [
           "Creation of visual identities and graphic assets for social media and marketing.",
           "Custom web design and development for startups and diverse businesses.",
         ],
-      },
-    ],
-    valuesTitle: "Core Values & Philosophy",
-    values: [
-      {
-        title: "User-Centered Clarity",
-        description:
-          "Every design choice starts with deep empathy for user needs, creating clear and intuitive digital journeys.",
-      },
-      {
-        title: "Elegance in Simplicity",
-        description:
-          "The best solutions eliminate unnecessary friction, turning complex ideas into clean, effortless interfaces.",
-      },
-      {
-        title: "Continuous Evolution",
-        description:
-          "Staying ahead by constantly mastering modern frameworks, DevOps practices, and emerging technologies.",
-      },
-      {
-        title: "End-to-End Reliability",
-        description:
-          "From pixel-perfect UI designs to zero-downtime server setups, taking full ownership of the entire product lifecycle.",
       },
     ],
   },
@@ -421,7 +379,119 @@ export const en = {
     emailCopied: "Email address copied to clipboard!",
     freeCallBadge:
       "First consultation or video call is 100% free to discuss your business or project.",
-    copyright: "© 2026 Luis Andrés — All rights reserved",
+    next: {
+      title: "What happens next",
+      steps: [
+        {
+          title: "You write or book a call",
+          description: "Tell me about your project in a few lines, or book a slot directly.",
+        },
+        {
+          title: "Free 20-min call",
+          description: "We review goals, scope and timing. No commitment.",
+        },
+        {
+          title: "Proposal & kickoff",
+          description: "You get a clear proposal with timeline and budget. Then we start.",
+        },
+      ],
+    },
+    copyright: "© 2026 Luis Andrés. All rights reserved",
+  },
+  ui: {
+    home: "Home",
+    available: "Available",
+    availableForWork: "Available for work",
+    availableForProjects2026: "Available for Projects · 2026",
+    openCommissions2026: "Open for Commissions · 2026",
+    copied: "Copied",
+    copy: "Copy",
+    socialsTitle: "Socials & Digital Presence",
+    getInTouch: "Get in Touch",
+    viewCase: "View case",
+    selectedPortfolio: "Selected Portfolio",
+    exploreProject: "Explore Project",
+    service: "SERVICE",
+    verifiedRating: "Client Rating",
+    verifiedReviews: "Client Reviews",
+    pauseRotation: "Pause auto-rotation",
+    resumeRotation: "Resume auto-rotation",
+    prevTestimonial: "Previous testimonial",
+    nextTestimonial: "Next testimonial",
+    goToSlide: "Go to slide",
+    loadingExperience: "Loading experience",
+    enterNow: "Enter now",
+    viewProject: "VIEW PROJECT ↗",
+    project: "Project",
+    projects: "Projects",
+    duration: "Duration",
+    priceRange: "Price Range",
+    loading3d: "Loading interactive 3D engine...",
+    clientFeedback: "Client Feedback",
+    clickToExpand: "Click to expand",
+    openEnlarged: "open enlarged image",
+    enlargedGallery: "Enlarged gallery",
+    closeLightbox: "Close",
+    prevImage: "Previous image",
+    nextImage: "Next image",
+    viewCategory: "View category →",
+    webPortfolio: "Web Portfolio",
+    webPortfolioUi: "Web & UI Portfolio",
+    designPortfolio: "3D & Design Portfolio",
+    caseStudy: "Case Study",
+    visualIdentityBrand: "Visual Identity & Brand",
+    creativeDirectionTag: "Creative Direction · 3D · Motion · Code",
+    toggleAutoRotate: "Toggle auto-rotation",
+    resetCamera: "Reset camera",
+    dragToOrbit: "Drag to orbit · Scroll to zoom",
+    finishMaterial: "Finish / Material:",
+    liveSite: "Live Site",
+  },
+  process: {
+    label: "How I Work",
+    title: "From first call to launch",
+    subtitle:
+      "A clear, low-friction process. You always know what happens next, and what you get at each step.",
+    freeBadge: "Free",
+    steps: [
+      {
+        number: "01",
+        title: "Listen & understand",
+        description:
+          "A free 20-minute call to understand your business, your goal and your audience. I listen first: I understand the need before proposing anything.",
+      },
+      {
+        number: "02",
+        title: "Define the solution",
+        description:
+          "I turn that need into a tailored plan: design, web development, 3D, content or a mix. With clear scope, timeline and budget.",
+      },
+      {
+        number: "03",
+        title: "Design & build",
+        description:
+          "I bring the solution to life in stages, from visual direction and interface to code. You review and approve each step before we move on.",
+      },
+      {
+        number: "04",
+        title: "Launch & support",
+        description:
+          "I ship it, measure results and stay close to fine-tune and maintain. Your project goes live and keeps running.",
+      },
+    ],
+    ctaTitle: "Ready to start?",
+    ctaSubtitle:
+      "Book a free 20-minute call, no commitment. We'll define scope, timeline and next steps.",
+    ctaButton: "Book a free call",
+  },
+  idCard: {
+    role: "Creative Developer & 3D",
+    idLabel: "ID · 2026",
+    basedIn: "Based in",
+    basedInValue: "Remote · Worldwide",
+    focus: "Focus",
+    focusValue: "UI/UX · Web · 3D",
+    status: "Available",
   },
   projectDetailPage: {
     backToGallery: "Back to Project Gallery",

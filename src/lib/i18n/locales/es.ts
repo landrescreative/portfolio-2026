@@ -2,10 +2,8 @@ import { Translations } from "./en";
 
 export const es: Translations = {
   nav: {
-    work: "Trabajo",
     projects: "Proyectos",
     services: "Servicios",
-    testimonials: "Testimonios",
     about: "Sobre Mí",
     contact: "Contacto",
     cv: "CV / Resumé",
@@ -14,15 +12,14 @@ export const es: Translations = {
     name: "Luis Andrés",
     role: "Desarrollador Creativo & Diseñador UI/UX",
     available: "Disponible para trabajar",
-    selectedWorks: "Proyectos Seleccionados — 2026",
+    selectedWorks: "Proyectos Seleccionados · 2026",
     titleLine1: "Hey, soy",
-    titleLine2: "Alex.",
+    titleLine2: "Luis Andrés.",
     downloadCv: "Descargar CV",
     exploreProjects: "Explorar Proyectos",
-    bioPart1:
-      "Diseñador UI/UX y Desarrollador Web enfocado en React, Next.js, Webflow, Astro, WordPress y ",
-    bioHighlight: "DevOps & SysAdmin Linux",
-    bioPart2: " para convertir ideas en productos digitales rápidos y de alta conversión.",
+    bioPart1: "Diseño y construyo productos digitales para ",
+    bioHighlight: "startups y agencias",
+    bioPart2: ", de Figma a servidor: UI/UX, desarrollo web y 3D.",
     experienceLabel: "Experiencia",
     experienceValue: "6 Años",
     locationLabel: "Ubicación",
@@ -30,7 +27,7 @@ export const es: Translations = {
   },
   work: {
     title: "Proyectos Destacados",
-    counter: "001 — 004",
+    counter: "001 - 004",
     featuredBadge: "Destacado",
     vitreousTitle: "Next Era Developments",
     vitreousTag: "Diseño UI/UX · Desarrollo Web",
@@ -126,46 +123,29 @@ export const es: Translations = {
       },
       {
         id: "art-toy-conejo",
-        title: "Art Toy Conejo — Escultura & Personaje 3D",
+        title: "Art Toy Conejo · Escultura & Personaje 3D",
         category: "3d",
         categoryLabel: "3D & Modelado",
         tag: "Modelado 3D · Art Toy & Escultura Digital",
         description:
           "Diseño de personaje, modelado 3D en Blender y renders de estudio para un Art Toy coleccionable primaveral.",
-        image: "/uploads/art-toy-conejo-cover.jpg",
+        image: "/uploads/art-toy-conejo-cover.webp",
       },
     ],
   },
-  projectDetailPage: {
-    backToGallery: "Volver a Galería de Proyectos",
-    clientLabel: "Cliente",
-    roleLabel: "Rol / Servicio",
-    yearLabel: "Año",
-    liveSite: "Ver Sitio Web",
-    privateProject: "Proyecto Privado",
-    techStackLabel: "Tecnologías & Herramientas:",
-    overviewLabel: "Visión General",
-    challengeLabel: "El Desafío",
-    solutionLabel: "La Solución",
-    deliverablesLabel: "Entregables Clave",
-    metricsLabel: "Resultados e Impacto",
-    galleryLabel: "Galería Visual & Detalles",
-    prevProject: "Proyecto Anterior",
-    nextProject: "Siguiente Proyecto",
-    playVideo: "Reproducir Video del Proyecto",
-    notFoundTitle: "Proyecto No Encontrado",
-    notFoundSubtitle: "El proyecto que buscas no existe o ha sido movido.",
-    backToProjects: "Volver a Proyectos",
-  },
   ticker: {
-    webgl: "React & Next.js",
-    visualIdentity: "Diseño UI/UX",
-    reactjs: "TypeScript",
-    motionDesign: "DevOps & Linux",
-    cinema4d: "Webflow & Framer",
-    interactiveUX: "Astro & WordPress",
-    threejs: "Figma",
-    designSystems: "GoHighLevel",
+    items: [
+      "Diseño UI/UX",
+      "Desarrollo Web",
+      "React & Next.js",
+      "3D & Motion",
+      "DevOps Linux",
+      "Astro & WordPress",
+      "Webflow & Framer",
+      "SEO & Performance",
+      "Branding & Identidad",
+      "SaaS & Plataformas",
+    ],
   },
   services: {
     title: "Servicios",
@@ -311,7 +291,7 @@ export const es: Translations = {
     statementHighlight: "infraestructura confiable en la nube.",
     devLabel: "Desarrollo Web & Frontend",
     devCopy:
-      "React, Next.js, TypeScript, Astro, Webflow, Framer y WordPress — diseñados para velocidad, SEO y conversión.",
+      "React, Next.js, TypeScript, Astro, Webflow, Framer y WordPress, diseñados para velocidad, SEO y conversión.",
     interfaceLabel: "Diseño & UI/UX",
     interfaceCopy:
       "Diseño de producto e interfaz en Figma enfocados en claridad, sistemas de diseño y flujos de usuario orientados a conversión.",
@@ -323,7 +303,7 @@ export const es: Translations = {
     backToHome: "← Volver al Inicio",
     title: "Sobre Mí y Mi Trayectoria",
     subtitle:
-      "Diseñador UI/UX, Desarrollador Web Creativo y Especialista en DevOps Linux con más de 6 años de experiencia creando soluciones digitales de alto impacto.",
+      "Diseño y construyo productos digitales para startups y agencias, de Figma a servidor. UI/UX, desarrollo web, 3D y DevOps Linux, con más de 6 años de experiencia.",
     storyTitle: "Mi Historia y Enfoque",
     storyP1:
       "Soy diseñador UI/UX y desarrollador web con experiencia en WordPress, Webflow, React, Next.js, Node.js, Expo, Astro, Framer y GHL (GoHighLevel). Trabajo tanto con sitios estáticos como con plataformas CMS y aplicaciones web modernas, adaptándome según las necesidades del proyecto.",
@@ -338,7 +318,7 @@ export const es: Translations = {
         role: "Programador Web Full Stack",
         company: "NEEXIS",
         location: "España",
-        period: "2026 — Presente",
+        period: "2026 - Presente",
         description:
           "Desarrollador web full stack enfocado en la creación y optimización de aplicaciones y plataformas web escalables.",
         achievements: [
@@ -350,7 +330,7 @@ export const es: Translations = {
         role: "Web Designer & SEO Manager",
         company: "CORNERSTONE MEDIA",
         location: "USA",
-        period: "2024 — 2026",
+        period: "2024 - 2026",
         description:
           "Encargado de planear, diseñar y configurar sitios web para múltiples clientes, con enfoque en la experiencia del usuario, SEO, obtención de leads y conversiones.",
         achievements: [
@@ -362,36 +342,13 @@ export const es: Translations = {
         role: "Diseñador y Desarrollador Web",
         company: "FREELANCE",
         location: "Remoto",
-        period: "2020 — Presente",
+        period: "2020 - Presente",
         description:
           "Durante estos años he trabajado en proyectos de diseño web, desarrollo web y diseño gráfico enfocado mayormente a social media.",
         achievements: [
           "Diseño e implementación de identidades visuales y gráficos para redes sociales.",
           "Desarrollo web a la medida para clientes y negocios independientes.",
         ],
-      },
-    ],
-    valuesTitle: "Valores Fundamentales y Filosofía",
-    values: [
-      {
-        title: "Claridad Centrada en el Usuario",
-        description:
-          "Cada decisión de diseño nace de comprender profundamente las necesidades y objetivos de los usuarios.",
-      },
-      {
-        title: "Simplicidad y Elegancia",
-        description:
-          "Las mejores soluciones eliminan la complejidad, convirtiendo ideas avanzadas en interfaces intuitivas y limpias.",
-      },
-      {
-        title: "Aprendizaje Continuo",
-        description:
-          "Evolución constante adaptándome a nuevos frameworks, prácticas DevOps y tecnologías emergentes.",
-      },
-      {
-        title: "Compromiso de Inicio a Fin",
-        description:
-          "Desde el diseño de píxel perfecto en Figma hasta la infraestructura en servidores Linux, garantizando un producto sólido.",
       },
     ],
   },
@@ -423,7 +380,119 @@ export const es: Translations = {
     emailCopied: "¡Dirección de correo copiada al portapapeles!",
     freeCallBadge:
       "La primera consulta o videollamada es 100% gratuita para analizar tu negocio o proyecto.",
-    copyright: "© 2026 Luis Andrés — Todos los derechos reservados",
+    next: {
+      title: "Qué pasa después",
+      steps: [
+        {
+          title: "Me escribes o agendas una llamada",
+          description: "Cuéntame tu proyecto en unas líneas, o reserva un hueco directamente.",
+        },
+        {
+          title: "Llamada gratis de 20 min",
+          description: "Revisamos objetivos, alcance y tiempos. Sin compromiso.",
+        },
+        {
+          title: "Propuesta y arranque",
+          description: "Recibes una propuesta clara con plazos y presupuesto. Y empezamos.",
+        },
+      ],
+    },
+    copyright: "© 2026 Luis Andrés. Todos los derechos reservados",
+  },
+  ui: {
+    home: "Inicio",
+    available: "Disponible",
+    availableForWork: "Disponible para proyectos",
+    availableForProjects2026: "Disponible para Proyectos · 2026",
+    openCommissions2026: "Comisiones Abiertas · 2026",
+    copied: "Copiado",
+    copy: "Copiar",
+    socialsTitle: "Redes & Presencia Digital",
+    getInTouch: "Contactar",
+    viewCase: "Ver caso",
+    selectedPortfolio: "Portafolio Seleccionado",
+    exploreProject: "Explorar Proyecto",
+    service: "SERVICIO",
+    verifiedRating: "Valoración de Clientes",
+    verifiedReviews: "Reseñas de Clientes",
+    pauseRotation: "Pausar rotación automática",
+    resumeRotation: "Reanudar rotación automática",
+    prevTestimonial: "Testimonio anterior",
+    nextTestimonial: "Siguiente testimonio",
+    goToSlide: "Ir al slide",
+    loadingExperience: "Cargando experiencia",
+    enterNow: "Entrar ahora",
+    viewProject: "VER PROYECTO ↗",
+    project: "Proyecto",
+    projects: "Proyectos",
+    duration: "Duración",
+    priceRange: "Inversión",
+    loading3d: "Cargando motor 3D interactivo...",
+    clientFeedback: "Testimonio del Cliente",
+    clickToExpand: "Haz clic para ampliar",
+    openEnlarged: "abrir imagen ampliada",
+    enlargedGallery: "Galería ampliada",
+    closeLightbox: "Cerrar",
+    prevImage: "Imagen anterior",
+    nextImage: "Imagen siguiente",
+    viewCategory: "Ver categoría →",
+    webPortfolio: "Portafolio Web",
+    webPortfolioUi: "Portafolio Web & UI",
+    designPortfolio: "Portafolio 3D & Diseño",
+    caseStudy: "Caso de Estudio",
+    visualIdentityBrand: "Identidad Visual & Marca",
+    creativeDirectionTag: "Dirección Creativa · 3D · Motion · Código",
+    toggleAutoRotate: "Alternar auto-rotación",
+    resetCamera: "Centrar vista",
+    dragToOrbit: "Arrastra para rotar · Rueda para zoom",
+    finishMaterial: "Acabado / Material:",
+    liveSite: "En Vivo",
+  },
+  process: {
+    label: "Cómo Trabajo",
+    title: "De la primera llamada al lanzamiento",
+    subtitle:
+      "Un proceso claro y sin fricción. Siempre sabes qué viene después, y qué recibes en cada paso.",
+    freeBadge: "Gratis",
+    steps: [
+      {
+        number: "01",
+        title: "Escuchar y entender",
+        description:
+          "Una llamada gratis de 20 minutos para entender tu negocio, tu objetivo y tu público. Primero escucho: entiendo la necesidad antes de proponer nada.",
+      },
+      {
+        number: "02",
+        title: "Definir la solución",
+        description:
+          "Traduzco esa necesidad en un plan a medida: diseño, desarrollo web, 3D, contenido o una combinación. Con alcance, plazos y presupuesto claros.",
+      },
+      {
+        number: "03",
+        title: "Diseñar y construir",
+        description:
+          "Llevo la solución a la práctica por etapas, desde la dirección visual y la interfaz hasta el código. Revisas y apruebas cada avance antes de seguir.",
+      },
+      {
+        number: "04",
+        title: "Lanzar y acompañar",
+        description:
+          "Lo pongo en producción, mido resultados y me quedo cerca para ajustar y mantener. Tu proyecto sale en vivo y sigue funcionando.",
+      },
+    ],
+    ctaTitle: "¿Listo para empezar?",
+    ctaSubtitle:
+      "Agenda una llamada gratis de 20 minutos, sin compromiso. Definimos alcance, plazos y siguientes pasos.",
+    ctaButton: "Agendar llamada gratis",
+  },
+  idCard: {
+    role: "Desarrollador Creativo & 3D",
+    idLabel: "ID · 2026",
+    basedIn: "Ubicación",
+    basedInValue: "Remoto · Todo el mundo",
+    focus: "Enfoque",
+    focusValue: "UI/UX · Web · 3D",
+    status: "Disponible",
   },
   projectDetailPage: {
     backToGallery: "Volver a Galería de Proyectos",

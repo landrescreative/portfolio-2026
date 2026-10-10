@@ -2,6 +2,29 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import fs from "fs";
 import path from "path";
 
+// TanStack Devtools (dev-only) injects a `data-tsd-source` attribute into every
+// JSX element for its "click to source" feature. React Three Fiber interprets
+// dashed props as "pierced" props (e.g. `material-color`) and throws when it
+// receives `data-tsd-source` on a 3D element. Since the devtools bridge is
+// already disabled, we simply strip that attribute in development.
+function stripTanStackSourceTags() {
+  return {
+    name: "strip-tanstack-source-tags",
+    apply: "serve",
+    enforce: "post",
+    transform(code: string, id: string) {
+      if (id.includes("node_modules") || !code.includes("data-tsd-source")) return null;
+
+      const cleaned = code
+        .replace(/\s*"data-tsd-source"\s*:\s*"[^"]*",?/g, "")
+        .replace(/\s+data-tsd-source="[^"]*"/g, "");
+
+      if (cleaned === code) return null;
+      return { code: cleaned, map: null };
+    },
+  };
+}
+
 function localSavePlugin() {
   return {
     name: "local-save-plugin",
@@ -38,7 +61,7 @@ function localSavePlugin() {
             try {
               const updatedProject = JSON.parse(body);
               const targetFile = path.resolve(process.cwd(), "src/data/projectsData.ts");
-              let fileContent = fs.readFileSync(targetFile, "utf-8");
+              const fileContent = fs.readFileSync(targetFile, "utf-8");
 
               const targetKey = `"${updatedProject.id}": {`;
               const keyIndex = fileContent.indexOf(targetKey);
@@ -64,24 +87,36 @@ function localSavePlugin() {
                   let serialized = JSON.stringify(updatedProject, null, 2);
                   serialized = serialized
                     .replace(/"coverImage": "([^"]+)"/g, (match, val) => {
-                      if (val === "workVitreous" || val.includes("work-vitreous")) return `"coverImage": workVitreous`;
-                      if (val === "workNexus" || val.includes("work-nexus")) return `"coverImage": workNexus`;
-                      if (val === "workEditorial" || val.includes("work-editorial")) return `"coverImage": workEditorial`;
-                      if (val === "workBrutalist" || val.includes("work-brutalist")) return `"coverImage": workBrutalist`;
+                      if (val === "workVitreous" || val.includes("work-vitreous"))
+                        return `"coverImage": workVitreous`;
+                      if (val === "workNexus" || val.includes("work-nexus"))
+                        return `"coverImage": workNexus`;
+                      if (val === "workEditorial" || val.includes("work-editorial"))
+                        return `"coverImage": workEditorial`;
+                      if (val === "workBrutalist" || val.includes("work-brutalist"))
+                        return `"coverImage": workBrutalist`;
                       return match;
                     })
                     .replace(/"src": "([^"]+)"/g, (match, val) => {
-                      if (val === "workVitreous" || val.includes("work-vitreous")) return `"src": workVitreous`;
-                      if (val === "workNexus" || val.includes("work-nexus")) return `"src": workNexus`;
-                      if (val === "workEditorial" || val.includes("work-editorial")) return `"src": workEditorial`;
-                      if (val === "workBrutalist" || val.includes("work-brutalist")) return `"src": workBrutalist`;
+                      if (val === "workVitreous" || val.includes("work-vitreous"))
+                        return `"src": workVitreous`;
+                      if (val === "workNexus" || val.includes("work-nexus"))
+                        return `"src": workNexus`;
+                      if (val === "workEditorial" || val.includes("work-editorial"))
+                        return `"src": workEditorial`;
+                      if (val === "workBrutalist" || val.includes("work-brutalist"))
+                        return `"src": workBrutalist`;
                       return match;
                     })
                     .replace(/"poster": "([^"]+)"/g, (match, val) => {
-                      if (val === "workVitreous" || val.includes("work-vitreous")) return `"poster": workVitreous`;
-                      if (val === "workNexus" || val.includes("work-nexus")) return `"poster": workNexus`;
-                      if (val === "workEditorial" || val.includes("work-editorial")) return `"poster": workEditorial`;
-                      if (val === "workBrutalist" || val.includes("work-brutalist")) return `"poster": workBrutalist`;
+                      if (val === "workVitreous" || val.includes("work-vitreous"))
+                        return `"poster": workVitreous`;
+                      if (val === "workNexus" || val.includes("work-nexus"))
+                        return `"poster": workNexus`;
+                      if (val === "workEditorial" || val.includes("work-editorial"))
+                        return `"poster": workEditorial`;
+                      if (val === "workBrutalist" || val.includes("work-brutalist"))
+                        return `"poster": workBrutalist`;
                       return match;
                     });
 
@@ -159,13 +194,16 @@ export default defineConfig({
   },
   nitro: {
     preset: "vercel",
+    // Nitro v3 supports `inlineDynamicImports` (and the Lovable wrapper forwards
+    // any extra keys into the Nitro config), but it narrows its typed option
+    // surface. Assert through the narrow type to keep the flag without `any`.
     inlineDynamicImports: true,
-  },
+  } as { preset: string },
   vite: {
     server: {
       host: true,
       port: 8080,
     },
-    plugins: [localSavePlugin()],
+    plugins: [stripTanStackSourceTags(), localSavePlugin()],
   },
 });

@@ -1,0 +1,9 @@
+# https://www.landrescreative.com
+User-agent: *
+Allow: /
+
+# Link-in-bio page: keep it out of the index (marked noindex in the page head too)
+Disallow: /es/links
+Disallow: /en/links
+
+Sitemap: https://www.landrescreative.com/sitemap.xml

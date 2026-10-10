@@ -107,6 +107,20 @@
   animation: page-fade 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@utility animate-float {
+  animation: float-y 7s ease-in-out infinite;
+}
+
 @keyframes filter-card-in {
   0% {
     opacity: 0;
@@ -139,6 +153,21 @@
 
 .animate-curtain {
   animation: curtain-sweep 0.95s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+/* Preloader exit: the overlay is already fully covering the screen, so it just
+   sweeps up to reveal the interface. */
+@keyframes preloader-out {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.animate-preloader-out {
+  animation: preloader-out 0.8s cubic-bezier(0.76, 0, 0.24, 1) forwards;
 }
 
 /* Scroll-driven reveal (triggered by IntersectionObserver adding .is-visible) */
@@ -189,9 +218,42 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    scroll-behavior: auto;
+  }
+
   .reveal {
     opacity: 1;
     transform: none;
     transition: none;
   }
+
+  .animate-marquee,
+  .animate-reveal,
+  .animate-page-reveal,
+  .animate-filter-card,
+  .animate-curtain,
+  .animate-preloader-out,
+  .animate-float,
+  .animate-ping,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-spin {
+    animation: none !important;
+  }
+}
+
+/* The custom cursor replaces the native one only on fine-pointer devices where
+   it is actually mounted. Text fields keep their caret affordance. */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+html.has-custom-cursor input,
+html.has-custom-cursor textarea,
+html.has-custom-cursor select,
+html.has-custom-cursor [contenteditable="true"] {
+  cursor: auto !important;
 }

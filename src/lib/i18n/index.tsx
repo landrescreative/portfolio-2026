@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { en, Translations } from "./locales/en";
 import { es } from "./locales/es";
+import { DEFAULT_LOCALE } from "@/lib/seo";
 
 export type Language = "en" | "es";
 
@@ -15,31 +16,25 @@ const translations: Record<Language, Translations> = { en, es };
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-const STORAGE_KEY = "portfolio_language_preference";
-
-export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>("es");
+/**
+ * The active language is driven by the URL prefix (`/es`, `/en`) so that every
+ * page has a single, crawlable language. `initialLanguage` is resolved from the
+ * pathname on the server (and on the client) to avoid hydration mismatches.
+ */
+export const I18nProvider: React.FC<{
+  children: React.ReactNode;
+  initialLanguage?: Language;
+}> = ({ children, initialLanguage }) => {
+  const [language, setLanguageState] = useState<Language>(initialLanguage ?? DEFAULT_LOCALE);
 
   useEffect(() => {
-    try {
-      const savedLang = localStorage.getItem(STORAGE_KEY) as Language | null;
-      if (savedLang && (savedLang === "en" || savedLang === "es")) {
-        setLanguageState(savedLang);
-      } else {
-        setLanguageState("es");
-      }
-    } catch {
-      // Fallback to default language on SSR or restricted environments
+    if (initialLanguage) {
+      setLanguageState(initialLanguage);
     }
-  }, []);
+  }, [initialLanguage]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    try {
-      localStorage.setItem(STORAGE_KEY, lang);
-    } catch {
-      // Ignore write errors
-    }
   };
 
   const t = translations[language] || es;
@@ -58,3 +53,13 @@ export const useI18n = (): I18nContextType => {
   }
   return context;
 };
+
+/**
+ * Pick a localized string without the hook. Use it in places where hooks cannot
+ * run (route `head()` functions, module-level constants) and for one-off,
+ * page-specific copy. Any string that is shared across pages should live in the
+ * dictionaries under `t.ui` instead.
+ */
+export function tx(lang: Language, es: string, en: string): string {
+  return lang === "en" ? en : es;
+}

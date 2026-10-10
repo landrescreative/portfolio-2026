@@ -6,8 +6,7 @@ export function ScrollProgress() {
   useEffect(() => {
     const handleScroll = () => {
       const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-      const height =
-        document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       if (height > 0) {
         const scrolled = (winScroll / height) * 100;
         setScrollWidth(scrolled);
