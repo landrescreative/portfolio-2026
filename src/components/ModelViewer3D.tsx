@@ -5,6 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Center, useGLTF, ContactShadows } from "@react-three/drei";
 import { RotateCw, Box, RefreshCw, ZoomIn, Palette } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { ArButton, type ArAssets } from "@/components/ArButton";
 
 export interface ModelOption {
   id: string;
@@ -14,6 +15,8 @@ export interface ModelOption {
   originalSize: string;
   optimizedSize: string;
   isColored?: boolean;
+  /** Native AR assets (GLB for Android, USDZ for iOS). Only when available. */
+  ar?: ArAssets;
 }
 
 export const AFORE_MODELS: ModelOption[] = [
@@ -60,6 +63,10 @@ export const CONEJO_MODELS: ModelOption[] = [
     originalSize: "9.9 MB",
     optimizedSize: "2.3 MB (GLB)",
     isColored: true,
+    ar: {
+      glb: "/models/ar/art-toy-conejo.glb",
+      usdz: "/models/ar/art-toy-conejo.usdz",
+    },
   },
 ];
 
@@ -305,8 +312,20 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
 
         {/* Orbit Instructions Cue (Bottom-Center) */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 pointer-events-none rounded-full border border-white/10 bg-black/40 px-4 py-1 text-[10px] font-medium tracking-wider text-white/60 backdrop-blur-md uppercase">
-          {t.ui.dragToOrbit}
+          <span className="sm:hidden">{t.ui.dragToOrbitTouch}</span>
+          <span className="hidden sm:inline">{t.ui.dragToOrbit}</span>
         </div>
+
+        {/* View in AR. Only renders on devices with a native AR viewer. Sits
+            above the hint on phones so the two never collide. */}
+        {activeModel.ar && (
+          <div className="absolute bottom-16 right-4 z-10 sm:bottom-5">
+            <ArButton
+              assets={activeModel.ar}
+              title={activeModel.name[lang] || activeModel.name.es}
+            />
+          </div>
+        )}
 
         {/* Three.js Canvas */}
         {mounted ? (

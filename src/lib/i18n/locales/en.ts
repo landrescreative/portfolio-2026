@@ -442,7 +442,9 @@ export const en = {
     toggleAutoRotate: "Toggle auto-rotation",
     resetCamera: "Reset camera",
     dragToOrbit: "Drag to orbit · Scroll to zoom",
+    dragToOrbitTouch: "Drag to rotate · Pinch",
     finishMaterial: "Finish / Material:",
+    viewInAr: "View in AR",
     liveSite: "Live Site",
   },
   process: {

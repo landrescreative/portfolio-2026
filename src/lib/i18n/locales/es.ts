@@ -443,7 +443,9 @@ export const es: Translations = {
     toggleAutoRotate: "Alternar auto-rotación",
     resetCamera: "Centrar vista",
     dragToOrbit: "Arrastra para rotar · Rueda para zoom",
+    dragToOrbitTouch: "Arrastra para rotar · Pellizca",
     finishMaterial: "Acabado / Material:",
+    viewInAr: "Ver en AR",
     liveSite: "En Vivo",
   },
   process: {
