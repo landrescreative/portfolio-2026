@@ -28,6 +28,10 @@ export const AFORE_MODELS: ModelOption[] = [
     url: "/models/personaje-4.glb",
     originalSize: "49.7 MB (STL)",
     optimizedSize: "0.26 MB (GLB)",
+    ar: {
+      glb: "/models/ar/afore-personaje-4.glb",
+      usdz: "/models/ar/afore-personaje-4.usdz",
+    },
   },
   {
     id: "personaje-1",
@@ -36,6 +40,10 @@ export const AFORE_MODELS: ModelOption[] = [
     url: "/models/personaje-1.glb",
     originalSize: "71.4 MB (STL)",
     optimizedSize: "0.26 MB (GLB)",
+    ar: {
+      glb: "/models/ar/afore-personaje-1.glb",
+      usdz: "/models/ar/afore-personaje-1.usdz",
+    },
   },
   {
     id: "personaje-2",
@@ -44,6 +52,10 @@ export const AFORE_MODELS: ModelOption[] = [
     url: "/models/personaje-2.glb",
     originalSize: "145.0 MB (STL)",
     optimizedSize: "0.26 MB (GLB)",
+    ar: {
+      glb: "/models/ar/afore-personaje-2.glb",
+      usdz: "/models/ar/afore-personaje-2.usdz",
+    },
   },
   {
     id: "personaje-3",
@@ -52,6 +64,10 @@ export const AFORE_MODELS: ModelOption[] = [
     url: "/models/personaje-3.glb",
     originalSize: "133.5 MB (STL)",
     optimizedSize: "0.26 MB (GLB)",
+    ar: {
+      glb: "/models/ar/afore-personaje-3.glb",
+      usdz: "/models/ar/afore-personaje-3.usdz",
+    },
   },
 ];
 

@@ -83,6 +83,34 @@ const MODELS = [
     metres: 0.18, // collectible art toy, ~18 cm
     decimate: 0.6,
   },
+  {
+    id: "afore-personaje-1",
+    src: "public/models/personaje-1.glb",
+    out: "afore-personaje-1",
+    metres: 0.1, // board game pawn, ~10 cm
+    decimate: 0,
+  },
+  {
+    id: "afore-personaje-2",
+    src: "public/models/personaje-2.glb",
+    out: "afore-personaje-2",
+    metres: 0.1,
+    decimate: 0,
+  },
+  {
+    id: "afore-personaje-3",
+    src: "public/models/personaje-3.glb",
+    out: "afore-personaje-3",
+    metres: 0.1,
+    decimate: 0,
+  },
+  {
+    id: "afore-personaje-4",
+    src: "public/models/personaje-4.glb",
+    out: "afore-personaje-4",
+    metres: 0.1,
+    decimate: 0,
+  },
 ];
 
 const only = process.argv.includes("--only")
