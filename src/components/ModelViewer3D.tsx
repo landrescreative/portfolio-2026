@@ -5,7 +5,8 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Center, useGLTF, ContactShadows } from "@react-three/drei";
 import { RotateCw, Box, RefreshCw, ZoomIn, Palette } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
-import { ArButton, type ArAssets } from "@/components/ArButton";
+import { ArButton } from "@/components/ArButton";
+import { useArMode, type ArAssets } from "@/lib/ar";
 
 export interface ModelOption {
   id: string;
@@ -221,6 +222,7 @@ function LoaderIndicator() {
 export function ModelViewer3D({ projectId }: { projectId?: string }) {
   const { lang, t } = useI18n();
   const [mounted, setMounted] = useState(false);
+  const arMode = useArMode();
 
   const isRabbitProject = projectId === "art-toy-conejo";
   const isPowerkickProject = projectId === "powerkick";
@@ -316,17 +318,6 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
           <span className="hidden sm:inline">{t.ui.dragToOrbit}</span>
         </div>
 
-        {/* View in AR. Only renders on devices with a native AR viewer. Sits
-            above the hint on phones so the two never collide. */}
-        {activeModel.ar && (
-          <div className="absolute bottom-16 right-4 z-10 sm:bottom-5">
-            <ArButton
-              assets={activeModel.ar}
-              title={activeModel.name[lang] || activeModel.name.es}
-            />
-          </div>
-        )}
-
         {/* Three.js Canvas */}
         {mounted ? (
           <Suspense fallback={<LoaderIndicator />}>
@@ -375,6 +366,18 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
           <LoaderIndicator />
         )}
       </div>
+
+      {/* View in AR. Sits below the canvas so it never covers the model, and
+          only renders on devices with a native AR viewer. */}
+      {activeModel.ar && arMode !== "unsupported" && (
+        <div className="flex justify-center">
+          <ArButton
+            assets={activeModel.ar}
+            title={activeModel.name[lang] || activeModel.name.es}
+            mode={arMode}
+          />
+        </div>
+      )}
 
       {/* Bottom Controls Bar: Model Selectors & Material Finishes */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">

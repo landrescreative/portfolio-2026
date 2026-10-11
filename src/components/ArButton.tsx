@@ -1,42 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Box } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
-
-export interface ArAssets {
-  /** Clean, uncompressed GLB for Android's Scene Viewer. */
-  glb: string;
-  /** USDZ for iOS Quick Look. */
-  usdz: string;
-}
-
-type ArMode = "quick-look" | "scene-viewer" | "unsupported";
-
-/**
- * iOS exposes AR Quick Look through `rel="ar"`; Android hands the model to the
- * native Scene Viewer. Anything else (desktop) gets nothing, so the button only
- * ever shows where it actually works.
- */
-function detectArMode(): ArMode {
-  if (typeof navigator === "undefined" || typeof document === "undefined") return "unsupported";
-
-  const ua = navigator.userAgent;
-  const isIOS =
-    /iPad|iPhone|iPod/.test(ua) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-
-  if (isIOS) {
-    const link = document.createElement("a");
-    if (link.relList?.supports?.("ar")) return "quick-look";
-  }
-  if (/android/i.test(ua)) return "scene-viewer";
-  return "unsupported";
-}
+import type { ArAssets, ArMode } from "@/lib/ar";
 
 /** Scene Viewer intent link. https://developers.google.com/ar/develop/scene-viewer */
 function sceneViewerIntent(glbUrl: string, title: string) {
   const absolute = new URL(glbUrl, window.location.origin).href;
   const query = new URLSearchParams({ file: absolute, mode: "ar_preferred", title });
-  const fallback = encodeURIComponent(absolute);
+  // If the Google app is missing or too old, Chrome follows this URL. Pointing
+  // it at the project page means the visitor lands back on the interactive 3D
+  // viewer instead of a raw file download.
+  const fallback = encodeURIComponent(window.location.href);
   return (
     `intent://arvr.google.com/scene-viewer/1.0?${query.toString()}` +
     "#Intent;scheme=https;package=com.google.android.googlequicksearchbox;" +
@@ -84,15 +58,18 @@ function quickLookPoster(label: string) {
  * (AR Quick Look on iOS, Scene Viewer on Android) so nothing extra is bundled
  * and the visitor never leaves the portfolio for the regular 3D view.
  */
-export function ArButton({ assets, title }: { assets?: ArAssets; title: string }) {
+export function ArButton({
+  assets,
+  title,
+  mode,
+}: {
+  assets?: ArAssets;
+  title: string;
+  mode: ArMode;
+}) {
   const { t } = useI18n();
-  const [mode, setMode] = useState<ArMode>("unsupported");
-
-  useEffect(() => {
-    setMode(detectArMode());
-  }, []);
-
   const label = t.ui.viewInAr;
+
   const intent = useMemo(
     () => (mode === "scene-viewer" && assets ? sceneViewerIntent(assets.glb, title) : ""),
     [mode, assets, title],
