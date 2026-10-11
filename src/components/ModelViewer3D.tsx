@@ -87,18 +87,6 @@ export const CONEJO_MODELS: ModelOption[] = [
   },
 ];
 
-export const POWERKICK_MODELS: ModelOption[] = [
-  {
-    id: "sneaker-airforce-2",
-    name: { es: "Powerkick Sneaker Air Force 2", en: "Powerkick Sneaker Air Force 2" },
-    role: { es: "Sneaker 3D Interactivo", en: "Interactive 3D Sneaker" },
-    url: "/models/sneaker.glb",
-    originalSize: "3.6 MB",
-    optimizedSize: "1.0 MB (GLB)",
-    isColored: true,
-  },
-];
-
 interface FinishConfig {
   id: string;
   name: { es: string; en: string };
@@ -241,14 +229,12 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
   const arMode = useArMode();
 
   const isRabbitProject = projectId === "art-toy-conejo";
-  const isPowerkickProject = projectId === "powerkick";
-  const hasColoredModel = isRabbitProject || isPowerkickProject;
+  const hasColoredModel = isRabbitProject;
 
   const modelList = useMemo(() => {
     if (isRabbitProject) return CONEJO_MODELS;
-    if (isPowerkickProject) return POWERKICK_MODELS;
     return AFORE_MODELS;
-  }, [isRabbitProject, isPowerkickProject]);
+  }, [isRabbitProject]);
 
   const [selectedModelIdx, setSelectedModelIdx] = useState(0);
 

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import React, { useState, useEffect, useMemo, useRef, Suspense, lazy } from "react";
 import { createPortal } from "react-dom";
 import { useI18n, tx } from "@/lib/i18n";
@@ -29,6 +29,11 @@ import { imageSize } from "@/lib/image";
 const LazyModelViewer3D = lazy(() => import("@/components/ModelViewer3D"));
 
 export const Route = createFileRoute("/$lang/projects/$projectId")({
+  // Un id que no existe debe responder 404 de verdad. Antes la pagina se pintaba
+  // igual pero con status 200 (un "soft 404" que Search Console reporta).
+  loader: ({ params }) => {
+    if (!getProjectById(params.projectId)) throw notFound();
+  },
   head: ({ params }) => {
     const lang = params.lang as Locale;
     const project = getProjectById(params.projectId);
@@ -87,8 +92,29 @@ export const Route = createFileRoute("/$lang/projects/$projectId")({
       ],
     });
   },
+  notFoundComponent: ProjectNotFound,
   component: ProjectDetailPage,
 });
+
+function ProjectNotFound() {
+  const { lang, t } = useI18n();
+  const staticTexts = t.projectDetailPage;
+
+  return (
+    <main className="flex min-h-[70vh] flex-col items-center justify-center px-6 py-32 text-center">
+      <h1 className="font-serif text-5xl tracking-tight text-ink">{staticTexts.notFoundTitle}</h1>
+      <p className="mt-4 text-muted">{staticTexts.notFoundSubtitle}</p>
+      <Link
+        to="/$lang/projects"
+        params={{ lang }}
+        className="mt-8 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-transform hover:scale-105"
+      >
+        <ArrowLeft className="size-4" />
+        <span>{staticTexts.backToProjects}</span>
+      </Link>
+    </main>
+  );
+}
 
 function ProjectDetailPage() {
   const { projectId } = Route.useParams();
@@ -204,20 +230,7 @@ function ProjectDetailPage() {
   }, [projectId, liveProject]);
 
   if (!project) {
-    return (
-      <main className="flex min-h-[70vh] flex-col items-center justify-center px-6 py-32 text-center">
-        <h1 className="font-serif text-5xl tracking-tight text-ink">{staticTexts.notFoundTitle}</h1>
-        <p className="mt-4 text-muted">{staticTexts.notFoundSubtitle}</p>
-        <Link
-          to="/$lang/projects"
-          params={{ lang }}
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-transform hover:scale-105"
-        >
-          <ArrowLeft className="size-4" />
-          <span>{staticTexts.backToProjects}</span>
-        </Link>
-      </main>
-    );
+    return <ProjectNotFound />;
   }
 
   const titleText =
