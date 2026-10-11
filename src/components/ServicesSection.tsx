@@ -41,7 +41,8 @@ const serviceProjects: ServiceProjectPreview[] = [
     projectId: "casa-tonala",
     projectTitle: { es: "Casa Tonalá · Animación 3D", en: "Casa Tonalá · 3D Animation" },
     projectTag: { es: "Blender 3D & Motion Graphics", en: "Blender 3D & Motion Graphics" },
-    image: "/uploads/casa-tonala-cover.webp",
+    // Poster = primer fotograma del video (interior 3D), asi no hay salto al arrancar.
+    image: "/uploads/service-3d-motion-poster.webp",
     // Self-hosted 3D render, muted and looping, fills the frame via object-cover.
     video: { mp4Url: "/uploads/service-3d-motion.mp4" },
   },
