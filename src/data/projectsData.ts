@@ -2264,7 +2264,6 @@ export const projectsData: Record<string, ProjectDetail> = {
       "React Three Fiber",
       "GSAP",
       "Tailwind CSS",
-      "Blender",
       "Optimización WebGL",
       "WebGL Post-Processing",
     ],
@@ -2344,8 +2343,8 @@ export const projectsData: Record<string, ProjectDetail> = {
         src: "/uploads/powerkick-render-test.webp",
         alt: "Render Test & Iluminación",
         caption: {
-          es: "Prueba de iluminación volumétrica y materiales en Blender",
-          en: "Volumetric lighting and material studio test in Blender",
+          es: "Prueba de iluminación volumétrica y materiales en la escena 3D",
+          en: "Volumetric lighting and material test in the 3D scene",
         },
         span: "half",
       },
