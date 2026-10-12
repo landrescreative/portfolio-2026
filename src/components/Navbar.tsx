@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 import { imageSize } from "@/lib/image";
@@ -8,6 +8,12 @@ import { Menu, X, FileText } from "lucide-react";
 export function Navbar() {
   const { t, lang } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
+
+  // The link-in-bio page is reached from social profiles and is meant to be
+  // self-contained: no CV download offered from there.
+  const isLinkBio = useRouterState({
+    select: (state) => state.location.pathname.replace(/\/+$/, "").endsWith("/links"),
+  });
 
   // Prevent background scrolling when menu is open
   useEffect(() => {
@@ -70,18 +76,20 @@ export function Navbar() {
               ))}
             </div>
 
-            {/* Direct CV Download Link */}
-            <a
-              href="/uploads/cv-luis-andres.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              download="CV_Luis_Andres_Creative_Developer.pdf"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-surface/80 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-wider text-ink transition-all duration-300 hover:border-accent hover:bg-accent hover:text-canvas hover:scale-105 active:scale-95"
-              title="Descargar Curriculum Vitae en PDF"
-            >
-              <FileText className="size-3.5 text-accent group-hover:text-canvas" />
-              <span>{t.nav.cv || "CV"}</span>
-            </a>
+            {/* Direct CV Download Link (hidden on the link-in-bio page) */}
+            {!isLinkBio && (
+              <a
+                href="/uploads/cv-luis-andres.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="CV_Luis_Andres_Creative_Developer.pdf"
+                className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-surface/80 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-wider text-ink transition-all duration-300 hover:border-accent hover:bg-accent hover:text-canvas hover:scale-105 active:scale-95"
+                title="Descargar Curriculum Vitae en PDF"
+              >
+                <FileText className="size-3.5 text-accent group-hover:text-canvas" />
+                <span>{t.nav.cv || "CV"}</span>
+              </a>
+            )}
 
             {/* Language Pill Switcher */}
             <LanguageSwitcher />
@@ -180,16 +188,18 @@ export function Navbar() {
               isOpen ? "translate-y-0 opacity-100 delay-[320ms]" : "translate-y-8 opacity-0 delay-0"
             }`}
           >
-            <a
-              href="/uploads/cv-luis-andres.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              download="CV_Luis_Andres_Creative_Developer.pdf"
-              className="inline-flex items-center gap-2 rounded-full border border-canvas/20 bg-canvas/10 px-6 py-2.5 text-xs font-semibold uppercase tracking-widest text-canvas transition-colors hover:bg-accent hover:text-canvas"
-            >
-              <FileText className="size-4 text-accent" />
-              <span>{t.hero.downloadCv || "Descargar CV"}</span>
-            </a>
+            {!isLinkBio && (
+              <a
+                href="/uploads/cv-luis-andres.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="CV_Luis_Andres_Creative_Developer.pdf"
+                className="inline-flex items-center gap-2 rounded-full border border-canvas/20 bg-canvas/10 px-6 py-2.5 text-xs font-semibold uppercase tracking-widest text-canvas transition-colors hover:bg-accent hover:text-canvas"
+              >
+                <FileText className="size-4 text-accent" />
+                <span>{t.hero.downloadCv || "Descargar CV"}</span>
+              </a>
+            )}
             <div className="scale-110">
               <LanguageSwitcher />
             </div>

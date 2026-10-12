@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
+  Globe,
   Mail,
   Send,
-  FileText,
   Instagram,
   Linkedin,
   Github,
@@ -211,10 +211,48 @@ function LinkBioPage() {
           </div>
         </div>
 
-        {/* Portfolios: the two dedicated tracks */}
+        {/* Portfolios: the main experience first, then the two dedicated tracks */}
         <div className="mt-11">
           <SectionLabel label={tx(lang, "Portafolios", "Portfolios")} />
-          <div className="mt-4 flex flex-col gap-3">
+
+          {/* Primary: the full portfolio experience on landrescreative.com */}
+          <Link
+            to="/$lang"
+            params={{ lang }}
+            className="group animate-reveal relative mt-4 flex items-start gap-4 overflow-hidden rounded-2xl bg-accent p-6 text-ink shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99]"
+          >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.4),transparent)] transition-transform duration-700 group-hover:translate-x-full"
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -right-16 -top-16 size-44 rounded-full bg-ink/10 blur-2xl"
+            />
+            <span className="relative flex size-12 shrink-0 items-center justify-center rounded-xl bg-ink text-accent shadow-lg transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110">
+              <Globe className="size-5" />
+            </span>
+            <span className="relative min-w-0 flex-1">
+              <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-ink">
+                {tx(lang, "Portafolio principal", "Main portfolio")}
+              </span>
+              <span className="mt-1 block font-serif text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
+                {tx(lang, "Explora el portafolio completo", "Explore the full portfolio")}
+              </span>
+              <span className="mt-2 block text-xs font-medium leading-snug text-ink">
+                {tx(
+                  lang,
+                  "La experiencia interactiva completa: proyectos, servicios y contacto.",
+                  "The full interactive experience: projects, services and contact.",
+                )}
+              </span>
+            </span>
+            <span className="relative mt-1 flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-ink transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:bg-ink group-hover:text-accent">
+              <ArrowUpRight className="size-5" />
+            </span>
+          </Link>
+
+          <div className="mt-3 flex flex-col gap-3">
             {portfolios.map((item, idx) => {
               const Icon = item.icon;
               return (
@@ -222,7 +260,7 @@ function LinkBioPage() {
                   key={item.to}
                   to={item.to}
                   params={{ lang }}
-                  style={{ animationDelay: `${idx * 90}ms` }}
+                  style={{ animationDelay: `${(idx + 1) * 90}ms` }}
                   className="group animate-reveal relative block overflow-hidden rounded-2xl border border-ink/10 bg-ink p-5 text-canvas shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-2xl active:scale-[0.99]"
                 >
                   <span
@@ -252,84 +290,12 @@ function LinkBioPage() {
               );
             })}
           </div>
-
-          <div className="mt-3 text-center">
-            <Link
-              to="/$lang/projects"
-              params={{ lang }}
-              className="group inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-accent"
-            >
-              {tx(lang, "Ver todos los proyectos", "Browse all projects")}
-              <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-          </div>
         </div>
 
-        {/* Primary call to action */}
+        {/* Contact: direct email with an explicit copy action */}
         <div className="mt-9">
-          <SectionLabel label={tx(lang, "Agenda", "Book")} />
-          <a
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative mt-4 flex items-center gap-4 overflow-hidden rounded-2xl bg-accent p-5 text-ink shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99]"
-          >
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.35),transparent)] transition-transform duration-700 group-hover:translate-x-full"
-            />
-            <span className="relative flex size-12 shrink-0 items-center justify-center rounded-xl bg-ink text-accent shadow-lg transition-transform duration-300 group-hover:scale-110">
-              <Send className="size-5" />
-            </span>
-            <span className="relative min-w-0 flex-1">
-              <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-ink">
-                {tx(lang, "Videollamada gratuita", "Free video call")}
-              </span>
-              <span className="mt-1 block font-serif text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
-                {tx(lang, "Agendar llamada (30 min)", "Book a call (30 min)")}
-              </span>
-              <span className="mt-1.5 block text-xs font-medium leading-snug text-ink">
-                {tx(
-                  lang,
-                  "Elige día y hora en el calendario. Sin compromiso.",
-                  "Pick a day and time on the calendar. No commitment.",
-                )}
-              </span>
-            </span>
-            <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full border border-ink/25 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:border-ink group-hover:bg-ink group-hover:text-accent">
-              <ArrowUpRight className="size-4" />
-            </span>
-          </a>
-        </div>
-
-        {/* Resources: CV and direct email, both with an explicit action chip */}
-        <div className="mt-9">
-          <SectionLabel label={tx(lang, "Recursos", "Resources")} />
-          <div className="mt-4 flex flex-col gap-2.5">
-            <a
-              href="/uploads/cv-luis-andres.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              download="CV_Luis_Andres_2026.pdf"
-              className="group flex items-center gap-4 rounded-xl border border-ink/10 bg-surface/70 p-3.5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface hover:shadow-md active:scale-[0.99]"
-            >
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-ink/5 bg-ink/5 text-accent transition-transform duration-300 group-hover:scale-110">
-                <FileText className="size-4" />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block font-serif text-sm font-semibold leading-tight text-ink">
-                  {tx(lang, "Curriculum Vitae", "Curriculum Vitae")}
-                </span>
-                <span className="block text-[11px] text-muted">
-                  {tx(lang, "PDF · Perfil 2026", "PDF · 2026 profile")}
-                </span>
-              </span>
-              <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-canvas transition-colors group-hover:bg-accent group-hover:text-ink">
-                {tx(lang, "Descargar", "Download")}
-                <ArrowUpRight className="size-3" />
-              </span>
-            </a>
-
+          <SectionLabel label={tx(lang, "Contacto", "Contact")} />
+          <div className="mt-4">
             <button
               type="button"
               onClick={handleCopyEmail}
@@ -391,6 +357,43 @@ function LinkBioPage() {
               );
             })}
           </div>
+        </div>
+
+        {/* Closing call to action: booking */}
+        <div className="mt-9">
+          <SectionLabel label={tx(lang, "Agenda", "Book")} />
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative mt-4 flex items-center gap-4 overflow-hidden rounded-2xl bg-accent p-5 text-ink shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99]"
+          >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.35),transparent)] transition-transform duration-700 group-hover:translate-x-full"
+            />
+            <span className="relative flex size-12 shrink-0 items-center justify-center rounded-xl bg-ink text-accent shadow-lg transition-transform duration-300 group-hover:scale-110">
+              <Send className="size-5" />
+            </span>
+            <span className="relative min-w-0 flex-1">
+              <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-ink">
+                {tx(lang, "Videollamada gratuita", "Free video call")}
+              </span>
+              <span className="mt-1 block font-serif text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
+                {tx(lang, "Agendar llamada (30 min)", "Book a call (30 min)")}
+              </span>
+              <span className="mt-1.5 block text-xs font-medium leading-snug text-ink">
+                {tx(
+                  lang,
+                  "Elige día y hora en el calendario. Sin compromiso.",
+                  "Pick a day and time on the calendar. No commitment.",
+                )}
+              </span>
+            </span>
+            <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full border border-ink/25 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:border-ink group-hover:bg-ink group-hover:text-accent">
+              <ArrowUpRight className="size-4" />
+            </span>
+          </a>
         </div>
 
         <footer className="mt-auto pt-14 pb-2 text-center">
