@@ -121,6 +121,24 @@
   animation: float-y 7s ease-in-out infinite;
 }
 
+/* Slow drifting glow used by the link-in-bio background. */
+@keyframes aurora-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(5%, -4%, 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(-4%, 4%, 0) scale(0.94);
+  }
+}
+
+@utility animate-aurora {
+  animation: aurora-drift 24s ease-in-out infinite;
+}
+
 @keyframes filter-card-in {
   0% {
     opacity: 0;
@@ -236,6 +254,7 @@
   .animate-curtain,
   .animate-preloader-out,
   .animate-float,
+  .animate-aurora,
   .animate-ping,
   .animate-pulse,
   .animate-bounce,

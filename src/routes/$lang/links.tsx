@@ -1,8 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  Globe,
-  Briefcase,
   Mail,
   Send,
   FileText,
@@ -11,7 +9,6 @@ import {
   Github,
   Check,
   Copy,
-  ExternalLink,
   Sparkles,
   ArrowUpRight,
   Code,
@@ -21,7 +18,6 @@ import {
 import { useI18n, tx } from "@/lib/i18n";
 import { imageSize } from "@/lib/image";
 import { CALENDLY_URL } from "@/lib/links";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { buildSeo, type Locale } from "@/lib/seo";
 
 const LINKS_SEO = {
@@ -46,16 +42,24 @@ export const Route = createFileRoute("/$lang/links")({
   component: LinkBioPage,
 });
 
+/** Small uppercase eyebrow with an accent dot, used to group the link blocks. */
+function SectionLabel({ label }: { label: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="flex shrink-0 items-center gap-2">
+        <span aria-hidden className="size-1.5 rounded-full bg-accent" />
+        <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-ink">{label}</span>
+      </span>
+      <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-ink/15 to-transparent" />
+    </div>
+  );
+}
+
 function LinkBioPage() {
   const { lang, t } = useI18n();
   const [copiedEmail, setCopiedEmail] = useState(false);
 
   const email = "landres.creative@gmail.com";
-
-  const localizedHref = (href: string) => {
-    if (!href.startsWith("/")) return href;
-    return `/${lang}${href === "/" ? "" : href}`;
-  };
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(email);
@@ -63,101 +67,73 @@ function LinkBioPage() {
     setTimeout(() => setCopiedEmail(false), 2500);
   };
 
-  const featuredLinks = [
+  // Two dedicated portfolios instead of three "portfolio" buttons: the full
+  // showcase is offered as a quiet text link below them.
+  const portfolios: Array<{
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    to: "/$lang/design" | "/$lang/web";
+    icon: typeof Box;
+  }> = [
     {
-      title: { es: "Portafolio de Diseño, 3D & Motion", en: "Design, 3D & Motion Portfolio" },
-      subtitle: {
-        es: "Modelado 3D, Motion Graphics, VFX y Social Media",
-        en: "3D Modeling, Motion Graphics, VFX & Social Media",
-      },
-      href: "/design",
-      isInternal: true,
-      badge: { es: "3D & Motion", en: "3D & Motion" },
+      eyebrow: tx(lang, "01 · 3D & Motion", "01 · 3D & Motion"),
+      title: tx(lang, "Diseño, 3D & Motion", "Design, 3D & Motion"),
+      subtitle: tx(
+        lang,
+        "Modelado 3D, motion graphics, VFX y social media.",
+        "3D modeling, motion graphics, VFX & social media.",
+      ),
+      to: "/$lang/design",
       icon: Box,
-      highlight: true,
     },
     {
-      title: { es: "Portafolio Web & UI/UX", en: "Web Dev & UI/UX Portfolio" },
-      subtitle: {
-        es: "React, Next.js, Webflow, Astro, UI/UX y DevOps",
-        en: "React, Next.js, Webflow, Astro, UI/UX & DevOps",
-      },
-      href: "/web",
-      isInternal: true,
-      badge: { es: "Web & UI", en: "Web & UI" },
+      eyebrow: tx(lang, "02 · Web & UI", "02 · Web & UI"),
+      title: tx(lang, "Desarrollo Web & UI/UX", "Web Development & UI/UX"),
+      subtitle: tx(
+        lang,
+        "React, Next.js, Webflow, Astro y DevOps Linux.",
+        "React, Next.js, Webflow, Astro & DevOps Linux.",
+      ),
+      to: "/$lang/web",
       icon: Code,
-      highlight: true,
-    },
-    {
-      title: { es: "Portafolio Principal (Todo)", en: "Full Portfolio (All Works)" },
-      subtitle: {
-        es: "Explora la experiencia interactiva completa 2026",
-        en: "Explore the full interactive 2026 experience",
-      },
-      href: "/",
-      isInternal: true,
-      badge: { es: "Oficial", en: "Official" },
-      icon: Globe,
-    },
-    {
-      title: { es: "Galería de Proyectos", en: "All Projects Showcase" },
-      subtitle: {
-        es: "Explora todos los casos de estudio documentados",
-        en: "Explore all documented case studies",
-      },
-      href: "/projects",
-      isInternal: true,
-      badge: { es: "Casos de Estudio", en: "Case Studies" },
-      icon: Briefcase,
-    },
-    {
-      title: { es: "Descargar Curriculum Vitae (PDF)", en: "Download Curriculum Vitae (PDF)" },
-      subtitle: {
-        es: "Perfil profesional actualizado 2026",
-        en: "Updated 2026 professional resume",
-      },
-      href: "/uploads/cv-luis-andres.pdf",
-      isDownload: true,
-      badge: "PDF",
-      icon: FileText,
-    },
-    {
-      title: { es: "Agendar Llamada Gratis (30 min)", en: "Book a Free Call (30 min)" },
-      subtitle: {
-        es: "Elige día y hora en el calendario. Videollamada gratuita, sin compromiso.",
-        en: "Pick a day and time on the calendar. Free video call, no commitment.",
-      },
-      href: CALENDLY_URL,
-      isInternal: false,
-      badge: { es: "Disponible", en: "Available" },
-      icon: Send,
     },
   ];
 
-  const socialLinks = [
+  // Each network keeps its own brand color on the icon tile and on the hover
+  // border, so the row reads as a set of recognizable badges.
+  const socials = [
     {
       name: "Behance",
       label: "behance.net/luishernandez303",
       href: "https://behance.net/luishernandez303",
       icon: Layers,
+      tile: "bg-[#1769FF]",
+      ring: "hover:border-[#1769FF]",
     },
     {
       name: "Instagram",
       label: "@landrescreative",
       href: "https://instagram.com/landrescreative",
       icon: Instagram,
+      tile: "bg-[linear-gradient(45deg,#F58529,#DD2B7F,#8134AF)]",
+      ring: "hover:border-[#DD2B7F]",
     },
     {
       name: "LinkedIn",
       label: "in/landrescreative",
       href: "https://linkedin.com/in/landrescreative",
       icon: Linkedin,
+      tile: "bg-[#0A66C2]",
+      ring: "hover:border-[#0A66C2]",
     },
     {
       name: "GitHub",
       label: "github.com/landrescreative",
       href: "https://github.com/landrescreative",
       icon: Github,
+      tile: "bg-[#181717]",
+      ring: "hover:border-[#181717]",
     },
   ];
 
@@ -168,65 +144,53 @@ function LinkBioPage() {
   ];
 
   return (
-    <main className="grain min-h-screen bg-canvas text-ink flex flex-col justify-between py-12 px-4 sm:px-6 relative selection:bg-accent selection:text-canvas">
-      {/* Top Floating Controls */}
-      <div className="mx-auto w-full max-w-lg flex items-center justify-between pb-6">
-        <Link
-          to="/$lang"
-          params={{ lang }}
-          className="flex items-center gap-2 group transition-transform active:scale-95"
-          title="Ir al inicio"
-        >
-          <img
-            src="/uploads/logo-black-and-orange.webp"
-            alt="LANDRES Logo"
-            decoding="async"
-            {...imageSize("/uploads/logo-black-and-orange.webp")}
-            className="h-8 w-auto object-contain transition-opacity group-hover:opacity-80"
-          />
-        </Link>
-        <LanguageSwitcher />
+    <main className="grain relative min-h-screen overflow-hidden bg-canvas text-ink selection:bg-accent selection:text-canvas">
+      {/* Background: fine grid plus three slowly drifting accent glows. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(13,13,13,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(13,13,13,0.05)_1px,transparent_1px)] bg-[size:34px_34px]" />
+        <div className="animate-aurora absolute inset-x-0 -top-40 mx-auto size-[36rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(255,77,0,0.26),transparent_62%)] blur-3xl" />
+        <div className="animate-aurora absolute -left-40 top-1/4 size-[30rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(255,120,40,0.22),transparent_65%)] blur-3xl [animation-delay:-8s] [animation-duration:28s]" />
+        <div className="animate-aurora absolute -right-40 top-2/3 size-[32rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(13,13,13,0.08),transparent_68%)] blur-3xl [animation-delay:-15s] [animation-duration:32s]" />
       </div>
 
-      {/* Center Bio Content Box */}
-      <div className="mx-auto w-full max-w-lg flex flex-col items-center">
-        {/* Profile Card Header */}
-        <div className="relative flex flex-col items-center text-center">
-          {/* Avatar Ring */}
-          <div className="relative group mb-5">
-            <div className="relative size-28 sm:size-32 rounded-3xl overflow-hidden border-2 border-ink/10 bg-surface shadow-2xl p-1.5 backdrop-blur-md transition-transform duration-500 group-hover:scale-105 group-hover:rotate-1">
-              <img
-                src="/favicon.png"
-                alt="Luis Andrés"
-                {...imageSize("/favicon.png")}
-                className="h-full w-full object-cover rounded-2xl bg-ink"
-              />
-            </div>
-            {/* Live Indicator */}
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-lg flex-col px-4 pb-12 pt-24 sm:px-6 sm:pt-28">
+        {/* Profile header */}
+        <div className="flex flex-col items-center text-center">
+          <div className="relative mb-7">
             <div
-              className="absolute -bottom-1.5 -right-1.5 flex items-center gap-1.5 rounded-full bg-surface border border-ink/15 px-3 py-1 shadow-lg backdrop-blur-md"
-              title="Disponible para proyectos"
-            >
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-accent" />
-              </span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-ink">
-                {t.ui.available}
-              </span>
+              aria-hidden
+              className="absolute -inset-8 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,77,0,0.28),transparent_70%)] blur-2xl"
+            />
+            <div className="group relative">
+              <div className="relative size-28 overflow-hidden rounded-[2rem] border-2 border-ink/10 bg-surface p-1.5 shadow-2xl backdrop-blur-md transition-transform duration-500 group-hover:-rotate-1 group-hover:scale-105 sm:size-32">
+                <img
+                  src="/favicon.png"
+                  alt="Luis Andrés"
+                  {...imageSize("/favicon.png")}
+                  className="h-full w-full rounded-[1.6rem] bg-ink object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-2.5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full border border-ink/15 bg-surface px-3 py-1 shadow-lg backdrop-blur-md">
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                  <span className="relative inline-flex size-2 rounded-full bg-accent" />
+                </span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-ink">
+                  {t.ui.available}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Name & Title */}
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-ink">
+          <h1 className="font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
             Luis Andrés
           </h1>
 
-          <p className="mt-1 font-serif text-lg italic text-ink/75">
+          <p className="mt-2 font-serif text-lg italic text-ink/85">
             Creative Developer & UI/UX Designer
           </p>
 
-          <p className="mt-2 text-xs sm:text-sm text-muted max-w-sm leading-relaxed">
+          <p className="mt-3 max-w-sm text-xs leading-relaxed text-muted sm:text-sm">
             {tx(
               lang,
               "Diseño experiencias digitales de alto impacto, desarrollo web frontend y render 3D interactivo.",
@@ -234,12 +198,11 @@ function LinkBioPage() {
             )}
           </p>
 
-          {/* Quick Skill Tags */}
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {quickHighlights.map((skill, idx) => (
+          <div className="mt-5 flex flex-wrap justify-center gap-2">
+            {quickHighlights.map((skill) => (
               <span
-                key={idx}
-                className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-surface/70 px-3 py-1 text-[11px] font-medium text-ink/80 backdrop-blur-sm"
+                key={skill.label}
+                className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-surface/70 px-3 py-1 text-[11px] font-medium text-ink/90 backdrop-blur-sm"
               >
                 <skill.icon className="size-3 text-accent" />
                 <span>{skill.label}</span>
@@ -248,166 +211,194 @@ function LinkBioPage() {
           </div>
         </div>
 
-        {/* Action Links Stack */}
-        <div className="mt-8 flex flex-col gap-3.5 w-full">
-          {featuredLinks.map((link, idx) => {
-            const titleText =
-              typeof link.title === "object" ? link.title[lang] || link.title.es : link.title;
-            const subtitleText =
-              typeof link.subtitle === "object"
-                ? link.subtitle[lang] || link.subtitle.es
-                : link.subtitle;
-            const badgeText =
-              typeof link.badge === "object" ? link.badge[lang] || link.badge.es : link.badge;
-            const Icon = link.icon;
-
-            const content = (
-              <div
-                className={`group relative flex items-center justify-between p-4 sm:p-5 rounded-2xl border transition-all duration-300 active:scale-[0.98] ${
-                  link.highlight
-                    ? "border-accent bg-ink text-canvas shadow-xl hover:shadow-accent/20 hover:-translate-y-0.5"
-                    : "border-ink/10 bg-surface/80 hover:bg-surface text-ink hover:border-accent/40 hover:shadow-md hover:-translate-y-0.5"
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`size-11 sm:size-12 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${
-                      link.highlight
-                        ? "bg-accent text-canvas"
-                        : "bg-ink/5 text-accent border border-ink/5"
-                    }`}
-                  >
-                    <Icon className="size-5" />
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`font-serif text-lg sm:text-xl font-semibold tracking-tight ${
-                          link.highlight ? "text-canvas" : "text-ink"
-                        }`}
-                      >
-                        {titleText}
-                      </span>
-                      {badgeText && (
-                        <span
-                          className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                            link.highlight
-                              ? "bg-accent/30 text-accent border border-accent/40"
-                              : "bg-accent text-canvas"
-                          }`}
-                        >
-                          {badgeText}
-                        </span>
-                      )}
-                    </div>
-                    <span
-                      className={`text-xs leading-snug ${
-                        link.highlight ? "text-canvas/70" : "text-muted"
-                      }`}
-                    >
-                      {subtitleText}
-                    </span>
-                  </div>
-                </div>
-
-                <div
-                  className={`size-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${
-                    link.highlight
-                      ? "text-canvas/60 group-hover:text-canvas"
-                      : "text-muted group-hover:text-accent"
-                  }`}
-                >
-                  <ArrowUpRight className="size-5" />
-                </div>
-              </div>
-            );
-
-            if (link.isInternal) {
+        {/* Portfolios: the two dedicated tracks */}
+        <div className="mt-11">
+          <SectionLabel label={tx(lang, "Portafolios", "Portfolios")} />
+          <div className="mt-4 flex flex-col gap-3">
+            {portfolios.map((item, idx) => {
+              const Icon = item.icon;
               return (
-                <a key={idx} href={localizedHref(link.href)} className="w-full block">
-                  {content}
-                </a>
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  params={{ lang }}
+                  style={{ animationDelay: `${idx * 90}ms` }}
+                  className="group animate-reveal relative block overflow-hidden rounded-2xl border border-ink/10 bg-ink p-5 text-canvas shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-2xl active:scale-[0.99]"
+                >
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -right-14 -top-14 size-40 rounded-full bg-accent/25 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+                  />
+                  <span className="relative flex items-start gap-4">
+                    <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-accent text-canvas shadow-lg transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110">
+                      <Icon className="size-5" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
+                        {item.eyebrow}
+                      </span>
+                      <span className="mt-1 block font-serif text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
+                        {item.title}
+                      </span>
+                      <span className="mt-1.5 block text-xs leading-snug text-canvas/75">
+                        {item.subtitle}
+                      </span>
+                    </span>
+                    <span className="mt-1 flex size-9 shrink-0 items-center justify-center rounded-full border border-canvas/20 bg-canvas/5 text-canvas/70 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:border-accent group-hover:bg-accent group-hover:text-canvas">
+                      <ArrowUpRight className="size-4" />
+                    </span>
+                  </span>
+                </Link>
               );
-            }
+            })}
+          </div>
 
-            return (
-              <a
-                key={idx}
-                href={link.href}
-                target={link.isDownload ? undefined : "_blank"}
-                rel={link.isDownload ? undefined : "noopener noreferrer"}
-                download={link.isDownload ? "CV_Luis_Andres_2026.pdf" : undefined}
-                className="w-full block"
-              >
-                {content}
-              </a>
-            );
-          })}
+          <div className="mt-3 text-center">
+            <Link
+              to="/$lang/projects"
+              params={{ lang }}
+              className="group inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-accent"
+            >
+              {tx(lang, "Ver todos los proyectos", "Browse all projects")}
+              <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </div>
         </div>
 
-        {/* Quick Email Copy Pill */}
-        <div className="mt-4 w-full">
-          <button
-            type="button"
-            onClick={handleCopyEmail}
-            className="w-full flex items-center justify-between p-3.5 px-5 rounded-2xl border border-ink/10 bg-canvas text-ink hover:border-accent/40 hover:bg-surface/50 transition-all active:scale-[0.99] group shadow-sm"
+        {/* Primary call to action */}
+        <div className="mt-9">
+          <SectionLabel label={tx(lang, "Agenda", "Book")} />
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative mt-4 flex items-center gap-4 overflow-hidden rounded-2xl bg-accent p-5 text-ink shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99]"
           >
-            <div className="flex items-center gap-3">
-              <Mail className="size-4 text-accent group-hover:scale-110 transition-transform" />
-              <span className="font-mono text-xs font-semibold text-ink/90 truncate">{email}</span>
-            </div>
-            <div className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-muted group-hover:text-accent">
-              {copiedEmail ? (
-                <>
-                  <Check className="size-3.5 text-accent" />
-                  <span className="text-accent">{t.ui.copied}</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="size-3.5" />
-                  <span>{t.ui.copy}</span>
-                </>
-              )}
-            </div>
-          </button>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.35),transparent)] transition-transform duration-700 group-hover:translate-x-full"
+            />
+            <span className="relative flex size-12 shrink-0 items-center justify-center rounded-xl bg-ink text-accent shadow-lg transition-transform duration-300 group-hover:scale-110">
+              <Send className="size-5" />
+            </span>
+            <span className="relative min-w-0 flex-1">
+              <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-ink">
+                {tx(lang, "Videollamada gratuita", "Free video call")}
+              </span>
+              <span className="mt-1 block font-serif text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
+                {tx(lang, "Agendar llamada (30 min)", "Book a call (30 min)")}
+              </span>
+              <span className="mt-1.5 block text-xs font-medium leading-snug text-ink">
+                {tx(
+                  lang,
+                  "Elige día y hora en el calendario. Sin compromiso.",
+                  "Pick a day and time on the calendar. No commitment.",
+                )}
+              </span>
+            </span>
+            <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full border border-ink/25 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:border-ink group-hover:bg-ink group-hover:text-accent">
+              <ArrowUpRight className="size-4" />
+            </span>
+          </a>
         </div>
 
-        {/* Social Grid */}
-        <div className="mt-8 w-full border-t border-ink/10 pt-6">
-          <span className="block text-center text-[10px] uppercase tracking-[0.25em] text-muted font-semibold mb-4">
-            {t.ui.socialsTitle}
-          </span>
-          <div className="grid grid-cols-2 gap-2.5">
-            {socialLinks.map((s) => {
-              const Icon = s.icon;
+        {/* Resources: CV and direct email, both with an explicit action chip */}
+        <div className="mt-9">
+          <SectionLabel label={tx(lang, "Recursos", "Resources")} />
+          <div className="mt-4 flex flex-col gap-2.5">
+            <a
+              href="/uploads/cv-luis-andres.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="CV_Luis_Andres_2026.pdf"
+              className="group flex items-center gap-4 rounded-xl border border-ink/10 bg-surface/70 p-3.5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface hover:shadow-md active:scale-[0.99]"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-ink/5 bg-ink/5 text-accent transition-transform duration-300 group-hover:scale-110">
+                <FileText className="size-4" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-serif text-sm font-semibold leading-tight text-ink">
+                  {tx(lang, "Curriculum Vitae", "Curriculum Vitae")}
+                </span>
+                <span className="block text-[11px] text-muted">
+                  {tx(lang, "PDF · Perfil 2026", "PDF · 2026 profile")}
+                </span>
+              </span>
+              <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-canvas transition-colors group-hover:bg-accent group-hover:text-ink">
+                {tx(lang, "Descargar", "Download")}
+                <ArrowUpRight className="size-3" />
+              </span>
+            </a>
+
+            <button
+              type="button"
+              onClick={handleCopyEmail}
+              className="group flex w-full items-center gap-4 rounded-xl border border-ink/10 bg-surface/70 p-3.5 text-left backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface hover:shadow-md active:scale-[0.99]"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-ink/5 bg-ink/5 text-accent transition-transform duration-300 group-hover:scale-110">
+                <Mail className="size-4" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-serif text-sm font-semibold leading-tight text-ink">
+                  {tx(lang, "Correo directo", "Direct email")}
+                </span>
+                <span className="block truncate font-mono text-[11px] text-muted">{email}</span>
+              </span>
+              <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-canvas transition-colors group-hover:bg-accent group-hover:text-ink">
+                {copiedEmail ? (
+                  <>
+                    <Check className="size-3" />
+                    {t.ui.copied}
+                  </>
+                ) : (
+                  <>
+                    <Copy className="size-3" />
+                    {t.ui.copy}
+                  </>
+                )}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Social profiles, each in its own brand color */}
+        <div className="mt-9">
+          <SectionLabel label={t.ui.socialsTitle} />
+          <div className="mt-4 grid grid-cols-2 gap-2.5">
+            {socials.map((social) => {
+              const Icon = social.icon;
               return (
                 <a
-                  key={s.name}
-                  href={s.href}
+                  key={social.name}
+                  href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 p-3 rounded-xl border border-ink/10 bg-surface/60 hover:bg-surface hover:border-accent/40 text-ink transition-all group active:scale-95 shadow-sm"
+                  aria-label={`${social.name} · ${social.label}`}
+                  className={`group flex items-center gap-3 rounded-xl border border-ink/10 bg-surface/70 p-3 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-surface hover:shadow-md active:scale-95 ${social.ring}`}
                 >
-                  <Icon className="size-4 text-accent transition-transform group-hover:scale-110" />
-                  <div className="flex flex-col text-left overflow-hidden">
-                    <span className="font-serif text-sm font-semibold leading-tight text-ink group-hover:text-accent transition-colors">
-                      {s.name}
+                  <span
+                    className={`flex size-9 shrink-0 items-center justify-center rounded-lg text-white shadow-sm transition-transform duration-300 group-hover:scale-110 ${social.tile}`}
+                  >
+                    <Icon className="size-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-serif text-sm font-semibold leading-tight text-ink">
+                      {social.name}
                     </span>
-                    <span className="text-[10px] text-muted truncate">{s.label}</span>
-                  </div>
+                    <span className="block truncate text-[10px] text-muted">{social.label}</span>
+                  </span>
                 </a>
               );
             })}
           </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <footer className="mx-auto w-full max-w-lg pt-12 pb-4 text-center">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
-          © {new Date().getFullYear()} Luis Andrés · LANDRES™
-        </p>
-      </footer>
+        <footer className="mt-auto pt-14 pb-2 text-center">
+          <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted">
+            © {new Date().getFullYear()} Luis Andrés · LANDRES™
+          </p>
+        </footer>
+      </div>
     </main>
   );
 }
