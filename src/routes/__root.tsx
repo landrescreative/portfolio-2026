@@ -180,6 +180,9 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const lang = localeFromPathname(pathname);
+  // The link-in-bio page is a self-contained landing: it renders its own
+  // minimal top bar, so the site navigation must not show up there.
+  const isLinkBio = pathname.replace(/\/+$/, "").endsWith("/links");
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -188,7 +191,7 @@ function RootComponent() {
         <CustomCursor />
         <Preloader />
         <PageTransition>
-          <Navbar />
+          {!isLinkBio && <Navbar />}
           {/* Required: nested routes render here with page transition animations */}
           <AnimatedOutlet />
         </PageTransition>

@@ -19,6 +19,7 @@ import { useI18n, tx } from "@/lib/i18n";
 import { imageSize } from "@/lib/image";
 import { CALENDLY_URL } from "@/lib/links";
 import { buildSeo, type Locale } from "@/lib/seo";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 const LINKS_SEO = {
   es: {
@@ -153,7 +154,26 @@ function LinkBioPage() {
         <div className="animate-aurora absolute -right-40 top-2/3 size-[32rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(13,13,13,0.08),transparent_68%)] blur-3xl [animation-delay:-15s] [animation-duration:32s]" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-lg flex-col px-4 pb-12 pt-24 sm:px-6 sm:pt-28">
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-lg flex-col px-4 pb-12 pt-9 sm:px-6 sm:pt-12">
+        {/* Self-contained top bar: the site navbar is deliberately hidden here */}
+        <div className="mb-9 flex items-center justify-between">
+          <Link
+            to="/$lang"
+            params={{ lang }}
+            aria-label="LANDRES · Luis Andrés"
+            className="transition-opacity hover:opacity-80"
+          >
+            <img
+              src="/uploads/logo-black-and-orange.webp"
+              alt="LANDRES"
+              decoding="async"
+              {...imageSize("/uploads/logo-black-and-orange.webp")}
+              className="h-7 w-auto object-contain sm:h-8"
+            />
+          </Link>
+          <LanguageSwitcher />
+        </div>
+
         {/* Profile header */}
         <div className="flex flex-col items-center text-center">
           <div className="relative mb-7">
@@ -219,7 +239,7 @@ function LinkBioPage() {
           <Link
             to="/$lang"
             params={{ lang }}
-            className="group animate-reveal relative mt-4 flex items-start gap-4 overflow-hidden rounded-2xl bg-accent p-6 text-ink shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99]"
+            className="group animate-reveal relative mt-4 flex items-center gap-4 overflow-hidden rounded-2xl bg-accent p-6 text-ink shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] sm:p-7"
           >
             <span
               aria-hidden
@@ -229,8 +249,8 @@ function LinkBioPage() {
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-16 size-44 rounded-full bg-ink/10 blur-2xl"
             />
-            <span className="relative flex size-12 shrink-0 items-center justify-center rounded-xl bg-ink text-accent shadow-lg transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110">
-              <Globe className="size-5" />
+            <span className="relative flex size-14 shrink-0 items-center justify-center rounded-xl bg-ink text-accent shadow-lg transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110">
+              <Globe className="size-6" />
             </span>
             <span className="relative min-w-0 flex-1">
               <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-ink">
@@ -239,15 +259,8 @@ function LinkBioPage() {
               <span className="mt-1 block font-serif text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
                 {tx(lang, "Explora el portafolio completo", "Explore the full portfolio")}
               </span>
-              <span className="mt-2 block text-xs font-medium leading-snug text-ink">
-                {tx(
-                  lang,
-                  "La experiencia interactiva completa: proyectos, servicios y contacto.",
-                  "The full interactive experience: projects, services and contact.",
-                )}
-              </span>
             </span>
-            <span className="relative mt-1 flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-ink transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:bg-ink group-hover:text-accent">
+            <span className="relative flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-ink transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:bg-ink group-hover:text-accent">
               <ArrowUpRight className="size-5" />
             </span>
           </Link>
