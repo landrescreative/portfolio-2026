@@ -1,4 +1,11 @@
-import { useRef, useEffect, useMemo, useState, Suspense } from "react";
+import {
+  useRef,
+  useEffect,
+  useMemo,
+  useState,
+  Suspense,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import ReactDOM from "react-dom";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
@@ -178,6 +185,11 @@ const heroParams = {
   stageScale: 0.72,
   stageX: 0,
   stageY: -0.1,
+  // Avatar framing (the link-in-bio profile picture): a bust, framed so the face
+  // and the waving arm read inside a small square.
+  avatarScale: 0.9,
+  avatarX: 0,
+  avatarY: -0.6,
   // Scrolled desktop pose: the character follows the cursor like a puppet.
   followScale: 0.8,
   followPan: 0.5,
@@ -201,6 +213,18 @@ const AXIS_Z = new THREE.Vector3(0, 0, 1);
  * reads as a random flash behind the page).
  */
 const heroScroll = { value: 0 };
+
+/**
+ * Avatar variant state. The visitor can drag the bust to spin it; a moment after
+ * they let go it eases back to the default three-quarter view. Written by the
+ * pointer handlers *outside* the Canvas and read by the frame loop *inside* it,
+ * mirroring the `heroScroll` pattern so nothing has to cross the R3F boundary.
+ */
+const AVATAR_RETURN_DELAY = 1200; // ms without input before easing back
+const AVATAR_RETURN_EASE = 0.05;
+const AVATAR_MAX_YAW = 3.2;
+const AVATAR_MAX_PITCH = 0.45;
+const avatarDrag = { yaw: 0, pitch: 0, dragging: false, lastInput: 0 };
 
 /**
  * Material FX injected into the model's original `MeshStandardMaterial` via
@@ -519,14 +543,19 @@ function prepareScene(scene: THREE.Group) {
   prepared.userData.__heroPrepared = true;
 }
 
-function HeroCharacter({ mode }: { mode: "desktop" | "stage" }) {
+function HeroCharacter({ mode }: { mode: "desktop" | "stage" | "avatar" }) {
   const isStage = mode === "stage";
+  const isAvatar = mode === "avatar";
   const groupRef = useRef<THREE.Group>(null);
   const mouse = useRef({ x: 0, y: 0 });
   const smoothRef = useRef({ x: 0, y: 0 });
   const pointerSeen = useRef(false);
   const announcedReady = useRef(false);
   const scrollRef = useRef(0);
+  // Timestamp of the first rendered frame: the wave clock starts here so the
+  // character greets as soon as it appears, instead of waiting a full cycle
+  // (the first one would be spent while the model is still loading).
+  const waveClock = useRef<number | null>(null);
 
   const { viewport } = useThree();
   const { scene } = useGLTF(MODEL_URL);
@@ -554,6 +583,9 @@ function HeroCharacter({ mode }: { mode: "desktop" | "stage" }) {
   const restArmPivot = (scene as PreparedScene).userData.__heroRestArmPivot;
 
   useEffect(() => {
+    // The avatar is spun by dragging, so it ignores the cursor and the scroll.
+    if (isAvatar) return;
+
     const handleMouseMove = (event: MouseEvent) => {
       pointerSeen.current = true;
       mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -576,7 +608,7 @@ function HeroCharacter({ mode }: { mode: "desktop" | "stage" }) {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isAvatar]);
 
   const tmpQuat = useMemo(() => new THREE.Quaternion(), []);
   const tmpQuatB = useMemo(() => new THREE.Quaternion(), []);
@@ -614,18 +646,25 @@ function HeroCharacter({ mode }: { mode: "desktop" | "stage" }) {
     materialFxUniforms.uRimCursor.value.set(lookX, lookY);
 
     // Character glitch: short, irregular bursts of vertex tearing. Fades out as
-    // the hero scrolls away so it never flashes in the background.
+    // the hero scrolls away so it never flashes in the background. The avatar
+    // keeps it off entirely: it adds nothing at profile-picture size and costs
+    // fragment work on every frame.
     materialFxUniforms.uGlitchTime.value = time;
-    materialFxUniforms.uGlitch.value = heroGlitchAmount(time) * p.glitchStrength * (1 - easeScroll);
+    materialFxUniforms.uGlitch.value = isAvatar
+      ? 0
+      : heroGlitchAmount(time) * p.glitchStrength * (1 - easeScroll);
 
     // Hand wave: lift one arm and swing it, then let it rest, on a loop.
     if (waveBase && waveSet && wavePivot && waveSet.size > 0) {
-      const cyclePos = (time % p.wavePeriod) / p.wavePeriod;
+      if (waveClock.current === null) waveClock.current = time;
+      const waveTime = time - waveClock.current;
+      const cyclePos = (waveTime % p.wavePeriod) / p.wavePeriod;
       const envelope = cyclePos < p.waveActive ? Math.sin((cyclePos / p.waveActive) * Math.PI) : 0;
       const dir = WAVE_SIDE === "l" ? 1 : -1;
       // Slight secondary harmonic so the swing doesn't read as a metronome.
       const swingWave =
-        p.waveAmp * (Math.sin(time * p.waveSpeed) + 0.3 * Math.sin(time * p.waveSpeed * 1.6 + 0.5));
+        p.waveAmp *
+        (Math.sin(waveTime * p.waveSpeed) + 0.3 * Math.sin(waveTime * p.waveSpeed * 1.6 + 0.5));
       const angle = dir * envelope * (p.waveRaise + swingWave);
 
       // Raise the arm and tilt it towards the camera.
@@ -717,20 +756,33 @@ function HeroCharacter({ mode }: { mode: "desktop" | "stage" }) {
     // Placement. Desktop: fixed canvas; the character starts anchored to the
     // right of the hero, then, as the hero scrolls away, shrinks, blurs and
     // becomes a little "puppet" that follows the cursor. Mobile: the canvas
-    // lives inside a stage in the hero and simply floats in place.
-    const heroX = isStage ? p.stageX : viewport.width * 0.25;
-    const heroY = isStage
-      ? p.stageY + Math.sin(time * 0.7) * 0.12
-      : p.heroYOffset + Math.sin(time * 0.8) * 0.1;
+    // lives inside a stage in the hero and simply floats in place. Avatar: a
+    // small bust the visitor can spin, easing back to its default view.
+    const heroX = isAvatar ? p.avatarX : isStage ? p.stageX : viewport.width * 0.25;
+    const heroY = isAvatar
+      ? p.avatarY + Math.sin(time * 0.7) * 0.05
+      : isStage
+        ? p.stageY + Math.sin(time * 0.7) * 0.12
+        : p.heroYOffset + Math.sin(time * 0.8) * 0.1;
+
+    // Avatar drag: spin the bust, then ease back once the visitor lets go.
+    if (
+      isAvatar &&
+      !avatarDrag.dragging &&
+      performance.now() - avatarDrag.lastInput > AVATAR_RETURN_DELAY
+    ) {
+      avatarDrag.yaw += (0 - avatarDrag.yaw) * AVATAR_RETURN_EASE;
+      avatarDrag.pitch += (0 - avatarDrag.pitch) * AVATAR_RETURN_EASE;
+    }
 
     const breathe = 1.0 + Math.sin(time * 1.6) * 0.006;
     let targetX = heroX;
     let targetY = heroY;
-    let targetScale = p.stageScale * breathe;
-    let targetRotX = p.modelRotX;
-    let targetRotY = p.modelRotY;
+    let targetScale = (isAvatar ? p.avatarScale : p.stageScale) * breathe;
+    let targetRotX = p.modelRotX + (isAvatar ? avatarDrag.pitch : 0);
+    let targetRotY = p.modelRotY + (isAvatar ? avatarDrag.yaw : 0);
 
-    if (!isStage) {
+    if (!isStage && !isAvatar) {
       // Scrolled pose: follow the cursor like a puppet / custom pointer.
       const followX = mouse.current.x * viewport.width * p.followPan;
       const followY = mouse.current.y * viewport.height * p.followPan;
@@ -747,12 +799,16 @@ function HeroCharacter({ mode }: { mode: "desktop" | "stage" }) {
     group.position.x += (targetX - group.position.x) * 0.1;
     group.position.y += (targetY - group.position.y) * 0.1;
 
-    group.rotation.x += (targetRotX - group.rotation.x) * 0.05;
-    group.rotation.y += (targetRotY - group.rotation.y) * 0.05;
+    // While dragging the bust follows the finger exactly; the hero eases more
+    // slowly, and the avatar's auto-return uses a gentle lerp.
+    const rotLerp = isAvatar ? (avatarDrag.dragging ? 1 : 0.14) : 0.05;
+    group.rotation.x += (targetRotX - group.rotation.x) * rotLerp;
+    group.rotation.y += (targetRotY - group.rotation.y) * rotLerp;
     group.scale.setScalar(targetScale);
 
     // First fully-rendered frame with the model in place: release the preloader.
-    if (!announcedReady.current) {
+    // (The avatar lives on another route, which has no preloader to release.)
+    if (!isAvatar && !announcedReady.current) {
       announcedReady.current = true;
       markHeroModelReady();
     }
@@ -949,7 +1005,7 @@ const backdropFragment = /* glsl */ `
  * Animated gradient plane behind the character. Sized to cover the frustum at
  * `BACKDROP_Z` and anchored towards the hero's side of the screen.
  */
-function HeroBackdrop({ mode }: { mode: "desktop" | "stage" }) {
+function HeroBackdrop({ mode }: { mode: "desktop" | "stage" | "avatar" }) {
   const viewport = useThree((s) => s.viewport);
   const camera = useThree((s) => s.camera);
 
@@ -999,7 +1055,7 @@ function HeroBackdrop({ mode }: { mode: "desktop" | "stage" }) {
  * drives a shared chromatic-aberration offset (wired via refs) so its RGB split
  * actually shows; bloom is desktop-only because it is the expensive one.
  */
-function HeroPost({ mode }: { mode: "desktop" | "stage" }) {
+function HeroPost({ mode }: { mode: "desktop" | "stage" | "avatar" }) {
   const isStage = mode === "stage";
   const chromaticRef = useRef<ChromaticAberrationEffect | null>(null);
   const glitchRef = useRef<GlitchEffect | null>(null);
@@ -1045,25 +1101,32 @@ function HeroPost({ mode }: { mode: "desktop" | "stage" }) {
   );
 }
 
-function HeroScene({ mode, paused }: { mode: "desktop" | "stage"; paused: boolean }) {
+function HeroScene({ mode, paused }: { mode: "desktop" | "stage" | "avatar"; paused: boolean }) {
   const isStage = mode === "stage";
-  const frameloop = isStage ? "demand" : paused ? "never" : "always";
+  const isAvatar = mode === "avatar";
+  const frameloop = isStage || isAvatar ? "demand" : paused ? "never" : "always";
 
   return (
     <Canvas
       frameloop={frameloop}
-      style={{ pointerEvents: "none" }}
+      style={{
+        pointerEvents: isAvatar ? "auto" : "none",
+        touchAction: isAvatar ? "none" : undefined,
+      }}
       camera={{ position: [0, 0, CAMERA_Z], fov: 45 }}
-      dpr={isStage ? [1, 1.5] : [1, 1.6]}
+      dpr={isAvatar ? 1 : isStage ? [1, 1.5] : [1, 1.6]}
       gl={{
-        antialias: false, // MSAA is handled by the composer (see `multisampling`)
+        // The avatar has no composer, so it relies on plain MSAA instead.
+        antialias: isAvatar,
         alpha: true,
-        powerPreference: isStage ? "default" : "high-performance",
+        powerPreference: isStage || isAvatar ? "default" : "high-performance",
       }}
     >
-      {isStage ? <FrameLimiter enabled={!paused} fps={30} /> : null}
+      {isStage || isAvatar ? <FrameLimiter enabled={!paused} fps={30} /> : null}
 
-      <HeroBackdrop mode={mode} />
+      {/* The avatar is the cheapest variant: no animated backdrop, no
+          post-processing, dpr 1 and 24 fps, meant for low-end phones. */}
+      {isAvatar ? null : <HeroBackdrop mode={mode} />}
 
       <ambientLight intensity={0.9} />
       <directionalLight position={[5, 8, 5]} intensity={2.2} />
@@ -1074,8 +1137,8 @@ function HeroScene({ mode, paused }: { mode: "desktop" | "stage"; paused: boolea
         <HeroCharacter mode={mode} />
       </Suspense>
 
-      {/* Post-processing: one merged effect pass. */}
-      <HeroPost mode={mode} />
+      {/* Post-processing: one merged effect pass (desktop + mobile stage). */}
+      {isAvatar ? null : <HeroPost mode={mode} />}
     </Canvas>
   );
 }
@@ -1219,5 +1282,117 @@ export function HeroCanvas() {
       </div>
       {tuner}
     </>
+  );
+}
+
+/**
+ * Avatar variant: the character as the link-in-bio profile picture.
+ *
+ * The visitor can drag the bust to spin it, and it eases back to its default
+ * three-quarter view once they let go. This is the cheapest 3D path in the site
+ * (dpr 1, 30 fps, no post-processing, no animated backdrop, paused while
+ * off-screen) and it degrades to a static frame of the same character on
+ * constrained devices and connections.
+ */
+export function HeroAvatarCanvas({ className, label }: { className?: string; label?: string }) {
+  const stageRef = useRef<HTMLDivElement>(null);
+  // `null` until the device is probed, so the canvas never lands in the SSR markup.
+  const [canRender3D, setCanRender3D] = useState<boolean | null>(null);
+  const [paused, setPaused] = useState(false);
+  const pausedRef = useRef(false);
+  const applyPaused = (value: boolean) => {
+    if (pausedRef.current === value) return;
+    pausedRef.current = value;
+    setPaused(value);
+  };
+
+  // Same gate as the hero: no WebGL on constrained devices or connections.
+  useEffect(() => {
+    const nav = navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string };
+      deviceMemory?: number;
+    };
+    const reducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const saveData = nav.connection?.saveData === true;
+    const slowNetwork = ["slow-2g", "2g", "3g"].includes(nav.connection?.effectiveType ?? "");
+    const lowMemory = typeof nav.deviceMemory === "number" && nav.deviceMemory <= 2;
+    setCanRender3D(!(reducedMotion || saveData || slowNetwork || lowMemory));
+  }, []);
+
+  // Stop rendering while the avatar is scrolled out of view.
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el || canRender3D !== true || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(([entry]) => applyPaused(!entry.isIntersecting), {
+      rootMargin: "120px",
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [canRender3D]);
+
+  // Drag to spin. The pointer handlers live out here and mutate `avatarDrag`,
+  // which the frame loop inside the Canvas reads (same trick as `heroScroll`).
+  const pointer = useRef({ id: -1, x: 0, y: 0 });
+
+  const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    pointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    avatarDrag.dragging = true;
+    avatarDrag.lastInput = performance.now();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+  };
+
+  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!avatarDrag.dragging || pointer.current.id !== event.pointerId) return;
+    const dx = event.clientX - pointer.current.x;
+    const dy = event.clientY - pointer.current.y;
+    pointer.current.x = event.clientX;
+    pointer.current.y = event.clientY;
+    avatarDrag.yaw = THREE.MathUtils.clamp(
+      avatarDrag.yaw + dx * 0.013,
+      -AVATAR_MAX_YAW,
+      AVATAR_MAX_YAW,
+    );
+    avatarDrag.pitch = THREE.MathUtils.clamp(
+      avatarDrag.pitch + dy * 0.008,
+      -AVATAR_MAX_PITCH,
+      AVATAR_MAX_PITCH,
+    );
+    avatarDrag.lastInput = performance.now();
+  };
+
+  const endDrag = () => {
+    if (!avatarDrag.dragging) return;
+    avatarDrag.dragging = false;
+    avatarDrag.lastInput = performance.now();
+  };
+
+  // Constrained device: a still frame of the same character, a few KB instead of
+  // the whole 3D pipeline.
+  if (canRender3D === false) {
+    return (
+      <img
+        src="/uploads/hero-avatar.webp"
+        alt={label ?? "Luis Andrés"}
+        className={`${className ?? ""} object-cover`}
+        draggable={false}
+      />
+    );
+  }
+
+  return (
+    <div
+      ref={stageRef}
+      className={className}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+      role="img"
+      aria-label={label}
+    >
+      {canRender3D === true ? <HeroScene mode="avatar" paused={paused} /> : null}
+    </div>
   );
 }

@@ -20,6 +20,7 @@ import { imageSize } from "@/lib/image";
 import { CALENDLY_URL } from "@/lib/links";
 import { buildSeo, type Locale } from "@/lib/seo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { HeroAvatarCanvas } from "@/components/HeroCanvas";
 
 const LINKS_SEO = {
   es: {
@@ -176,19 +177,24 @@ function LinkBioPage() {
 
         {/* Profile header */}
         <div className="flex flex-col items-center text-center">
-          <div className="relative mb-7">
+          <div className="relative mb-6">
             <div
               aria-hidden
               className="absolute -inset-8 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,77,0,0.28),transparent_70%)] blur-2xl"
             />
-            <div className="group relative">
-              <div className="relative size-28 overflow-hidden rounded-[2rem] border-2 border-ink/10 bg-surface p-1.5 shadow-2xl backdrop-blur-md transition-transform duration-500 group-hover:-rotate-1 group-hover:scale-105 sm:size-32">
-                <img
-                  src="/favicon.png"
-                  alt="Luis Andrés"
-                  {...imageSize("/favicon.png")}
-                  className="h-full w-full rounded-[1.6rem] bg-ink object-cover"
-                />
+            <div className="relative">
+              {/* The profile picture is now the 3D character: drag to spin it. */}
+              <div className="relative size-40 overflow-hidden rounded-[2rem] border-2 border-ink/10 bg-surface p-1.5 shadow-2xl backdrop-blur-md sm:size-48">
+                <div className="h-full w-full overflow-hidden rounded-[1.6rem] bg-[radial-gradient(circle_at_50%_38%,#fff6ee,#eee8df)]">
+                  <HeroAvatarCanvas
+                    className="h-full w-full cursor-grab active:cursor-grabbing"
+                    label={tx(
+                      lang,
+                      "Luis Andrés · arrastra para girar",
+                      "Luis Andrés · drag to spin",
+                    )}
+                  />
+                </div>
               </div>
               <div className="absolute -bottom-2.5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full border border-ink/15 bg-surface px-3 py-1 shadow-lg backdrop-blur-md">
                 <span className="relative flex size-2">
@@ -200,6 +206,10 @@ function LinkBioPage() {
                 </span>
               </div>
             </div>
+
+            <p className="mt-4 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-muted">
+              {tx(lang, "Arrastra para girar", "Drag to spin")}
+            </p>
           </div>
 
           <h1 className="font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
@@ -210,15 +220,7 @@ function LinkBioPage() {
             Creative Developer & UI/UX Designer
           </p>
 
-          <p className="mt-3 max-w-sm text-xs leading-relaxed text-muted sm:text-sm">
-            {tx(
-              lang,
-              "Diseño experiencias digitales de alto impacto, desarrollo web frontend y render 3D interactivo.",
-              "Crafting high-impact digital experiences, frontend engineering and interactive 3D motion.",
-            )}
-          </p>
-
-          <div className="mt-5 flex flex-wrap justify-center gap-2">
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
             {quickHighlights.map((skill) => (
               <span
                 key={skill.label}
@@ -232,7 +234,7 @@ function LinkBioPage() {
         </div>
 
         {/* Portfolios: the main experience first, then the two dedicated tracks */}
-        <div className="mt-11">
+        <div className="mt-8">
           <SectionLabel label={tx(lang, "Portafolios", "Portfolios")} />
 
           {/* Primary: the full portfolio experience on landrescreative.com */}
