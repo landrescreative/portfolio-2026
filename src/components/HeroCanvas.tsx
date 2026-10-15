@@ -10,9 +10,7 @@ import ReactDOM from "react-dom";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import { Bloom, ChromaticAberration, EffectComposer, Glitch } from "@react-three/postprocessing";
-import { GlitchMode } from "postprocessing";
-import type { ChromaticAberrationEffect, GlitchEffect } from "postprocessing";
+import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postprocessing";
 import { markHeroModelReady } from "@/lib/heroModel";
 
 /**
@@ -179,8 +177,6 @@ const heroParams = {
   // Rim light (fresnel) added on top of the original PBR materials.
   rimStrength: 0.35,
   rimPower: 4.5,
-  // Glitch burst intensity on the character's material (0 = off).
-  glitchStrength: 0.4,
   // Mobile-only framing (the fixed desktop layout uses `heroYOffset` instead).
   stageScale: 0.72,
   stageX: 0,
@@ -207,18 +203,10 @@ const AXIS_Y = new THREE.Vector3(0, 1, 0);
 const AXIS_Z = new THREE.Vector3(0, 0, 1);
 
 /**
- * Scroll progress through the hero (0..1), shared between the character (which
- * uses it to morph into the cursor-follow pose) and the post-processing (which
- * uses it to switch the glitch off once the hero is scrolled away, so it never
- * reads as a random flash behind the page).
- */
-const heroScroll = { value: 0 };
-
-/**
  * Avatar variant state. The visitor can drag the bust to spin it; a moment after
  * they let go it eases back to the default three-quarter view. Written by the
  * pointer handlers *outside* the Canvas and read by the frame loop *inside* it,
- * mirroring the `heroScroll` pattern so nothing has to cross the R3F boundary.
+ * so nothing has to cross the R3F boundary.
  */
 const AVATAR_RETURN_DELAY = 1200; // ms without input before easing back
 const AVATAR_RETURN_EASE = 0.05;
@@ -228,11 +216,9 @@ const avatarDrag = { yaw: 0, pitch: 0, dragging: false, lastInput: 0 };
 
 /**
  * Material FX injected into the model's original `MeshStandardMaterial` via
- * `onBeforeCompile`, so the PBR look is untouched:
- *   - rim light (fresnel)  -> thin orange glow on the silhouette,
- *   - glitch               -> banded vertex tearing + a colour split flash,
- * driven by the shared uniforms below. A handful of ALU ops per vertex/fragment
- * and zero extra draw calls.
+ * `onBeforeCompile`, so the PBR look is untouched: a rim light (fresnel) that
+ * draws a thin orange glow on the silhouette, driven by the shared uniforms
+ * below. A handful of ALU ops per fragment and zero extra draw calls.
  */
 const RIM_COLOR = "#ff5a1f";
 const MATERIAL_FX_MARKER = "__heroMaterialFx";
@@ -241,8 +227,6 @@ const materialFxUniforms = {
   uRimPower: { value: 4.5 },
   uRimStrength: { value: 0.35 },
   uRimCursor: { value: new THREE.Vector2(0, 0) },
-  uGlitch: { value: 0 },
-  uGlitchTime: { value: 0 },
 };
 
 function applyMaterialFx(root: THREE.Object3D) {
@@ -258,26 +242,7 @@ function applyMaterialFx(root: THREE.Object3D) {
       material.onBeforeCompile = (shader) => {
         Object.assign(shader.uniforms, materialFxUniforms);
 
-        // Vertex: tearing. Displace bands of the mesh sideways during a burst.
-        shader.vertexShader = shader.vertexShader
-          .replace(
-            "#include <common>",
-            `#include <common>
-uniform float uGlitch;
-uniform float uGlitchTime;`,
-          )
-          .replace(
-            "#include <begin_vertex>",
-            `#include <begin_vertex>
-{
-  float glitchBand = floor( position.y * 3.5 );
-  float glitchSeed = fract( sin( glitchBand * 12.9898 + floor( uGlitchTime * 14.0 ) * 78.233 ) * 43758.5453 );
-  float glitchAmt = step( 1.0 - uGlitch * 0.85, glitchSeed ) * uGlitch;
-  transformed.x += ( glitchSeed - 0.5 ) * 0.45 * glitchAmt;
-}`,
-          );
-
-        // Fragment: rim light + a magenta/cyan flash during the burst.
+        // Fragment: rim light on top of the shaded PBR colour.
         shader.fragmentShader = shader.fragmentShader
           .replace(
             "#include <common>",
@@ -285,8 +250,7 @@ uniform float uGlitchTime;`,
 uniform vec3 uRimColor;
 uniform float uRimPower;
 uniform float uRimStrength;
-uniform vec2 uRimCursor;
-uniform float uGlitch;`,
+uniform vec2 uRimCursor;`,
           )
           .replace(
             "#include <opaque_fragment>",
@@ -298,37 +262,12 @@ uniform float uGlitch;`,
   float rim = pow( 1.0 - clamp( dot( rimNormal, rimView ), 0.0, 1.0 ), uRimPower );
   float rimSide = 0.5 + 0.5 * rimNormal.x * uRimCursor.x;
   gl_FragColor.rgb += uRimColor * rim * uRimStrength * mix( 0.6, 1.4, rimSide );
-
-  // Glitch colour split + scanlines during the burst.
-  if ( uGlitch > 0.001 ) {
-    float scan = step( 0.6, fract( gl_FragCoord.y * 0.5 ) );
-    gl_FragColor.rgb *= 1.0 - scan * uGlitch * 0.15;
-    float split = uGlitch * 0.05;
-    gl_FragColor.r += gl_FragColor.g * split;
-    gl_FragColor.b = mix( gl_FragColor.b, gl_FragColor.r, split );
-    gl_FragColor.rgb += vec3( 0.9, 0.1, 0.7 ) * uGlitch * 0.035;
-  }
 }`,
           );
       };
       material.needsUpdate = true;
     }
   });
-}
-
-/**
- * Irregular glitch bursts: two overlapping periodic envelopes of different
- * lengths so the rhythm never feels metronomic. Returns 0..1.
- */
-function glitchBurst(t: number, period: number, duration: number, phase: number) {
-  const p = (t + phase) % period;
-  return p >= 0 && p < duration ? Math.sin((p / duration) * Math.PI) : 0;
-}
-
-function heroGlitchAmount(t: number) {
-  const a = glitchBurst(t, 8.0, 0.18, -3.4);
-  const b = glitchBurst(t, 13.0, 0.26, -7.1);
-  return Math.min(1, Math.max(a, b * 0.8));
 }
 
 type IdleEntry = {
@@ -436,7 +375,7 @@ function prepareScene(scene: THREE.Group) {
   });
   removals.forEach((mesh) => mesh.parent?.remove(mesh));
 
-  // Add the rim light + glitch shader FX on the remaining (character) meshes.
+  // Add the rim-light shader FX on the remaining (character) meshes.
   applyMaterialFx(scene);
 
   const bones = collectBones(scene);
@@ -597,7 +536,6 @@ function HeroCharacter({ mode }: { mode: "desktop" | "stage" | "avatar" }) {
       const endScroll = window.innerHeight * 0.7;
       const progress = (window.scrollY - startScroll) / (endScroll - startScroll);
       scrollRef.current = Math.max(0, Math.min(progress, 1));
-      heroScroll.value = scrollRef.current;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -644,15 +582,6 @@ function HeroCharacter({ mode }: { mode: "desktop" | "stage" | "avatar" }) {
     materialFxUniforms.uRimPower.value = p.rimPower;
     materialFxUniforms.uRimStrength.value = p.rimStrength * (0.9 + 0.1 * Math.sin(time * 1.3));
     materialFxUniforms.uRimCursor.value.set(lookX, lookY);
-
-    // Character glitch: short, irregular bursts of vertex tearing. Fades out as
-    // the hero scrolls away so it never flashes in the background. The avatar
-    // keeps it off entirely: it adds nothing at profile-picture size and costs
-    // fragment work on every frame.
-    materialFxUniforms.uGlitchTime.value = time;
-    materialFxUniforms.uGlitch.value = isAvatar
-      ? 0
-      : heroGlitchAmount(time) * p.glitchStrength * (1 - easeScroll);
 
     // Hand wave: lift one arm and swing it, then let it rest, on a loop.
     if (waveBase && waveSet && wavePivot && waveSet.size > 0) {
@@ -854,7 +783,6 @@ const HERO_CONTROLS: Array<{ key: HeroParamKey; min: number; max: number; step: 
   { key: "modelRotY", min: -Math.PI, max: Math.PI, step: 0.01 },
   { key: "rimStrength", min: 0, max: 2, step: 0.01 },
   { key: "rimPower", min: 0.5, max: 8, step: 0.1 },
-  { key: "glitchStrength", min: 0, max: 1.5, step: 0.01 },
   { key: "stageScale", min: 0, max: 1.6, step: 0.01 },
   { key: "stageX", min: -3, max: 3, step: 0.05 },
   { key: "stageY", min: -3, max: 3, step: 0.05 },
@@ -1051,31 +979,12 @@ function HeroBackdrop({ mode }: { mode: "desktop" | "stage" | "avatar" }) {
  * hero) to avoid burning GPU/battery on an invisible canvas.
  */
 /**
- * Post-processing chain. Everything merges into a single effect pass. The glitch
- * drives a shared chromatic-aberration offset (wired via refs) so its RGB split
- * actually shows; bloom is desktop-only because it is the expensive one.
+ * Post-processing chain. Bloom is desktop-only because it is the expensive one.
+ * The chromatic aberration runs neutral (offset 0) but is kept on purpose: the
+ * composer being present is what gives the mobile stage its multisampling.
  */
 function HeroPost({ mode }: { mode: "desktop" | "stage" | "avatar" }) {
   const isStage = mode === "stage";
-  const chromaticRef = useRef<ChromaticAberrationEffect | null>(null);
-  const glitchRef = useRef<GlitchEffect | null>(null);
-
-  // The glitch effect modulates the chromatic aberration offset; it must be the
-  // very same Vector2 instance, which the JSX props can't share.
-  useEffect(() => {
-    const chromatic = chromaticRef.current;
-    const glitch = glitchRef.current;
-    if (chromatic && glitch) glitch.chromaticAberrationOffset = chromatic.offset;
-  }, []);
-
-  // Switch the fullscreen glitch off as soon as the hero is scrolled away, so it
-  // doesn't read as a random flash behind the rest of the page.
-  useFrame(() => {
-    const glitch = glitchRef.current;
-    if (!glitch) return;
-    const mode = heroScroll.value > 0.04 ? GlitchMode.DISABLED : GlitchMode.SPORADIC;
-    if (glitch.mode !== mode) glitch.mode = mode;
-  });
 
   return (
     <EffectComposer multisampling={isStage ? 2 : 4} enableNormalPass={false} mergeMode="none">
@@ -1089,14 +998,7 @@ function HeroPost({ mode }: { mode: "desktop" | "stage" | "avatar" }) {
           levels={4}
         />
       )}
-      <ChromaticAberration ref={chromaticRef} offset={[0, 0]} radialModulation={false} />
-      <Glitch
-        ref={glitchRef}
-        mode={GlitchMode.SPORADIC}
-        delay={[7, 15]}
-        duration={[0.1, 0.25]}
-        strength={isStage ? [0.03, 0.1] : [0.05, 0.18]}
-      />
+      <ChromaticAberration offset={[0, 0]} radialModulation={false} />
     </EffectComposer>
   );
 }
@@ -1125,7 +1027,7 @@ function HeroScene({ mode, paused }: { mode: "desktop" | "stage" | "avatar"; pau
       {isStage || isAvatar ? <FrameLimiter enabled={!paused} fps={30} /> : null}
 
       {/* The avatar is the cheapest variant: no animated backdrop, no
-          post-processing, dpr 1 and 24 fps, meant for low-end phones. */}
+          post-processing, dpr 1 and 30 fps, meant for low-end phones. */}
       {isAvatar ? null : <HeroBackdrop mode={mode} />}
 
       <ambientLight intensity={0.9} />
@@ -1333,7 +1235,7 @@ export function HeroAvatarCanvas({ className, label }: { className?: string; lab
   }, [canRender3D]);
 
   // Drag to spin. The pointer handlers live out here and mutate `avatarDrag`,
-  // which the frame loop inside the Canvas reads (same trick as `heroScroll`).
+  // which the frame loop inside the Canvas reads.
   const pointer = useRef({ id: -1, x: 0, y: 0 });
 
   const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
