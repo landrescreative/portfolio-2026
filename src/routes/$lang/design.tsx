@@ -108,26 +108,14 @@ export function DesignPortfolioPage() {
       <section className="px-6 pb-12 pt-32 md:pt-40">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col gap-6 border-b border-ink/10 pb-12">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            {/* Top Navigation */}
+            <div>
               <Link
                 to="/$lang"
                 params={{ lang }}
                 className="story-link text-xs font-semibold uppercase tracking-[0.25em] text-muted w-fit"
               >
                 ← {t.ui.home}
-              </Link>
-
-              {/* Premium Switch Button */}
-              <Link
-                to="/$lang/web"
-                params={{ lang }}
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-ink/15 bg-surface/90 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink shadow-sm backdrop-blur-md transition-all duration-300 hover:border-accent hover:bg-surface hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
-              >
-                <span className="flex size-5 items-center justify-center rounded-full bg-accent/15 text-accent transition-colors group-hover:bg-accent group-hover:text-canvas">
-                  <Code2 className="size-3" />
-                </span>
-                <span>{t.ui.webPortfolioUi}</span>
-                <ArrowUpRight className="size-3 text-muted transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
               </Link>
             </div>
 

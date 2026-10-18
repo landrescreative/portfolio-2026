@@ -23,6 +23,7 @@ try {
     "/",
     "/about",
     "/contact",
+    "/3d",
     "/design",
     "/web",
     "/projects",

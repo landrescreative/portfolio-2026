@@ -11,11 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangRouteImport } from './routes/$lang'
+import { Route as R3dRouteImport } from './routes/3d'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as DesignRouteImport } from './routes/design'
 import { Route as LinksRouteImport } from './routes/links'
 import { Route as WebRouteImport } from './routes/web'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
+import { Route as Lang3dRouteImport } from './routes/$lang/3d'
 import { Route as LangAboutRouteImport } from './routes/$lang/about'
 import { Route as LangContactRouteImport } from './routes/$lang/contact'
 import { Route as LangDesignRouteImport } from './routes/$lang/design'
@@ -34,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
 const LangRoute = LangRouteImport.update({
   id: '/$lang',
   path: '/$lang',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const R3dRoute = R3dRouteImport.update({
+  id: '/3d',
+  path: '/3d',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -59,6 +66,11 @@ const WebRoute = WebRouteImport.update({
 const LangIndexRoute = LangIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => LangRoute,
+} as any)
+const Lang3dRoute = Lang3dRouteImport.update({
+  id: '/3d',
+  path: '/3d',
   getParentRoute: () => LangRoute,
 } as any)
 const LangAboutRoute = LangAboutRouteImport.update({
@@ -110,10 +122,12 @@ const LangProjectsProjectIdRoute = LangProjectsProjectIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
+  '/3d': typeof R3dRoute
   '/about': typeof AboutRoute
   '/design': typeof DesignRoute
   '/links': typeof LinksRoute
   '/web': typeof WebRoute
+  '/$lang/3d': typeof Lang3dRoute
   '/$lang/about': typeof LangAboutRoute
   '/$lang/contact': typeof LangContactRoute
   '/$lang/design': typeof LangDesignRoute
@@ -127,10 +141,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/3d': typeof R3dRoute
   '/about': typeof AboutRoute
   '/design': typeof DesignRoute
   '/links': typeof LinksRoute
   '/web': typeof WebRoute
+  '/$lang/3d': typeof Lang3dRoute
   '/$lang/about': typeof LangAboutRoute
   '/$lang/contact': typeof LangContactRoute
   '/$lang/design': typeof LangDesignRoute
@@ -146,10 +162,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
+  '/3d': typeof R3dRoute
   '/about': typeof AboutRoute
   '/design': typeof DesignRoute
   '/links': typeof LinksRoute
   '/web': typeof WebRoute
+  '/$lang/3d': typeof Lang3dRoute
   '/$lang/about': typeof LangAboutRoute
   '/$lang/contact': typeof LangContactRoute
   '/$lang/design': typeof LangDesignRoute
@@ -166,10 +184,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$lang'
+    | '/3d'
     | '/about'
     | '/design'
     | '/links'
     | '/web'
+    | '/$lang/3d'
     | '/$lang/about'
     | '/$lang/contact'
     | '/$lang/design'
@@ -183,10 +203,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/3d'
     | '/about'
     | '/design'
     | '/links'
     | '/web'
+    | '/$lang/3d'
     | '/$lang/about'
     | '/$lang/contact'
     | '/$lang/design'
@@ -201,10 +223,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$lang'
+    | '/3d'
     | '/about'
     | '/design'
     | '/links'
     | '/web'
+    | '/$lang/3d'
     | '/$lang/about'
     | '/$lang/contact'
     | '/$lang/design'
@@ -220,6 +244,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LangRoute: typeof LangRouteWithChildren
+  R3dRoute: typeof R3dRoute
   AboutRoute: typeof AboutRoute
   DesignRoute: typeof DesignRoute
   LinksRoute: typeof LinksRoute
@@ -242,6 +267,13 @@ declare module '@tanstack/react-router' {
       path: '/$lang'
       fullPath: '/$lang'
       preLoaderRoute: typeof LangRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/3d': {
+      id: '/3d'
+      path: '/3d'
+      fullPath: '/3d'
+      preLoaderRoute: typeof R3dRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -277,6 +309,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/$lang/'
       preLoaderRoute: typeof LangIndexRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/3d': {
+      id: '/$lang/3d'
+      path: '/3d'
+      fullPath: '/$lang/3d'
+      preLoaderRoute: typeof Lang3dRouteImport
       parentRoute: typeof LangRoute
     }
     '/$lang/about': {
@@ -346,6 +385,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface LangRouteChildren {
+  Lang3dRoute: typeof Lang3dRoute
   LangAboutRoute: typeof LangAboutRoute
   LangContactRoute: typeof LangContactRoute
   LangDesignRoute: typeof LangDesignRoute
@@ -357,6 +397,7 @@ interface LangRouteChildren {
 }
 
 const LangRouteChildren: LangRouteChildren = {
+  Lang3dRoute: Lang3dRoute,
   LangAboutRoute: LangAboutRoute,
   LangContactRoute: LangContactRoute,
   LangDesignRoute: LangDesignRoute,
@@ -372,6 +413,7 @@ const LangRouteWithChildren = LangRoute._addFileChildren(LangRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LangRoute: LangRouteWithChildren,
+  R3dRoute: R3dRoute,
   AboutRoute: AboutRoute,
   DesignRoute: DesignRoute,
   LinksRoute: LinksRoute,

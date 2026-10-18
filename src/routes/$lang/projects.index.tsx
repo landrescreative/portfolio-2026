@@ -1,8 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useI18n, tx } from "@/lib/i18n";
 import { projectsData, ProjectDetail } from "@/data/projectsData";
-import { ArrowRight, Sparkles, Code2, Box, ArrowUpRight } from "lucide-react";
+import { ArrowRight, Sparkles, Code2, Box, Layers, ArrowUpRight, Briefcase } from "lucide-react";
 import { ContactSection } from "@/components/ContactSection";
 import { buildSeo, type Locale } from "@/lib/seo";
 
@@ -82,17 +82,36 @@ function ProjectsPage() {
     };
   }, [activeTab, allProjects]);
 
-  const categories = [
-    {
-      key: "web",
-      keys: ["web", "ui"],
-      label: tx(lang, "Diseño UI/UX & Desarrollo Web", "UI/UX Design & Web Development"),
-    },
-    { key: "3d", keys: ["3d"], label: t.projectsPage.tabs["3d"] },
-    { key: "animation", keys: ["animation"], label: t.projectsPage.tabs.animation },
-    { key: "photo", keys: ["photo"], label: t.projectsPage.tabs.photo },
-    { key: "devops", keys: ["devops"], label: t.projectsPage.tabs.devops },
-  ];
+  const categories = useMemo(
+    () => [
+      {
+        key: "web",
+        keys: ["web", "ui"],
+        label: tx(lang, "Diseño UI/UX & Web", "UI/UX & Web Design"),
+      },
+      { key: "3d", keys: ["3d"], label: t.projectsPage.tabs["3d"] },
+      { key: "animation", keys: ["animation"], label: t.projectsPage.tabs.animation },
+      { key: "photo", keys: ["photo"], label: t.projectsPage.tabs.photo },
+      { key: "devops", keys: ["devops"], label: t.projectsPage.tabs.devops },
+    ],
+    [lang, t.projectsPage.tabs],
+  );
+
+  const categoriesWithCounts = useMemo(() => {
+    return [
+      {
+        key: "all",
+        keys: [],
+        label: t.projectsPage.tabs.all,
+        count: allProjects.length,
+      },
+      ...categories.map((c) => ({
+        ...c,
+        count: allProjects.filter((p) => c.keys.includes(p.category)).length,
+      })),
+    ];
+  }, [allProjects, categories, t.projectsPage.tabs.all]);
+
   return (
     <main className="grain bg-canvas text-ink min-h-screen">
       {/* Header Section */}
@@ -105,10 +124,22 @@ function ProjectsPage() {
                 params={{ lang }}
                 className="story-link text-xs font-semibold uppercase tracking-[0.25em] text-muted w-fit"
               >
-                {t.projectsPage.backToHome}
+                ← {t.ui.home}
               </Link>
 
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  to="/$lang/3d"
+                  params={{ lang }}
+                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-ink/15 bg-surface/90 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink shadow-sm backdrop-blur-md transition-all duration-300 hover:border-accent hover:bg-surface hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  <span className="flex size-5 items-center justify-center rounded-full bg-accent/15 text-accent transition-colors group-hover:bg-accent group-hover:text-canvas">
+                    <Box className="size-3" />
+                  </span>
+                  <span>{t.ui.threeDPortfolio}</span>
+                  <ArrowUpRight className="size-3 text-muted transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
+                </Link>
+
                 <Link
                   to="/$lang/web"
                   params={{ lang }}
@@ -117,7 +148,7 @@ function ProjectsPage() {
                   <span className="flex size-5 items-center justify-center rounded-full bg-accent/15 text-accent transition-colors group-hover:bg-accent group-hover:text-canvas">
                     <Code2 className="size-3" />
                   </span>
-                  <span>{t.ui.webPortfolio}</span>
+                  <span>{t.ui.webPortfolioUi}</span>
                   <ArrowUpRight className="size-3 text-muted transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
                 </Link>
 
@@ -127,7 +158,7 @@ function ProjectsPage() {
                   className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-ink/15 bg-surface/90 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink shadow-sm backdrop-blur-md transition-all duration-300 hover:border-accent hover:bg-surface hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
                 >
                   <span className="flex size-5 items-center justify-center rounded-full bg-accent/15 text-accent transition-colors group-hover:bg-accent group-hover:text-canvas">
-                    <Box className="size-3" />
+                    <Layers className="size-3" />
                   </span>
                   <span>{t.ui.designPortfolio}</span>
                   <ArrowUpRight className="size-3 text-muted transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
@@ -135,17 +166,28 @@ function ProjectsPage() {
               </div>
             </div>
 
-            <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
               <div>
-                <h1 className="font-serif text-5xl tracking-tight text-ink md:text-7xl">
+                <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-accent mb-4">
+                  <Briefcase className="size-3.5" />
+                  <span>Full-Stack · 3D · Motion · Creative Development</span>
+                </div>
+                <h1 className="font-serif text-5xl tracking-tight text-ink md:text-7xl lg:text-8xl">
                   {t.projectsPage.title}
                 </h1>
+                <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
+                  {tx(
+                    lang,
+                    "Colección completa de proyectos: desarrollo web interactivo, diseño UI/UX, modelado 3D, animación y soluciones creativas de extremo a extremo.",
+                    "Complete collection of projects: interactive web development, UI/UX design, 3D modeling, animation, and end-to-end creative solutions.",
+                  )}
+                </p>
               </div>
 
               {/* Filter Tabs - Modern Brutalist Segmented Filter */}
               <div className="w-full lg:w-auto">
-                <div className="flex max-w-full items-center gap-2 overflow-x-auto no-scrollbar lg:flex-wrap lg:overflow-visible">
-                  {[{ key: "all", label: t.projectsPage.tabs.all }, ...categories].map((cat) => {
+                <div className="flex max-w-full items-center gap-1.5 overflow-x-auto p-1 no-scrollbar rounded-xl border border-ink/10 bg-surface/80 shadow-sm backdrop-blur-md">
+                  {categoriesWithCounts.map((cat) => {
                     const isActive = activeTab === cat.key;
                     return (
                       <button
@@ -159,19 +201,19 @@ function ProjectsPage() {
                             search: { category: cat.key === "all" ? undefined : cat.key },
                           });
                         }}
-                        className={`flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium uppercase tracking-wider transition-all duration-200 active:scale-95 ${
+                        className={`group relative flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-200 active:scale-95 ${
                           isActive
-                            ? "border-ink bg-ink font-semibold text-canvas shadow-md"
-                            : "border-ink/10 bg-surface/70 text-muted backdrop-blur-md hover:border-ink/25 hover:bg-surface hover:text-ink"
+                            ? "bg-ink text-canvas shadow-sm"
+                            : "text-muted hover:bg-ink/5 hover:text-ink"
                         }`}
                       >
-                        {isActive && (
-                          <span className="relative flex size-1.5">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-                            <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
-                          </span>
-                        )}
+                        <span
+                          className={`size-1.5 rounded-full transition-colors ${
+                            isActive ? "bg-accent" : "bg-muted/40 group-hover:bg-accent"
+                          }`}
+                        />
                         <span>{cat.label}</span>
+                        <span className="text-[10px] opacity-60">({cat.count})</span>
                       </button>
                     );
                   })}

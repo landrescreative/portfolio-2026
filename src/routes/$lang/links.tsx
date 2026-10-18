@@ -69,28 +69,38 @@ function LinkBioPage() {
     setTimeout(() => setCopiedEmail(false), 2500);
   };
 
-  // Two dedicated portfolios instead of three "portfolio" buttons: the full
-  // showcase is offered as a quiet text link below them.
+  // Dedicated portfolios for each discipline
   const portfolios: Array<{
     eyebrow: string;
     title: string;
     subtitle: string;
-    to: "/$lang/design" | "/$lang/web";
+    to: "/$lang/3d" | "/$lang/design" | "/$lang/web";
     icon: typeof Box;
   }> = [
     {
-      eyebrow: tx(lang, "01 · 3D & Motion", "01 · 3D & Motion"),
-      title: tx(lang, "Diseño, 3D & Motion", "Design, 3D & Motion"),
+      eyebrow: tx(lang, "01 · 3D", "01 · 3D"),
+      title: tx(lang, "Portafolio 3D", "3D Portfolio"),
       subtitle: tx(
         lang,
-        "Modelado 3D, motion graphics, VFX y social media.",
-        "3D modeling, motion graphics, VFX & social media.",
+        "Modelado 3D, esculturas, miniaturas STL y renders.",
+        "3D modeling, sculptures, STL miniatures & renders.",
       ),
-      to: "/$lang/design",
+      to: "/$lang/3d",
       icon: Box,
     },
     {
-      eyebrow: tx(lang, "02 · Web & UI", "02 · Web & UI"),
+      eyebrow: tx(lang, "02 · Diseño & Motion", "02 · Design & Motion"),
+      title: tx(lang, "Diseño & Motion Graphics", "Design & Motion Graphics"),
+      subtitle: tx(
+        lang,
+        "Motion graphics, VFX, animación y redes sociales.",
+        "Motion graphics, VFX, animation & social media.",
+      ),
+      to: "/$lang/design",
+      icon: Layers,
+    },
+    {
+      eyebrow: tx(lang, "03 · Web & UI", "03 · Web & UI"),
       title: tx(lang, "Desarrollo Web & UI/UX", "Web Development & UI/UX"),
       subtitle: tx(
         lang,

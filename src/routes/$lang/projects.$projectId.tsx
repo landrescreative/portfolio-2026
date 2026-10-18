@@ -389,24 +389,29 @@ function ProjectDetailPage() {
           ))}
         </section>
 
-        {/* Interactive 3D Model Viewer for 3D Print / Mesh Projects */}
+        {/* Interactive 3D Model Viewer for 3D Print / Mesh / Product Projects */}
         {(project.has3DViewer ||
           projectId === "aforeaventura-3d" ||
-          projectId === "art-toy-conejo") && (
-          <SafeBoundary>
-            <Suspense
-              fallback={
-                <div className="mb-24 flex h-[560px] w-full flex-col items-center justify-center gap-3 rounded-3xl border border-ink/10 bg-[#18191c] text-canvas shadow-2xl">
-                  <RefreshCw className="size-8 animate-spin text-accent" />
-                  <span className="text-xs font-semibold uppercase tracking-widest text-canvas/70">
-                    {t.ui.loading3d}
-                  </span>
-                </div>
-              }
-            >
-              <LazyModelViewer3D projectId={projectId} />
-            </Suspense>
-          </SafeBoundary>
+          projectId === "art-toy-conejo" ||
+          projectId === "veravetalize" ||
+          projectId === "the-old-man-and-the-sea" ||
+          projectId === "inartiva-studio") && (
+          <div id="model-viewer" className="scroll-mt-24">
+            <SafeBoundary>
+              <Suspense
+                fallback={
+                  <div className="mb-24 flex h-[560px] w-full flex-col items-center justify-center gap-3 rounded-3xl border border-ink/10 bg-[#18191c] text-canvas shadow-2xl">
+                    <RefreshCw className="size-8 animate-spin text-accent" />
+                    <span className="text-xs font-semibold uppercase tracking-widest text-canvas/70">
+                      {t.ui.loading3d}
+                    </span>
+                  </div>
+                }
+              >
+                <LazyModelViewer3D projectId={projectId} />
+              </Suspense>
+            </SafeBoundary>
+          </div>
         )}
 
         {/* Story Sections: Overview, Challenge, Solution */}
