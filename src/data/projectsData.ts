@@ -1647,7 +1647,7 @@ export const projectsData: Record<string, ProjectDetail> = {
       es: "Modelador 3D, Diseñador de Juego & Especialista STL",
       en: "3D Modeler, Tabletop Game Designer & STL Specialist",
     },
-    coverImage: "/uploads/aforeaventura-personaje-4.webp",
+    coverImage: "/uploads/aforeaventura-tablero.webp",
     techStack: [
       "Blender",
       "Modelado 3D",
@@ -1697,17 +1697,8 @@ export const projectsData: Record<string, ProjectDetail> = {
       { label: { es: "Casillas de Tablero", en: "Board Spaces" }, value: "75 Casillas" },
       { label: { es: "Tarjetas de Juego", en: "Game Cards" }, value: "114 Tarjetas" },
     ],
-    has3DViewer: true,
+    has3DViewer: false,
     gallery: [
-      {
-        src: "/uploads/aforeaventura-personaje-4.webp",
-        alt: "AforeAventura · Personaje 4 Render 3D Miniatura",
-        caption: {
-          es: "Render 3D de miniatura inclusiva con silla de ruedas y base circular lista para impresión 3D STL",
-          en: "3D render of inclusive wheelchair miniature with circular base ready for STL 3D printing",
-        },
-        span: "half",
-      },
       {
         src: "/uploads/aforeaventura-tablero.webp",
         alt: "AforeAventura · Tablero Hexagonal de Juego",
@@ -1768,6 +1759,510 @@ export const projectsData: Record<string, ProjectDetail> = {
         caption: {
           es: "Modelado 3D de personaje femenino estilizado con base de apoyo para tablero",
           en: "Stylized female character 3D model with stable tabletop base",
+        },
+        span: "half",
+      },
+    ],
+  },
+
+  "afore-personaje-1": {
+    id: "afore-personaje-1",
+    title: {
+      es: "AforeAventura · Personaje 1 (Juventud)",
+      en: "AforeAventura · Character 1 (Youth)",
+    },
+    subtitle: {
+      es: "Peón miniatura 3D estilizado con sudadera blanca y bermudas para juego de mesa, optimizado para impresión 3D STL.",
+      en: "Stylized 3D miniature token in white hoodie and shorts for tabletop gaming, optimized for STL 3D printing.",
+    },
+    category: "3d",
+    categoryLabel: { es: "3D & Modelado", en: "3D & Modeling" },
+    tag: {
+      es: "Impresión 3D STL · Escultura de Personaje",
+      en: "3D Printing STL · Character Sculpting",
+    },
+    client: "AforeAventura / Educación Lúdica",
+    year: "2024",
+    role: {
+      es: "Modelador 3D & Especialista STL",
+      en: "3D Modeler & STL Specialist",
+    },
+    coverImage: "/uploads/afore-p1-perspective.webp",
+    techStack: [
+      "Blender",
+      "Modelado 3D",
+      "Impresión 3D (STL)",
+      "Malla Estanca (Manifold)",
+      "Escultura Digital",
+      "Shaders PBR",
+    ],
+    industry: {
+      es: "Miniaturas Coleccionables, Juegos de Mesa & Fabricación Aditiva",
+      en: "Collectible Miniatures, Tabletop Games & Additive Manufacturing",
+    },
+    overview: {
+      es: "Diseño y modelado 3D del Personaje 1 (Juventud) para el juego de mesa AforeAventura. Representa la etapa inicial de ahorro temprano a través de un personaje juvenil con sudadera con capucha, bermudas y zapatillas deportivas. Su peana circular integrada de 10 cm garantiza máxima estabilidad en el tablero de juego físico.",
+      en: "3D design and modeling of Character 1 (Youth) for the AforeAventura board game. Represents the early savings phase with a youthful character in a hoodie, shorts, and sneakers. Its integrated 10 cm circular pedestal ensures maximum stability on physical tabletop boards.",
+    },
+    challenge: {
+      es: "Crear una silueta expresiva y dinámica manteniendo una geometría estanca (watertight/manifold) sin huecos internos ni caras invertidas, apta para impresión 3D en resina o filamento FDM.",
+      en: "Creating an expressive, dynamic silhouette while maintaining watertight/manifold geometry without internal voids or flipped normals, suitable for resin or FDM 3D printing.",
+    },
+    solution: {
+      es: "Modelado poligonal limpio con modificadores optimizados, horneado de pose fija sin deformaciones de esqueleto y verificación de estanqueidad STL, complementado con renderizado de estudio y visor 3D interactivo en tiempo real.",
+      en: "Clean polygonal modeling with optimized modifiers, baked static pose free from armature glitches, and STL watertight verification, complemented with studio rendering and real-time interactive 3D viewer.",
+    },
+    deliverables: {
+      es: [
+        "Archivo maestro Blender (.blend) con shaders y texturas",
+        "Malla STL estanca para impresión 3D de alta resolución (71.4 MB)",
+        "Modelo 3D optimizado para web GLB en tiempo real (43.5 MB)",
+        "Renders de estudio en múltiples ángulos e iluminación fotográfica",
+      ],
+      en: [
+        "Master Blender file (.blend) with shaders and textures",
+        "Watertight STL mesh for high-resolution 3D printing (71.4 MB)",
+        "Optimized web GLB model for real-time 3D (43.5 MB)",
+        "Multi-angle studio renders with photographic studio lighting",
+      ],
+    },
+    metrics: [
+      { label: { es: "Malla STL", en: "STL Mesh" }, value: "71.4 MB" },
+      { label: { es: "Modelo Web GLB", en: "Web GLB" }, value: "43.5 MB" },
+      { label: { es: "Escala Física", en: "Physical Scale" }, value: "10 cm" },
+      { label: { es: "Topología", en: "Topology" }, value: "Manifold 100%" },
+    ],
+    has3DViewer: true,
+    gallery: [
+      {
+        src: "/uploads/afore-p1-perspective.webp",
+        alt: "AforeAventura Personaje 1 Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 con iluminación de estudio y peana de soporte",
+          en: "3/4 Perspective with studio lighting and pedestal base",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p1-front.webp",
+        alt: "AforeAventura Personaje 1 Vista Frontal",
+        caption: {
+          es: "Vista frontal · Silueta estilizada y sudadera blanca",
+          en: "Front view · Stylized silhouette and white hoodie",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p1-detail.webp",
+        alt: "AforeAventura Personaje 1 Detalle de Rostro",
+        caption: {
+          es: "Primer plano de esculpido facial y capucha",
+          en: "Close-up of facial sculpting and hood",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p1-side.webp",
+        alt: "AforeAventura Personaje 1 Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Proporciones anatómicas estilizadas",
+          en: "Side profile · Stylized anatomical proportions",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p1-back.webp",
+        alt: "AforeAventura Personaje 1 Vista Posterior",
+        caption: {
+          es: "Vista posterior · Volumen de capucha y caída de sudadera",
+          en: "Rear view · Hood volume and hoodie drapery",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/aforeaventura-personaje-1.webp",
+        alt: "AforeAventura Personaje 1 Render de Producción",
+        caption: {
+          es: "Render de producción integrado como arte del juego",
+          en: "Production render integrated as tabletop game art",
+        },
+        span: "half",
+      },
+    ],
+  },
+
+  "afore-personaje-2": {
+    id: "afore-personaje-2",
+    title: {
+      es: "AforeAventura · Personaje 2 (Ejecutiva)",
+      en: "AforeAventura · Character 2 (Executive)",
+    },
+    subtitle: {
+      es: "Peón miniatura 3D de ejecutiva con abrigo verde, falda negra y botas altas, esculpido con peana circular para fabricación aditiva.",
+      en: "Stylized 3D executive miniature token in green overcoat, skirt, and boots, sculpted with circular stability pedestal for additive manufacturing.",
+    },
+    category: "3d",
+    categoryLabel: { es: "3D & Modelado", en: "3D & Modeling" },
+    tag: {
+      es: "Impresión 3D STL · Escultura de Personaje",
+      en: "3D Printing STL · Character Sculpture",
+    },
+    client: "AforeAventura / Educación Lúdica",
+    year: "2024",
+    role: {
+      es: "Modelador 3D & Especialista STL",
+      en: "3D Modeler & STL Specialist",
+    },
+    coverImage: "/uploads/afore-p2-perspective.webp",
+    techStack: [
+      "Blender",
+      "Modelado 3D",
+      "Impresión 3D (STL)",
+      "Malla Estanca (Manifold)",
+      "Escultura Digital",
+      "Shaders PBR",
+    ],
+    industry: {
+      es: "Miniaturas Coleccionables, Juegos de Mesa & Fabricación Aditiva",
+      en: "Collectible Miniatures, Tabletop Games & Additive Manufacturing",
+    },
+    overview: {
+      es: "Diseño y modelado 3D del Personaje 2 (Ejecutiva) para el juego de mesa AforeAventura. Representa la fase de consolidación laboral y ahorro profesional con un estilizado abrigo verde, falda oscura, botas altas y peinado con flequillo, montada sobre peana circular de mesa.",
+      en: "3D design and modeling of Character 2 (Executive) for the AforeAventura board game. Represents career consolidation and professional savings with a stylized green overcoat, dark skirt, tall boots, and bangs hairstyle, mounted on a circular tabletop pedestal.",
+    },
+    challenge: {
+      es: "Integrar el vuelo asimétrico del abrigo y las piezas finas del cabello garantizando espesores mínimos viables para impresión 3D sin fragilidad estructural.",
+      en: "Integrating the asymmetrical overcoat flare and delicate hair strands while ensuring minimum wall thickness for 3D printing without structural fragility.",
+    },
+    solution: {
+      es: "Cálculo de espesores para fabricación aditiva, horneado estático de mallas sin distorsión y optimización de geometría PBR para visualización en tiempo real.",
+      en: "Thickness engineering for additive manufacturing, distortion-free static mesh baking, and PBR geometry optimization for real-time viewing.",
+    },
+    deliverables: {
+      es: [
+        "Archivo maestro Blender (.blend) con jerarquía limpia",
+        "Malla STL estanca para impresión 3D de alta definición (145.0 MB)",
+        "Modelo 3D optimizado para web GLB en tiempo real (61.6 MB)",
+        "Colección de renders de estudio en múltiples perspectivas",
+      ],
+      en: [
+        "Master Blender file (.blend) with clean hierarchy",
+        "Watertight STL mesh for high-definition 3D printing (145.0 MB)",
+        "Optimized web GLB model for real-time 3D (61.6 MB)",
+        "Studio render collection in multiple perspectives",
+      ],
+    },
+    metrics: [
+      { label: { es: "Malla STL", en: "STL Mesh" }, value: "145.0 MB" },
+      { label: { es: "Modelo Web GLB", en: "Web GLB" }, value: "61.6 MB" },
+      { label: { es: "Escala Física", en: "Physical Scale" }, value: "10 cm" },
+      { label: { es: "Topología", en: "Topology" }, value: "Manifold 100%" },
+    ],
+    has3DViewer: true,
+    gallery: [
+      {
+        src: "/uploads/afore-p2-perspective.webp",
+        alt: "AforeAventura Personaje 2 Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 · Abrigo verde, falda y botas altas",
+          en: "3/4 Perspective · Green coat, skirt and boots",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p2-front.webp",
+        alt: "AforeAventura Personaje 2 Vista Frontal",
+        caption: {
+          es: "Vista frontal · Silueta estilizada y peinado con flequillo",
+          en: "Front view · Stylized silhouette and bangs hairstyle",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p2-detail.webp",
+        alt: "AforeAventura Personaje 2 Detalle Rostro",
+        caption: {
+          es: "Detalle de rostro y esculpido de cabello",
+          en: "Face and hair sculpting detail",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p2-side.webp",
+        alt: "AforeAventura Personaje 2 Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Vuelo del abrigo y postura",
+          en: "Side profile · Overcoat flow and posture",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p2-back.webp",
+        alt: "AforeAventura Personaje 2 Vista Posterior",
+        caption: {
+          es: "Vista posterior · Esculpido de peinado y espalda",
+          en: "Rear view · Hairstyle sculpt and back silhouette",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/aforeaventura-personaje-2.webp",
+        alt: "AforeAventura Personaje 2 Render de Producción",
+        caption: {
+          es: "Render de producción para material promocional",
+          en: "Production render for promotional game art",
+        },
+        span: "half",
+      },
+    ],
+  },
+
+  "afore-personaje-3": {
+    id: "afore-personaje-3",
+    title: {
+      es: "AforeAventura · Personaje 3 (Explorador)",
+      en: "AforeAventura · Character 3 (Explorer)",
+    },
+    subtitle: {
+      es: "Peón miniatura 3D con lentes metálicos, túnica estilizada y brazo extendido para juego de mesa educativo.",
+      en: "3D miniature token featuring metal glasses, stylized tunic, and outstretched pose for educational tabletop gameplay.",
+    },
+    category: "3d",
+    categoryLabel: { es: "3D & Modelado", en: "3D & Modeling" },
+    tag: {
+      es: "Impresión 3D STL · Modelado & Prototipado",
+      en: "3D Print STL · Modeling & Prototyping",
+    },
+    client: "AforeAventura / Educación Lúdica",
+    year: "2024",
+    role: {
+      es: "Modelador 3D & Diseñador de Personaje",
+      en: "3D Modeler & Character Designer",
+    },
+    coverImage: "/uploads/afore-p3-perspective.webp",
+    techStack: [
+      "Blender",
+      "Modelado 3D",
+      "Impresión 3D (STL)",
+      "Malla Estanca (Manifold)",
+      "Escultura Digital",
+      "Shaders PBR",
+    ],
+    industry: {
+      es: "Miniaturas Coleccionables, Juegos de Mesa & Fabricación Aditiva",
+      en: "Collectible Miniatures, Tabletop Games & Additive Manufacturing",
+    },
+    overview: {
+      es: "Diseño y modelado 3D del Personaje 3 (Explorador) para AforeAventura. Destaca por sus características gafas redondas, túnica estilizada y peana circular esculpida. El personaje simboliza la exploración y descubrimiento del sistema financiero.",
+      en: "3D design and modeling of Character 3 (Explorer) for AforeAventura. Features distinct round glasses, stylized tunic, and sculpted circular pedestal. The character symbolizes financial discovery and exploration.",
+    },
+    challenge: {
+      es: "Modelar monturas de lentes esféricas y varillas delgadas con precisión milimétrica sin roturas en el mallado y manteniendo la coherencia formal en 3D.",
+      en: "Modeling spherical eyeglass frames and thin temples with millimeter precision without mesh breakage while maintaining formal 3D consistency.",
+    },
+    solution: {
+      es: "Horneado de lentes y accesorios con mallas al 100% de detalle sin decimar, integración de peana estable y exportación verificada para Three.js y STL.",
+      en: "Full-detail undecimated baking for glasses and accessories, stable pedestal integration, and verified export for Three.js and STL.",
+    },
+    deliverables: {
+      es: [
+        "Archivo maestro Blender (.blend) con materiales y shaders",
+        "Malla STL estanca para fabricación aditiva (138.2 MB)",
+        "Modelo 3D optimizado para web GLB en tiempo real (57.0 MB)",
+        "Renders de estudio en alta resolución con iluminación suave",
+      ],
+      en: [
+        "Master Blender file (.blend) with materials and shaders",
+        "Watertight STL mesh for additive manufacturing (138.2 MB)",
+        "Optimized web GLB model for real-time 3D (57.0 MB)",
+        "High-resolution studio renders with soft lighting",
+      ],
+    },
+    metrics: [
+      { label: { es: "Malla STL", en: "STL Mesh" }, value: "138.2 MB" },
+      { label: { es: "Modelo Web GLB", en: "Web GLB" }, value: "57.0 MB" },
+      { label: { es: "Escala Física", en: "Physical Scale" }, value: "10 cm" },
+      { label: { es: "Topología", en: "Topology" }, value: "Manifold 100%" },
+    ],
+    has3DViewer: true,
+    gallery: [
+      {
+        src: "/uploads/afore-p3-perspective.webp",
+        alt: "AforeAventura Personaje 3 Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 · Gafas metálicas, túnica y brazo extendido",
+          en: "3/4 Perspective · Metal glasses, tunic and outstretched arm",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p3-front.webp",
+        alt: "AforeAventura Personaje 3 Vista Frontal",
+        caption: {
+          es: "Vista frontal · Silueta estilizada y peana de mesa",
+          en: "Front view · Stylized silhouette and tabletop pedestal",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p3-detail.webp",
+        alt: "AforeAventura Personaje 3 Detalle Gafas",
+        caption: {
+          es: "Detalle de montura de gafas y peinado rizado",
+          en: "Glasses frame and curly hairstyle detail",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p3-side.webp",
+        alt: "AforeAventura Personaje 3 Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Proporciones de juego y túnica",
+          en: "Side profile · Game proportions and tunic",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p3-back.webp",
+        alt: "AforeAventura Personaje 3 Vista Posterior",
+        caption: {
+          es: "Vista posterior · Caída de túnica y peinado",
+          en: "Rear view · Tunic drapery and curly hair",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/aforeaventura-personaje-3.webp",
+        alt: "AforeAventura Personaje 3 Render de Producción",
+        caption: {
+          es: "Render de producción para el arte del juego",
+          en: "Production render for tabletop game art",
+        },
+        span: "half",
+      },
+    ],
+  },
+
+  "afore-personaje-4": {
+    id: "afore-personaje-4",
+    title: {
+      es: "AforeAventura · Personaje 4 (Silla de Ruedas)",
+      en: "AforeAventura · Character 4 (Wheelchair)",
+    },
+    subtitle: {
+      es: "Peón miniatura 3D inclusivo en silla de ruedas con señal de paz y base circular integrada, diseñado para impresión 3D.",
+      en: "Inclusive 3D wheelchair miniature token with peace sign and integrated circular pedestal, engineered for 3D printing.",
+    },
+    category: "3d",
+    categoryLabel: { es: "3D & Modelado", en: "3D & Modeling" },
+    tag: {
+      es: "Impresión 3D STL · Escultura Digital Inclusiva",
+      en: "3D Print STL · Inclusive Digital Sculpture",
+    },
+    client: "AforeAventura / Educación Lúdica",
+    year: "2024",
+    role: {
+      es: "Modelador 3D & Especialista STL",
+      en: "3D Modeler & STL Specialist",
+    },
+    coverImage: "/uploads/afore-p4-perspective.webp",
+    techStack: [
+      "Blender",
+      "Modelado 3D",
+      "Impresión 3D (STL)",
+      "Malla Estanca (Manifold)",
+      "Escultura Digital",
+      "Shaders PBR",
+    ],
+    industry: {
+      es: "Miniaturas Coleccionables, Juegos de Mesa & Inclusión Social",
+      en: "Collectible Miniatures, Tabletop Games & Social Inclusion",
+    },
+    overview: {
+      es: "Diseño y modelado 3D del Personaje 4 (Silla de Ruedas) para AforeAventura. Es la pieza insignia de inclusión del juego de mesa: un personaje carismático haciendo la señal de paz (✌️) en silla de ruedas con ruedas detalladas, radios, descansabrazos y peana circular reforzada para impresión 3D.",
+      en: "3D design and modeling of Character 4 (Wheelchair) for AforeAventura. The flagship inclusive token of the board game: a charismatic character flashing a peace sign (✌️) in a detailed wheelchair with spokes, armrests, and reinforced circular printing base.",
+    },
+    challenge: {
+      es: "Fusionar el cuerpo anatómico con la estructura mecánica de la silla de ruedas (chasis tubular, aros y ruedas) en una sola malla unificada sin colisiones ni brazos flotantes.",
+      en: "Fusing the anatomical body with the mechanical wheelchair structure (tubular frame, handrims, and wheels) into a single cohesive mesh without collisions or floating limbs.",
+    },
+    solution: {
+      es: "Horneado estático en coordenadas de mundo que une anatómicamente los brazos al torso y ruedas, preservando la simetría y permitiendo visualización en 360° sin desajustes.",
+      en: "World-coordinate static mesh baking seamlessly connecting arms to torso and wheels, preserving symmetry and enabling full 360° interactive rendering.",
+    },
+    deliverables: {
+      es: [
+        "Archivo maestro Blender (.blend) con modelo y materiales",
+        "Malla STL estanca verificada para impresión 3D (49.7 MB)",
+        "Modelo 3D optimizado para web GLB en tiempo real (36.6 MB)",
+        "Suite de renders de estudio en múltiples ángulos con sombra de contacto",
+      ],
+      en: [
+        "Master Blender file (.blend) with model and materials",
+        "Watertight STL mesh verified for 3D printing (49.7 MB)",
+        "Optimized web GLB model for real-time 3D (36.6 MB)",
+        "Studio render suite in multiple angles with contact shadows",
+      ],
+    },
+    metrics: [
+      { label: { es: "Malla STL", en: "STL Mesh" }, value: "49.7 MB" },
+      { label: { es: "Modelo Web GLB", en: "Web GLB" }, value: "36.6 MB" },
+      { label: { es: "Escala Física", en: "Physical Scale" }, value: "10 cm" },
+      { label: { es: "Topología", en: "Topology" }, value: "Manifold 100%" },
+    ],
+    has3DViewer: true,
+    gallery: [
+      {
+        src: "/uploads/afore-p4-perspective.webp",
+        alt: "AforeAventura Personaje 4 Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 · Posa inclusiva con señal de paz ✌️",
+          en: "3/4 Perspective · Inclusive pose with peace sign ✌️",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p4-front.webp",
+        alt: "AforeAventura Personaje 4 Vista Frontal",
+        caption: {
+          es: "Vista frontal · Silueta estilizada y peana de soporte",
+          en: "Front view · Stylized silhouette and support base",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p4-detail.webp",
+        alt: "AforeAventura Personaje 4 Detalle Rostro",
+        caption: {
+          es: "Primer plano de expresión facial, cabello y señal de paz",
+          en: "Close-up of facial expression, hair, and peace sign",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p4-side.webp",
+        alt: "AforeAventura Personaje 4 Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Estructura de silla de ruedas y postura",
+          en: "Side profile · Wheelchair geometry and posture",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/afore-p4-back.webp",
+        alt: "AforeAventura Personaje 4 Vista Posterior",
+        caption: {
+          es: "Vista posterior · Respaldo de silla y peana circular",
+          en: "Rear view · Seat backrest and circular pedestal",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/aforeaventura-personaje-4.webp",
+        alt: "AforeAventura Personaje 4 Render de Producción",
+        caption: {
+          es: "Render de producción para impresión 3D STL",
+          en: "Production render for STL 3D printing",
         },
         span: "half",
       },

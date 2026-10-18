@@ -391,7 +391,6 @@ function ProjectDetailPage() {
 
         {/* Interactive 3D Model Viewer for 3D Print / Mesh / Product Projects */}
         {(project.has3DViewer ||
-          projectId === "aforeaventura-3d" ||
           projectId === "art-toy-conejo" ||
           projectId === "veravetalize" ||
           projectId === "the-old-man-and-the-sea" ||

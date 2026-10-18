@@ -650,6 +650,10 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
     if (projectId === "veravetalize") return SKINCARE_MODELS;
     if (projectId === "the-old-man-and-the-sea") return HOUSE_TOON_MODELS;
     if (projectId === "inartiva-studio") return INARTIVA_MODELS;
+    if (projectId === "afore-personaje-1") return [AFORE_MODELS[0]];
+    if (projectId === "afore-personaje-2") return [AFORE_MODELS[1]];
+    if (projectId === "afore-personaje-3") return [AFORE_MODELS[2]];
+    if (projectId === "afore-personaje-4") return [AFORE_MODELS[3]];
     return AFORE_MODELS;
   }, [projectId]);
 

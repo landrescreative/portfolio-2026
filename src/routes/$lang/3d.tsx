@@ -310,7 +310,7 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
   },
   {
     id: "afore-personaje-1",
-    projectId: "aforeaventura-3d",
+    projectId: "afore-personaje-1",
     modelId: "personaje-1",
     category: "aforeaventura",
     title: {
@@ -373,7 +373,7 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
   },
   {
     id: "afore-personaje-2",
-    projectId: "aforeaventura-3d",
+    projectId: "afore-personaje-2",
     modelId: "personaje-2",
     category: "aforeaventura",
     title: {
@@ -436,7 +436,7 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
   },
   {
     id: "afore-personaje-3",
-    projectId: "aforeaventura-3d",
+    projectId: "afore-personaje-3",
     modelId: "personaje-3",
     category: "aforeaventura",
     title: {
@@ -499,7 +499,7 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
   },
   {
     id: "afore-personaje-4",
-    projectId: "aforeaventura-3d",
+    projectId: "afore-personaje-4",
     modelId: "personaje-4",
     category: "aforeaventura",
     title: {
@@ -882,8 +882,10 @@ function ThreeDPortfolioPage() {
                         <ArrowUpRight className="size-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
                       </Link>
 
-                      <a
-                        href={`/${lang}/projects/${item.projectId}?model=${item.modelId}#model-viewer`}
+                      <Link
+                        to="/$lang/projects/$projectId"
+                        params={{ lang, projectId: item.projectId }}
+                        hash="model-viewer"
                         className="group/3d inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-surface/80 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink shadow-xs backdrop-blur-md transition-all duration-300 hover:border-accent hover:bg-accent/10 hover:text-accent hover:-translate-y-0.5 active:translate-y-0"
                         title={tx(
                           lang,
@@ -893,7 +895,7 @@ function ThreeDPortfolioPage() {
                       >
                         <RotateCw className="size-3.5 text-accent transition-transform duration-500 group-hover/3d:rotate-180" />
                         <span>{tx(lang, "Ver en 3D 360°", "View in 3D 360°")}</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </article>
