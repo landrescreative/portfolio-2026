@@ -27,7 +27,7 @@ export const AFORE_MODELS: ModelOption[] = [
     role: { es: "Peón Miniatura con Sudadera", en: "Hoodie Miniature Token" },
     url: "/models/personaje-1.glb",
     originalSize: "71.4 MB (STL)",
-    optimizedSize: "21.2 MB (GLB)",
+    optimizedSize: "43.5 MB (GLB)",
     isColored: true,
     ar: {
       glb: "/models/personaje-1.glb",
@@ -40,7 +40,7 @@ export const AFORE_MODELS: ModelOption[] = [
     role: { es: "Peón Miniatura con Abrigo Verde", en: "Green Overcoat Miniature Token" },
     url: "/models/personaje-2.glb",
     originalSize: "145.0 MB (STL)",
-    optimizedSize: "17.8 MB (GLB)",
+    optimizedSize: "61.6 MB (GLB)",
     isColored: true,
     ar: {
       glb: "/models/personaje-2.glb",
@@ -53,7 +53,7 @@ export const AFORE_MODELS: ModelOption[] = [
     role: { es: "Peón Miniatura con Lentes", en: "Glasses Miniature Token" },
     url: "/models/personaje-3.glb",
     originalSize: "138.2 MB (STL)",
-    optimizedSize: "7.9 MB (GLB)",
+    optimizedSize: "57.0 MB (GLB)",
     isColored: true,
     ar: {
       glb: "/models/personaje-3.glb",
@@ -66,7 +66,7 @@ export const AFORE_MODELS: ModelOption[] = [
     role: { es: "Peón Miniatura Inclusivo STL", en: "Inclusive Wheelchair Miniature Token STL" },
     url: "/models/personaje-4.glb",
     originalSize: "49.7 MB (STL)",
-    optimizedSize: "18.6 MB (GLB)",
+    optimizedSize: "36.6 MB (GLB)",
     isColored: true,
     ar: {
       glb: "/models/personaje-4.glb",
