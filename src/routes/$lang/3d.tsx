@@ -332,8 +332,8 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
     client: "AforeAventura / Educación Lúdica",
     year: "2024",
     specs: {
-      es: "Escala 10 cm · STL 71.4 MB → GLB 21.2 MB · Shaders PBR & Base",
-      en: "10 cm scale · STL 71.4 MB → GLB 21.2 MB · PBR Shaders & Base",
+      es: "Escala 10 cm · STL 71.4 MB → GLB 43.5 MB · Shaders PBR & Base",
+      en: "10 cm scale · STL 71.4 MB → GLB 43.5 MB · PBR Shaders & Base",
     },
     coverImage: "/uploads/afore-p1-perspective.webp",
     previewImages: [
@@ -395,8 +395,8 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
     client: "AforeAventura / Educación Lúdica",
     year: "2024",
     specs: {
-      es: "Escala 10 cm · STL 145.0 MB → GLB 17.8 MB · Shaders PBR & Abrigo",
-      en: "10 cm scale · STL 145.0 MB → GLB 17.8 MB · PBR Shaders & Overcoat",
+      es: "Escala 10 cm · STL 145.0 MB → GLB 61.6 MB · Shaders PBR & Abrigo",
+      en: "10 cm scale · STL 145.0 MB → GLB 61.6 MB · PBR Shaders & Overcoat",
     },
     coverImage: "/uploads/afore-p2-perspective.webp",
     previewImages: [
@@ -458,8 +458,8 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
     client: "AforeAventura / Educación Lúdica",
     year: "2024",
     specs: {
-      es: "Escala 10 cm · STL 138.2 MB → GLB 7.9 MB · Gafas & Peana Esculpida",
-      en: "10 cm scale · STL 138.2 MB → GLB 7.9 MB · Glasses & Sculpted Pedestal",
+      es: "Escala 10 cm · STL 138.2 MB → GLB 57.0 MB · Gafas & Peana Esculpida",
+      en: "10 cm scale · STL 138.2 MB → GLB 57.0 MB · Glasses & Sculpted Pedestal",
     },
     coverImage: "/uploads/afore-p3-perspective.webp",
     previewImages: [
@@ -521,8 +521,8 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
     client: "AforeAventura / Educación Lúdica",
     year: "2024",
     specs: {
-      es: "Escala 10 cm · STL 49.7 MB → GLB 18.6 MB · Silla de ruedas & Señal de paz",
-      en: "10 cm scale · STL 49.7 MB → GLB 18.6 MB · Full wheelchair & Peace sign",
+      es: "Escala 10 cm · STL 49.7 MB → GLB 36.6 MB · Silla de ruedas & Señal de paz",
+      en: "10 cm scale · STL 49.7 MB → GLB 36.6 MB · Full wheelchair & Peace sign",
     },
     coverImage: "/uploads/afore-p4-perspective.webp",
     previewImages: [
