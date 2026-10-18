@@ -36,11 +36,11 @@ export const AFORE_MODELS: ModelOption[] = [
   },
   {
     id: "personaje-2",
-    name: { es: "Personaje 2 · Ejecutiva", en: "Character 2 · Professional" },
+    name: { es: "Personaje 2 · Ejecutiva", en: "Character 2 · Executive" },
     role: { es: "Peón Miniatura con Abrigo Verde", en: "Green Overcoat Miniature Token" },
     url: "/models/personaje-2.glb",
-    originalSize: "145.0 MB (STL)",
-    optimizedSize: "61.6 MB (GLB)",
+    originalSize: "138.2 MB (STL)",
+    optimizedSize: "57.0 MB (GLB)",
     isColored: true,
     ar: {
       glb: "/models/personaje-2.glb",
@@ -50,10 +50,10 @@ export const AFORE_MODELS: ModelOption[] = [
   {
     id: "personaje-3",
     name: { es: "Personaje 3 · Explorador", en: "Character 3 · Explorer" },
-    role: { es: "Peón Miniatura con Lentes", en: "Glasses Miniature Token" },
+    role: { es: "Peón Miniatura con Lentes & Túnica", en: "Glasses & Tunic Miniature Token" },
     url: "/models/personaje-3.glb",
-    originalSize: "138.2 MB (STL)",
-    optimizedSize: "57.0 MB (GLB)",
+    originalSize: "145.0 MB (STL)",
+    optimizedSize: "61.6 MB (GLB)",
     isColored: true,
     ar: {
       glb: "/models/personaje-3.glb",

@@ -1941,20 +1941,20 @@ export const projectsData: Record<string, ProjectDetail> = {
     deliverables: {
       es: [
         "Archivo maestro Blender (.blend) con jerarquía limpia",
-        "Malla STL estanca para impresión 3D de alta definición (145.0 MB)",
-        "Modelo 3D optimizado para web GLB en tiempo real (61.6 MB)",
+        "Malla STL estanca para impresión 3D de alta definición (138.2 MB)",
+        "Modelo 3D optimizado para web GLB en tiempo real (57.0 MB)",
         "Colección de renders de estudio en múltiples perspectivas",
       ],
       en: [
         "Master Blender file (.blend) with clean hierarchy",
-        "Watertight STL mesh for high-definition 3D printing (145.0 MB)",
-        "Optimized web GLB model for real-time 3D (61.6 MB)",
+        "Watertight STL mesh for high-definition 3D printing (138.2 MB)",
+        "Optimized web GLB model for real-time 3D (57.0 MB)",
         "Studio render collection in multiple perspectives",
       ],
     },
     metrics: [
-      { label: { es: "Malla STL", en: "STL Mesh" }, value: "145.0 MB" },
-      { label: { es: "Modelo Web GLB", en: "Web GLB" }, value: "61.6 MB" },
+      { label: { es: "Malla STL", en: "STL Mesh" }, value: "138.2 MB" },
+      { label: { es: "Modelo Web GLB", en: "Web GLB" }, value: "57.0 MB" },
       { label: { es: "Escala Física", en: "Physical Scale" }, value: "10 cm" },
       { label: { es: "Topología", en: "Topology" }, value: "Manifold 100%" },
     ],
@@ -2067,20 +2067,20 @@ export const projectsData: Record<string, ProjectDetail> = {
     deliverables: {
       es: [
         "Archivo maestro Blender (.blend) con materiales y shaders",
-        "Malla STL estanca para fabricación aditiva (138.2 MB)",
-        "Modelo 3D optimizado para web GLB en tiempo real (57.0 MB)",
+        "Malla STL estanca para fabricación aditiva (145.0 MB)",
+        "Modelo 3D optimizado para web GLB en tiempo real (61.6 MB)",
         "Renders de estudio en alta resolución con iluminación suave",
       ],
       en: [
         "Master Blender file (.blend) with materials and shaders",
-        "Watertight STL mesh for additive manufacturing (138.2 MB)",
-        "Optimized web GLB model for real-time 3D (57.0 MB)",
+        "Watertight STL mesh for additive manufacturing (145.0 MB)",
+        "Optimized web GLB model for real-time 3D (61.6 MB)",
         "High-resolution studio renders with soft lighting",
       ],
     },
     metrics: [
-      { label: { es: "Malla STL", en: "STL Mesh" }, value: "138.2 MB" },
-      { label: { es: "Modelo Web GLB", en: "Web GLB" }, value: "57.0 MB" },
+      { label: { es: "Malla STL", en: "STL Mesh" }, value: "145.0 MB" },
+      { label: { es: "Modelo Web GLB", en: "Web GLB" }, value: "61.6 MB" },
       { label: { es: "Escala Física", en: "Physical Scale" }, value: "10 cm" },
       { label: { es: "Topología", en: "Topology" }, value: "Manifold 100%" },
     ],
