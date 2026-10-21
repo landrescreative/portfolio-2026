@@ -3302,6 +3302,111 @@ export const projectsData: Record<string, ProjectDetail> = {
       },
     ],
   },
+
+  "personaje-eli": {
+    id: "personaje-eli",
+    title: {
+      es: "Eli · Personaje 3D Estilizado",
+      en: "Eli · Stylized 3D Character",
+    },
+    subtitle: {
+      es: "Modelado de personaje 3D estilizado en progreso con rigging y materiales toon procedurales.",
+      en: "Stylized 3D character modeling in progress with rigging and procedural toon materials.",
+    },
+    category: "3d",
+    categoryLabel: { es: "3D & Modelado", en: "3D & Modeling" },
+    tag: {
+      es: "Personaje 3D · Estilo Toon & Rigging (WIP)",
+      en: "3D Character · Toon Style & Rigging (WIP)",
+    },
+    status: "wip",
+    client: "Proyecto Personal / Diseño de Personaje",
+    year: "2026",
+    role: {
+      es: "Modelador de Personajes & Rigger 3D",
+      en: "Character Modeler & 3D Rigger",
+    },
+    coverImage: "/uploads/personaje-eli-perspective.webp",
+    techStack: [
+      "Blender 5.2",
+      "Modelado de Personaje",
+      "Rigging & Armatures",
+      "T-Pose Default",
+      "Shading Procedural Toon",
+      "Visor 3D Interactivo",
+    ],
+    overview: {
+      es: "Diseño y modelado de personaje estilizado femenino con gorro de lana, sudadera oversize y proporciones toon expresivas. Desarrollo enfocado en topología para animación con armadura Rigify y exportación en pose neutra (T-pose).",
+      en: "Stylized female character design and modeling featuring a knit beanie, oversized hoodie, and expressive toon proportions. Development focused on animation topology with a Rigify armature and neutral bind pose (T-pose) export.",
+    },
+    challenge: {
+      es: "Lograr proporciones caricaturescas limpias aislando la geometría del personaje de elementos de escenario y preservando pesos de influencia para la postura bind neutral.",
+      en: "Achieving clean caricatured proportions while isolating character geometry from stage elements and preserving skinning weights for neutral bind posing.",
+    },
+    solution: {
+      es: "Modelado modular de mallas en Blender 5.2 enlazadas a esqueleto rigify, evaluadas en pose de descanso (REST) con exportación web GLB comprimida con Draco y renders multicámara de estudio.",
+      en: "Modular mesh modeling in Blender 5.2 bound to a rigify skeleton, evaluated in REST pose with Draco-compressed Web GLB export and studio multi-camera renders.",
+    },
+    deliverables: {
+      es: [
+        "Modelo 3D optimizado en T-pose (GLB comprimido Draco)",
+        "Visor interactivo 3D en tiempo real de 360°",
+        "Renders multicámara de estudio (perspectiva, frontal, perfil y detalle)",
+        "Catálogo en estado 'En Progreso' (WIP)",
+      ],
+      en: [
+        "Optimized 3D model in T-pose (Draco-compressed GLB)",
+        "Real-time 360° interactive 3D viewer",
+        "Multi-camera studio renders (perspective, front, side, and detail)",
+        "Cataloged in 'Work in Progress' (WIP) status",
+      ],
+    },
+    metrics: [
+      { label: { es: "Estado", en: "Status" }, value: "En Progreso (WIP)" },
+      { label: { es: "Pose", en: "Pose" }, value: "T-Pose / Bind Pose" },
+      { label: { es: "Malla GLB", en: "GLB Mesh" }, value: "11.2 MB (Draco)" },
+      { label: { es: "Software", en: "Software" }, value: "Blender 5.2" },
+    ],
+    has3DViewer: true,
+    gallery: [
+      {
+        src: "/uploads/personaje-eli-perspective.webp",
+        alt: "Eli Personaje Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 · Silueta estilizada y estudio de iluminación en T-pose",
+          en: "3/4 Perspective · Stylized silhouette and studio lighting study in T-pose",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/personaje-eli-front.webp",
+        alt: "Eli Personaje Vista Frontal",
+        caption: {
+          es: "Vista frontal · Proporciones faciales, gorro y simetría",
+          en: "Front view · Facial proportions, beanie, and symmetry",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/personaje-eli-side.webp",
+        alt: "Eli Personaje Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Volumen del gorro y postura neutra",
+          en: "Side profile · Beanie volume and neutral posture",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/personaje-eli-detail.webp",
+        alt: "Eli Personaje Detalle Facial",
+        caption: {
+          es: "Detalle facial · Textura tejida del gorro y expresión",
+          en: "Facial detail · Knit beanie texture and expression",
+        },
+        span: "half",
+      },
+    ],
+  },
 };
 
 export function getProjectById(id: string): ProjectDetail | undefined {

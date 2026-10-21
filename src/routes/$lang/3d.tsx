@@ -59,6 +59,70 @@ interface ThreeDModelItem {
 
 const THREE_D_MODELS: ThreeDModelItem[] = [
   {
+    id: "personaje-eli",
+    projectId: "personaje-eli",
+    modelId: "personaje-eli",
+    category: "personaje",
+    status: "wip",
+    title: {
+      es: "Eli · Personaje 3D Estilizado",
+      en: "Eli · Stylized 3D Character",
+    },
+    characterName: {
+      es: "Eli · Personaje Toon en T-Pose",
+      en: "Eli · Stylized Toon Character in T-Pose",
+    },
+    roleBadge: {
+      es: "Personaje 3D (WIP)",
+      en: "3D Character (WIP)",
+    },
+    tag: {
+      es: "Personaje 3D · Toon & Rigging (WIP)",
+      en: "3D Character · Toon & Rigging (WIP)",
+    },
+    client: "Proyecto Personal",
+    year: "2026",
+    specs: {
+      es: "T-Pose · GLB 11.2 MB (Draco) · Malla Toon con Rigify",
+      en: "T-Pose · 11.2 MB GLB (Draco) · Toon Mesh with Rigify",
+    },
+    coverImage: "/uploads/personaje-eli-perspective.webp",
+    previewImages: [
+      {
+        src: "/uploads/personaje-eli-perspective.webp",
+        alt: "Eli Personaje Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 · Silueta en pose de descanso",
+          en: "3/4 Perspective · Rest pose silhouette",
+        },
+      },
+      {
+        src: "/uploads/personaje-eli-front.webp",
+        alt: "Eli Personaje Vista Frontal",
+        caption: {
+          es: "Vista frontal · Expresión y simetría",
+          en: "Front view · Expression & symmetry",
+        },
+      },
+      {
+        src: "/uploads/personaje-eli-side.webp",
+        alt: "Eli Personaje Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Volumen del gorro y postura",
+          en: "Side profile · Beanie volume & posture",
+        },
+      },
+      {
+        src: "/uploads/personaje-eli-detail.webp",
+        alt: "Eli Personaje Detalle Facial",
+        caption: {
+          es: "Detalle de textura tejida del gorro y rostro",
+          en: "Close-up detail of knit beanie texture and face",
+        },
+      },
+    ],
+  },
+  {
     id: "dark-souls-personaje",
     projectId: "dark-souls-personaje",
     modelId: "dark-souls-personaje",

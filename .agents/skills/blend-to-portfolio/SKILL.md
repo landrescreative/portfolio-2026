@@ -45,6 +45,11 @@ Execute the Python pipeline:
 python scripts/blend_pipeline.py --blend "<path-to-blend>" --id "<model-id>" --status "<wip|completed>" --title "<title>" --category "<category>"
 ```
 *(Optionally pass `--object "<name>"` if target is a specific object or collection).*
+*Advanced flags:*
+- `--rest-pose`: Sets all armatures to REST pose (T-Pose / default bind pose) before evaluation and export. Essential for rigged characters.
+- `--include-prefix "Prefix1,Prefix2"`: Only includes meshes whose names start with the specified prefixes (e.g. `--include-prefix "Cube"` to isolate character parts and ignore background `Plane` or 3D `Text`).
+- `--exclude-prefix "Prefix1,Prefix2"`: Excludes meshes matching prefixes.
+- `--samples <int>`: Cycles render samples (default 32).
 
 This will automatically:
 1. Export the cleaned, evaluated geometry to `public/models/<id>.glb`.

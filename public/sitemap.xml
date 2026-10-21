@@ -560,4 +560,18 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.landrescreative.com/en/projects/dark-souls-personaje" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.landrescreative.com/es/projects/dark-souls-personaje" />
   </url>
+  <url>
+    <loc>https://www.landrescreative.com/es/projects/personaje-eli</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.landrescreative.com/es/projects/personaje-eli" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.landrescreative.com/en/projects/personaje-eli" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.landrescreative.com/es/projects/personaje-eli" />
+  </url>
+  <url>
+    <loc>https://www.landrescreative.com/en/projects/personaje-eli</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.landrescreative.com/es/projects/personaje-eli" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.landrescreative.com/en/projects/personaje-eli" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.landrescreative.com/es/projects/personaje-eli" />
+  </url>
 </urlset>

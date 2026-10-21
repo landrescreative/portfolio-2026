@@ -84,12 +84,15 @@ cfg = json.loads(argv[args_idx])
 
 model_id = cfg["id"]
 target_object = cfg.get("object")
-out_glb = cfg["out_glb"]
-render_dir = cfg["render_dir"]
+out_glb = os.path.abspath(cfg["out_glb"])
+render_dir = os.path.abspath(cfg["render_dir"])
 status = cfg.get("status", "completed")
 render_samples = cfg.get("samples", 32)
 res_x = cfg.get("res_x", 800)
 res_y = cfg.get("res_y", 800)
+rest_pose = cfg.get("rest_pose", False)
+include_prefix = cfg.get("include_prefix")
+exclude_prefix = cfg.get("exclude_prefix")
 
 os.makedirs(os.path.dirname(out_glb), exist_ok=True)
 os.makedirs(render_dir, exist_ok=True)
@@ -101,13 +104,33 @@ try:
 except Exception:
     pass
 
+# Force Armatures to Rest Pose (T-Pose / Default Bind Pose) if requested
+if rest_pose:
+    print("[*] Setting armatures to REST pose (T-pose)...")
+    for arm in bpy.data.armatures:
+        arm.pose_position = 'REST'
+    for obj in bpy.data.objects:
+        if obj.type == 'ARMATURE' and obj.pose:
+            for pb in obj.pose.bones:
+                pb.location = (0, 0, 0)
+                pb.rotation_quaternion = (1, 0, 0, 0)
+                pb.rotation_euler = (0, 0, 0)
+                pb.scale = (1, 1, 1)
+    bpy.context.view_layer.update()
+
 # 1. Select target objects without relying on context-sensitive operators
 for obj in bpy.data.objects:
     obj.select_set(False)
 
 target_meshes = []
 
-if target_object and target_object.lower() != "all":
+if include_prefix:
+    prefixes = [p.strip().lower() for p in include_prefix.split(',')]
+    target_meshes = [
+        obj for obj in bpy.data.objects
+        if obj.type == 'MESH' and any(obj.name.lower().startswith(p) for p in prefixes)
+    ]
+elif target_object and target_object.lower() != "all":
     found = False
     # Check collection
     if target_object in bpy.data.collections:
@@ -129,59 +152,36 @@ if target_object and target_object.lower() != "all":
                 target_meshes.append(obj)
 
 if not target_meshes:
-    # Fallback to all visible meshes (excluding rigify widget shapes like cs_*)
+    # Fallback to all visible meshes (excluding rigify widget shapes like cs_*, WGT-*)
     target_meshes = [
         obj for obj in bpy.data.objects 
         if obj.type == 'MESH' and obj.visible_get() and not obj.name.startswith("cs_") and not obj.name.startswith("WGT-")
+    ]
+
+# Apply exclude_prefix if provided
+if exclude_prefix:
+    ex_prefixes = [p.strip().lower() for p in exclude_prefix.split(',')]
+    target_meshes = [
+        obj for obj in target_meshes
+        if not any(obj.name.lower().startswith(p) for p in ex_prefixes)
     ]
 
 if not target_meshes:
     print("ERROR: No mesh objects found to process.")
     sys.exit(1)
 
+# Hide any non-target objects from viewport and render so they don't block camera or appear in renders
+for obj in list(bpy.data.objects):
+    if obj not in target_meshes and obj.type in ('MESH', 'CURVE', 'FONT', 'SURFACE'):
+        obj.hide_render = True
+        obj.hide_viewport = True
+
 for obj in target_meshes:
     obj.select_set(True)
 bpy.context.view_layer.objects.active = target_meshes[0]
 
-# 2. Normalize transforms and calculate bounding box
-bbox_corners = []
-for obj in target_meshes:
-    for corner in obj.bound_box:
-        bbox_corners.append(obj.matrix_world @ mathutils.Vector(corner))
-
-min_x, max_x = min(c.x for c in bbox_corners), max(c.x for c in bbox_corners)
-min_y, max_y = min(c.y for c in bbox_corners), max(c.y for c in bbox_corners)
-min_z, max_z = min(c.z for c in bbox_corners), max(c.z for c in bbox_corners)
-
-center_x = (min_x + max_x) / 2
-center_y = (min_y + max_y) / 2
-center_z = (min_z + max_z) / 2
-max_dim = max(max_x - min_x, max_y - min_y, max_z - min_z)
-scale_factor = 2.0 / max_dim if max_dim > 0 else 1.0
-
-# Create root turntable pivot at origin
-turntable = bpy.data.objects.new(name="TurntablePivot", object_data=None)
-bpy.context.scene.collection.objects.link(turntable)
-turntable.location = (0, 0, 0)
-
-for obj in target_meshes:
-    if obj.parent is None:
-        obj.location.x -= center_x
-        obj.location.y -= center_y
-        obj.location.z -= center_z
-        obj.scale *= scale_factor
-        obj.parent = turntable
-
-bpy.context.view_layer.update()
-
-# 3. Export GLB
-# Select only target meshes for export
-for obj in bpy.data.objects:
-    obj.select_set(False)
-for obj in target_meshes:
-    obj.select_set(True)
-bpy.context.view_layer.objects.active = target_meshes[0]
-
+# 2. Export GLB directly
+# Blender glTF exporter with export_apply=True bakes modifiers (rest pose) into exported geometry
 bpy.ops.export_scene.gltf(
     filepath=out_glb,
     export_format='GLB',
@@ -192,11 +192,56 @@ bpy.ops.export_scene.gltf(
 )
 print(f"Exported GLB: {out_glb}")
 
-# 4. Configure Studio Lighting & Camera for Renders
+# 3. Calculate evaluated bounding box in rest pose
+depsgraph = bpy.context.evaluated_depsgraph_get()
+pts = []
+for o in target_meshes:
+    eval_obj = o.evaluated_get(depsgraph)
+    mesh = eval_obj.to_mesh()
+    for v in mesh.vertices:
+        pts.append(eval_obj.matrix_world @ v.co)
+    eval_obj.to_mesh_clear()
+
+min_co = mathutils.Vector((min(p.x for p in pts), min(p.y for p in pts), min(p.z for p in pts)))
+max_co = mathutils.Vector((max(p.x for p in pts), max(p.y for p in pts), max(p.z for p in pts)))
+target = (min_co + max_co) / 2
+dims = max_co - min_co
+dim = max(dims.x, dims.y, dims.z)
+
+# 4. Determine facing direction
+if dims.y > dims.x:
+    # Outstretched width is along Y, facing direction is along X
+    head_pts = [p.x for p in pts if p.z > (min_co.z + dims.z * 0.7)]
+    avg_head_x = sum(head_pts) / len(head_pts) if head_pts else target.x
+    if avg_head_x >= target.x:
+        fwd = mathutils.Vector((1.0, 0.0, 0.0))
+        right = mathutils.Vector((0.0, -1.0, 0.0))
+    else:
+        fwd = mathutils.Vector((-1.0, 0.0, 0.0))
+        right = mathutils.Vector((0.0, 1.0, 0.0))
+else:
+    # Standard Blender orientation (width along X, facing along Y)
+    head_pts = [p.y for p in pts if p.z > (min_co.z + dims.z * 0.7)]
+    avg_head_y = sum(head_pts) / len(head_pts) if head_pts else target.y
+    if avg_head_y <= target.y:
+        fwd = mathutils.Vector((0.0, -1.0, 0.0))
+        right = mathutils.Vector((1.0, 0.0, 0.0))
+    else:
+        fwd = mathutils.Vector((0.0, 1.0, 0.0))
+        right = mathutils.Vector((-1.0, 0.0, 0.0))
+
+up = mathutils.Vector((0.0, 0.0, 1.0))
+
+# 5. Configure Studio Lighting & Camera for Renders
 scene = bpy.context.scene
 scene.render.resolution_x = res_x
 scene.render.resolution_y = res_y
 scene.render.film_transparent = True
+if hasattr(scene.render.image_settings, 'media_type'):
+    try:
+        scene.render.image_settings.media_type = 'IMAGE'
+    except Exception:
+        pass
 scene.render.image_settings.file_format = 'PNG'
 
 # Use Cycles or Eevee
@@ -206,54 +251,59 @@ if hasattr(scene, 'cycles'):
     scene.cycles.samples = render_samples
     scene.cycles.use_denoising = True
 
-# Add studio lights
+energy_scale = max(1.0, (dim / 2.0) ** 2)
+
+# Key Light
 key_data = bpy.data.lights.new(name="StudioKey", type='AREA')
-key_data.energy = 160
-key_data.size = 2.5
+key_data.energy = 220 * energy_scale
+key_data.size = dim * 0.7
 key_data.color = (1.0, 0.98, 0.94)
 key_obj = bpy.data.objects.new(name="StudioKey", object_data=key_data)
 scene.collection.objects.link(key_obj)
-key_obj.location = (2.2, -2.5, 2.5)
+key_obj.location = target + fwd * (dim * 1.2) + right * (dim * 1.0) + up * (dim * 0.8)
 
+# Fill Light
 fill_data = bpy.data.lights.new(name="StudioFill", type='AREA')
-fill_data.energy = 75
-fill_data.size = 3.2
+fill_data.energy = 90 * energy_scale
+fill_data.size = dim * 0.9
 fill_data.color = (0.8, 0.88, 1.0)
 fill_obj = bpy.data.objects.new(name="StudioFill", object_data=fill_data)
 scene.collection.objects.link(fill_obj)
-fill_obj.location = (-2.5, -2.0, 1.6)
+fill_obj.location = target + fwd * (dim * 0.8) - right * (dim * 1.2) + up * (dim * 0.4)
 
+# Rim Light
 rim_data = bpy.data.lights.new(name="StudioRim", type='AREA')
-rim_data.energy = 140
-rim_data.size = 2.0
+rim_data.energy = 180 * energy_scale
+rim_data.size = dim * 0.6
 rim_data.color = (1.0, 0.88, 0.75) if status == "wip" else (0.9, 0.95, 1.0)
 rim_obj = bpy.data.objects.new(name="StudioRim", object_data=rim_data)
 scene.collection.objects.link(rim_obj)
-rim_obj.location = (0.0, 2.8, 2.2)
+rim_obj.location = target - fwd * (dim * 1.2) + up * (dim * 0.6)
 
 # Camera
 cam_data = bpy.data.cameras.new(name="StudioCamera")
-cam_data.lens = 52
+cam_data.lens = 50
 cam_obj = bpy.data.objects.new(name="StudioCamera", object_data=cam_data)
 scene.collection.objects.link(cam_obj)
 scene.camera = cam_obj
 
-def point_camera(cam, loc, target=(0, 0, 1.0)):
+def point_camera(cam, loc, cam_target):
     cam.location = loc
-    direction = mathutils.Vector(target) - cam.location
+    direction = cam_target - cam.location
     cam.rotation_euler = direction.to_track_quat('-Z', 'Y').to_euler()
 
-# Render Angles centered on (0, 0, 0)
+# Render Angles
+detail_target = target + up * (dim * 0.22)
 angles = [
-    ("perspective", (1.8, -2.6, 1.0), (0, 0, 0)),
-    ("front", (0.0, -3.2, 0.1), (0, 0, 0)),
-    ("side", (3.2, 0.0, 0.1), (0, 0, 0)),
-    ("detail", (0.8, -1.6, 0.4), (0, 0, 0.2)),
+    ("perspective", target + fwd * (dim * 1.35) + right * (dim * 1.0) + up * (dim * 0.45), target),
+    ("front", target + fwd * (dim * 1.6) + up * (dim * 0.05), target),
+    ("side", target + right * (dim * 1.6) + up * (dim * 0.05), target),
+    ("detail", detail_target + fwd * (dim * 0.65) + right * (dim * 0.45) + up * (dim * 0.15), detail_target),
 ]
 
-for angle_name, cam_loc, target_loc in angles:
-    point_camera(cam_obj, cam_loc, target_loc)
-    out_png = os.path.join(render_dir, f"{model_id}-{angle_name}.png")
+for angle_name, cam_loc, cam_target in angles:
+    point_camera(cam_obj, cam_loc, cam_target)
+    out_png = os.path.abspath(os.path.join(render_dir, f"{model_id}-{angle_name}.png"))
     scene.render.filepath = out_png
     bpy.ops.render.render(write_still=True)
     print(f"Rendered: {out_png}")
@@ -285,7 +335,7 @@ def inspect_blend(blend_file):
         print("Error en inspección:", res.stderr)
         return None
 
-def process_blend(blend_file, model_id, target_object=None, status="completed", category="personaje", title=None, samples=32):
+def process_blend(blend_file, model_id, target_object=None, status="completed", category="personaje", title=None, samples=32, rest_pose=False, include_prefix=None, exclude_prefix=None):
     blender_bin = find_blender()
     PUBLIC_MODELS.mkdir(parents=True, exist_ok=True)
     PUBLIC_UPLOADS.mkdir(parents=True, exist_ok=True)
@@ -303,7 +353,10 @@ def process_blend(blend_file, model_id, target_object=None, status="completed", 
         "status": status,
         "samples": samples,
         "res_x": 800,
-        "res_y": 800
+        "res_y": 800,
+        "rest_pose": rest_pose,
+        "include_prefix": include_prefix,
+        "exclude_prefix": exclude_prefix
     }
 
     temp_script = TEMP_DIR / "_process_script.py"
@@ -367,6 +420,9 @@ def main():
     parser.add_argument("--status", choices=["wip", "completed"], default="completed", help="Estado del modelo")
     parser.add_argument("--category", choices=["art-toy", "personaje", "producto-escena", "aforeaventura"], default="personaje", help="Categoría 3D")
     parser.add_argument("--samples", type=int, default=32, help="Muestras de render en Cycles")
+    parser.add_argument("--rest-pose", action="store_true", help="Fuerza armaduras a Rest Pose (T-Pose / pose default)")
+    parser.add_argument("--include-prefix", help="Prefijo(s) de objetos a incluir separados por comas (ej. Cube)")
+    parser.add_argument("--exclude-prefix", help="Prefijo(s) de objetos a excluir separados por comas (ej. Plane,Text)")
 
     args = parser.parse_args()
 
@@ -385,7 +441,10 @@ def main():
         status=args.status,
         category=args.category,
         title=args.title,
-        samples=args.samples
+        samples=args.samples,
+        rest_pose=args.rest_pose,
+        include_prefix=args.include_prefix,
+        exclude_prefix=args.exclude_prefix
     )
 
 if __name__ == "__main__":
