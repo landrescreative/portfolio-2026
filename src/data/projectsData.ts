@@ -13,6 +13,7 @@ export interface ProjectDetail {
   categoryLabel: { es: string; en: string };
   tag: { es: string; en: string };
   client: string;
+  clientLogo?: string;
   year: string;
   role: { es: string; en: string };
   liveUrl?: string;
@@ -1106,7 +1107,8 @@ export const projectsData: Record<string, ProjectDetail> = {
       es: "VFX · Stop-Motion + 3D · Colaboración con Fractal",
       en: "VFX · Stop-Motion + 3D · Collaboration with Fractal",
     },
-    client: "Fractal (Productora Audiovisual)",
+    client: "Fractal · Productora Audiovisual",
+    clientLogo: "/uploads/fractal-logo.webp",
     year: "2025",
     role: {
       es: "Director de VFX, Iluminación & Entornos 3D",
@@ -1125,39 +1127,52 @@ export const projectsData: Record<string, ProjectDetail> = {
       "Particle Systems",
     ],
     overview: {
-      es: "«El Vacío» es una pieza cinematográfica desarrollada en colaboración con la productora audiovisual Fractal, donde se fusiona la artesanía tangible del stop-motion tradicional con entornos digitales tridimensionales creados en Blender. El proyecto aborda la travesía y descenso de un anciano en las profundidades del abismo oceánico, integrando placas de metraje con chroma key directamente en el espacio 3D de Cycles para generar reflejos, interacción lumínica y refracciones hiperrealistas.",
-      en: "«El Vacío» (The Void) is a cinematic piece produced in collaboration with audiovisual production studio Fractal, marrying the physical tactile craft of traditional stop-motion puppetry with 3D CGI environments in Blender. The story follows an old man's descent into an oceanic abyss, integrating chroma key footage plates onto 3D projection cards in Cycles to achieve realistic floor reflections, light shaft scattering, and refractive caustics.",
+      es: "«El Vacío» es una pieza cinematográfica desarrollada en estrecha colaboración con la productora audiovisual Fractal, donde se fusiona la artesanía tangible del stop-motion tradicional con entornos digitales tridimensionales creados en Blender. El proyecto aborda la travesía y caída abisal de un anciano hacia las profundidades del océano, integrando placas de metraje con green screen directamente en el espacio 3D de Cycles mediante tarjetas de proyección geométrica para generar reflejos, refracciones y sombras hiperrealistas.",
+      en: "«El Vacío» (The Void) is a cinematic piece produced in close collaboration with audiovisual studio Fractal, marrying the physical craft of traditional stop-motion puppetry with 3D CGI environments in Blender. The story follows an old man's descent into an oceanic abyss, integrating green-screen footage plates onto 3D projection cards in Cycles to achieve realistic floor reflections, volumetric light beams, and refractive caustics.",
     },
     challenge: {
-      es: "El principal desafío técnico fue eliminar cualquier discrepancia óptica entre la marioneta filmada en set físico sobre pantalla verde y el entorno 3D submarino. Esto requería neutralizar el spill verde de la iluminación práctica de rodaje, igualar la densidad del grano fílmico y lograr que las cáusticas generadas procedimentalmente en Blender reaccionaran y se reflejaran de manera coherente sobre el personaje y el suelo infinito.",
-      en: "The core technical challenge was eliminating optical discrepancies between the physical puppet filmed on a green-screen set and the 3D underwater environment. This required neutralizing green bounce spill from the physical stage lights, matching optical camera grain, and ensuring procedurally generated caustics in Blender naturally scattered and reflected across the character and infinite seabed floor.",
+      es: "El principal reto técnico consistió en armonizar dos mundos opuestos: una marioneta física articulada rodada en set sobre ciclorama verde por Fractal y un escenario submarino 3D procedural en Blender Cycles. Era imperativo neutralizar la contaminación verde (green spill) en los bordes de la marioneta, sincronizar el grano óptico analógico y asegurar que tanto la caída en la columna de agua como el reposo en el suelo marino interactuaran con cáusticas y luz volumétrica de forma fotorrealista.",
+      en: "The primary technical challenge was uniting two disparate worlds: a physical articulated puppet filmed on a green-screen stage by Fractal and a procedural 3D underwater environment in Blender Cycles. This demanded suppressing green light spill around the puppet contours, matching analog camera grain, and ensuring both the abyss descent and seabed resting phase naturally interacted with caustics and volumetric light shafts.",
     },
     solution: {
-      es: "Implementamos un pipeline de proyección de planos 3D (camera projection cards) vinculados a la cámara en Blender Cycles. La secuencia de video con transparencia fue proyectada en tarjetas con shaders emisivos y difusos controlados, interactuando en tiempo real con una simulación de océano volumétrico, haces de luz puntuales (god rays) y turbulencia de partículas marinas. Se aplicó un pase de corrección de color y denoiser en Cycles para armonizar ambas estéticas en un look cinematográfico cohesivo.",
-      en: "We implemented a 3D camera projection card pipeline in Blender Cycles. The keyed footage sequence was projected onto geometry cards with tuned diffuse and emissive shaders, reacting in real-time with volumetric ocean simulations, overhead god rays, and floating marine sediment particles. A dedicated Cycles color-grading and compositing pass unified both worlds into a single cohesive cinematic aesthetic.",
+      es: "Diseñamos un pipeline de tarjetas de proyección 3D vinculadas a la cámara en Blender Cycles. La secuencia de video con transparencia fue proyectada en tarjetas con shaders difusos y emisivos calibrados para recibir sombras y refracciones de la simulación de agua. Modelamos la secuencia completa en dos grandes arcos: el descenso libre del anciano entre partículas de sedimento y haces de luz cenitales, y el despertar en el lecho marino con cáusticas reflectantes. Completamos el proceso con un pase de corrección de color y denoiser en Cycles.",
+      en: "We engineered a 3D camera projection card workflow in Blender Cycles. The alpha-keyed footage sequence was projected onto geometry cards with calibrated diffuse and emissive shaders to catch real-time shadows and ocean water refractions. We split the pipeline into two core narrative acts: the old man's abyss freefall amidst suspended marine sediment and light shafts, and the awakening on the reflective seabed. A multi-pass color grading and Cycles denoiser harmonized the entire piece.",
     },
     deliverables: {
       es: [
-        "Dirección técnica de VFX e integración Stop-Motion / CGI",
-        "Setup de proyección 3D y alineación espacial en Blender Cycles",
-        "Simulación de iluminación volumétrica y cáusticas submarinas",
+        "Colaboración y dirección técnica de VFX con la productora Fractal",
+        "Pipeline de integración Stop-Motion / CGI y tarjetas de proyección 3D",
+        "Simulación de la secuencia de caída abisal y partículas de sedimento",
+        "Setup de iluminación volumétrica submarina y cáusticas procedimentales",
         "Composición de metraje green screen y eliminación de green spill",
-        "Masterización de fotogramas clave y renderizado en alta definición",
+        "Masterización de fotogramas clave y secuencias en alta definición",
       ],
       en: [
-        "VFX technical direction and Stop-Motion / CGI integration",
-        "3D card projection setup and spatial camera alignment in Cycles",
-        "Volumetric underwater light rays and procedural caustics simulation",
-        "Green screen compositing, matte refinement, and spill suppression",
-        "Keyframe sequence mastering and high-definition renders",
+        "Technical VFX direction and co-production with Fractal studio",
+        "Stop-Motion / CGI integration pipeline with 3D projection cards",
+        "Abyss freefall simulation with underwater marine sediment particles",
+        "Volumetric underwater light shafts and procedural ocean caustics",
+        "Green screen compositing, edge despill, and color harmonizing",
+        "High-definition keyframe and sequence mastering",
       ],
     },
     metrics: [
       { label: { es: "Fotogramas Compuestos", en: "Composited Frames" }, value: "146+" },
       { label: { es: "Motor de Render", en: "Render Engine" }, value: "Cycles 5.2" },
+      { label: { es: "Coproducción", en: "Co-Production" }, value: "Fractal Studio" },
       { label: { es: "Pipeline Híbrido", en: "Hybrid Pipeline" }, value: "Stop-Motion + 3D" },
-      { label: { es: "Resolución Master", en: "Master Quality" }, value: "1080p FHD" },
     ],
+    testimonial: {
+      quote: {
+        es: "Colaboración cinematográfica con la productora audiovisual Fractal para la integración técnica y composición de una marioneta física stop-motion dentro de entornos digitales hiperrealistas en Blender Cycles.",
+        en: "Cinematic co-production with audiovisual production studio Fractal for the technical integration and compositing of a physical stop-motion puppet into photoreal CGI environments in Blender Cycles.",
+      },
+      client: "Fractal · Productora Audiovisual",
+      role: {
+        es: "Colaboración Audiovisual & Dirección de VFX",
+        en: "Audiovisual Collaboration & VFX Direction",
+      },
+    },
     video: {
       mp4Url: "/uploads/el-vacio-sequence.mp4",
       poster: "/uploads/el-vacio-hero.webp",
@@ -1171,8 +1186,53 @@ export const projectsData: Record<string, ProjectDetail> = {
         src: "/uploads/el-vacio-hero.webp",
         alt: "El Vacío - Fotograma Principal Despertar",
         caption: {
-          es: "Fotograma 0215 · El despertar del personaje sobre el lecho marino reflectante",
-          en: "Frame 0215 · Character awakening on the reflective seabed",
+          es: "Fotograma 0215 · El despertar del personaje sobre el lecho marino reflectante con cáusticas procedimentales",
+          en: "Frame 0215 · Character awakening on the reflective seabed with procedural caustics",
+        },
+        span: "full",
+      },
+      {
+        src: "/uploads/el-vacio-falling-01-surface.webp",
+        alt: "El Vacío - Inicio de la Caída en Superficie",
+        caption: {
+          es: "La Caída · Fotograma 0015: Inicio del descenso del anciano desde la superficie oceánica hacia el abismo",
+          en: "The Descent · Frame 0015: Beginning of the old man's freefall from the ocean surface into the deep abyss",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/el-vacio-falling-02-descent.webp",
+        alt: "El Vacío - Descenso en Columna de Agua",
+        caption: {
+          es: "La Caída · Fotograma 0035: Descenso a través de la masa de agua y turbulencia de partículas marinas",
+          en: "The Descent · Frame 0035: Sinking through the water mass and floating marine sediment turbulence",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/el-vacio-falling-03-godrays.webp",
+        alt: "El Vacío - Caída con Haces de Luz Cenital",
+        caption: {
+          es: "La Caída · Fotograma 0110: Haces de luz volumétrica submarina (god rays) cruzando la silueta de la marioneta",
+          en: "The Descent · Frame 0110: Volumetric underwater god rays cutting through water across the puppet silhouette",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/el-vacio-falling-04-abyss.webp",
+        alt: "El Vacío - Ingreso a la Penumbra Abisal",
+        caption: {
+          es: "La Caída · Fotograma 0138: Transición hacia la oscuridad profunda de la fosa marina",
+          en: "The Descent · Frame 0138: Transition into the deep oceanic trench gloom before reaching the ocean floor",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/el-vacio-falling-05-seabed.webp",
+        alt: "El Vacío - Aproximación al Lecho Marino",
+        caption: {
+          es: "La Caída · Fotograma 0165: Descenso final y primeras reflexiones sobre el lecho marino antes de posarse",
+          en: "The Descent · Frame 0165: Final descent and initial caustics reflecting across the seabed prior to landing",
         },
         span: "full",
       },
@@ -1180,8 +1240,8 @@ export const projectsData: Record<string, ProjectDetail> = {
         src: "/uploads/el-vacio-still-slumber.webp",
         alt: "El Vacío - Letargo en el Fondo Marino",
         caption: {
-          es: "Fotograma 0140 · Estado de letargo bajo la atmósfera abisal y cáusticas",
-          en: "Frame 0140 · Slumber in the deep abyss beneath caustics",
+          es: "El Fondo · Fotograma 0140: Estado de reposo y letargo bajo la atmósfera abisal y cáusticas",
+          en: "The Seabed · Frame 0140: Slumber in the deep oceanic abyss beneath caustics",
         },
         span: "half",
       },
@@ -1189,41 +1249,31 @@ export const projectsData: Record<string, ProjectDetail> = {
         src: "/uploads/el-vacio-still-lightbeam.webp",
         alt: "El Vacío - Haz de Luz Cenital",
         caption: {
-          es: "Fotograma 0190 · Entrada del haz de luz volumétrico que despierta a la marioneta",
-          en: "Frame 0190 · Penetrating volumetric light beam awakening the puppet",
+          es: "El Fondo · Fotograma 0190: Entrada del haz de luz cenital volumétrico que despierta a la marioneta",
+          en: "The Seabed · Frame 0190: Penetrating overhead volumetric light beam awakening the puppet",
         },
         span: "half",
       },
       {
         src: "/uploads/el-vacio-viewport-setup.webp",
-        alt: "El Vacío - Interfaz de Blender y Setup 3D",
+        alt: "El Vacío - Vista Panorámica del Escenario 3D en Blender",
         caption: {
-          es: "Setup técnico en Blender 5.2 · Tarjetas de proyección, cámara cenital y geometría de escena",
-          en: "Blender 5.2 technical setup · Projection cards, overhead camera, and scene geometry",
+          es: "Behind The Scenes · Vista panorámica y alejada del escenario completo en Blender 5.2 Cycles: muestra la cámara de rodaje, el plano de proyección 3D con la marioneta en croma, el suelo reflectante infinito y los puntos de luz",
+          en: "Behind The Scenes · Wide pulled-back stage view in Blender 5.2 Cycles: showing filming camera, 3D projection card with keyed puppet, infinite reflective ocean floor, and spotlight rig",
         },
-        span: "half",
-      },
-      {
-        src: "/uploads/el-vacio-falling-scene.webp",
-        alt: "El Vacío - Descenso en la Columna de Agua",
-        caption: {
-          es: "Render de la caída · Partículas de sedimento marino y columna oceánica profunda",
-          en: "Descent render · Marine sediment particles and deep ocean column",
-        },
-        span: "half",
+        span: "full",
       },
       {
         src: "/uploads/el-vacio-still-gaze.webp",
         alt: "El Vacío - Mirada a Cámara",
         caption: {
-          es: "Fotograma 0250 · Mirada directa de la marioneta a cámara, evidenciando la textura artesanal física y la atmósfera 3D",
-          en: "Frame 0250 · Direct puppet gaze to camera, highlighting handcrafted texture alongside 3D atmosphere",
+          es: "Expresividad · Fotograma 0250: Mirada directa de la marioneta a cámara, evidenciando la textura artesanal física y la atmósfera 3D",
+          en: "Expressiveness · Frame 0250: Direct puppet gaze to camera, highlighting handcrafted physical texture alongside 3D atmosphere",
         },
         span: "full",
       },
     ],
   },
-
   "reflejos-vfx": {
     id: "reflejos-vfx",
     title: {

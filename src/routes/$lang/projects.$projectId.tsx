@@ -313,7 +313,16 @@ function ProjectDetailPage() {
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
                 {staticTexts.clientLabel}
               </span>
-              <span className="font-serif text-xl font-medium text-ink">{project.client}</span>
+              <div className="flex items-center gap-2.5">
+                {project.clientLogo && (
+                  <img
+                    src={project.clientLogo}
+                    alt={project.client}
+                    className="size-7 rounded-md object-cover border border-ink/15 shadow-2xs shrink-0"
+                  />
+                )}
+                <span className="font-serif text-xl font-medium text-ink">{project.client}</span>
+              </div>
             </div>
 
             <div className="flex flex-col gap-1.5">
@@ -521,7 +530,15 @@ function ProjectDetailPage() {
                   ”
                 </blockquote>
                 <div className="mt-6 flex items-center gap-3">
-                  <div className="size-2 rounded-full bg-accent" />
+                  {project.clientLogo ? (
+                    <img
+                      src={project.clientLogo}
+                      alt={project.testimonial.client || project.client}
+                      className="size-11 rounded-xl object-cover border border-accent/30 shadow-xs shrink-0"
+                    />
+                  ) : (
+                    <div className="size-2 rounded-full bg-accent" />
+                  )}
                   <div className="flex flex-col">
                     <span className="font-sans text-sm font-semibold text-ink">
                       {project.testimonial.client || project.client}

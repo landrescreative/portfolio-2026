@@ -284,16 +284,32 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
         src: "/uploads/el-vacio-hero.webp",
         alt: "El Vacío Portada",
         caption: {
-          es: "Fotograma 0215 · Despertar en el lecho submarino",
-          en: "Frame 0215 · Awakening on the seabed",
+          es: "Fotograma 0215 · Despertar en el lecho submarino con cáusticas procedimentales",
+          en: "Frame 0215 · Awakening on the reflective seabed with procedural caustics",
         },
       },
       {
-        src: "/uploads/el-vacio-still-slumber.webp",
-        alt: "El Vacío Letargo",
+        src: "/uploads/el-vacio-falling-01-surface.webp",
+        alt: "El Vacío Caída en Superficie",
         caption: {
-          es: "Fotograma 0140 · Letargo abisal y cáusticas reflectantes",
-          en: "Frame 0140 · Slumber in the deep abyss and reflective caustics",
+          es: "La Caída · Fotograma 0015: Descenso inicial desde la superficie oceánica",
+          en: "The Descent · Frame 0015: Initial descent from the ocean surface",
+        },
+      },
+      {
+        src: "/uploads/el-vacio-falling-03-godrays.webp",
+        alt: "El Vacío Caída con Haces de Luz",
+        caption: {
+          es: "La Caída · Fotograma 0110: Marioneta cayendo a través de haces de luz cenital (god rays)",
+          en: "The Descent · Frame 0110: Puppet falling through volumetric underwater light shafts",
+        },
+      },
+      {
+        src: "/uploads/el-vacio-falling-05-seabed.webp",
+        alt: "El Vacío Llegada al Fondo",
+        caption: {
+          es: "La Caída · Fotograma 0165: Llegada al lecho marino y primeras cáusticas",
+          en: "The Descent · Frame 0165: Reaching the seabed floor and initial caustics",
         },
       },
       {
@@ -305,27 +321,19 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
         },
       },
       {
-        src: "/uploads/el-vacio-viewport-setup.webp",
-        alt: "El Vacío Setup Blender",
-        caption: {
-          es: "Setup técnico en Blender 5.2 · Tarjetas de proyección, cámara cenital y geometría de escena",
-          en: "Blender 5.2 technical setup · Projection cards, overhead camera, and scene geometry",
-        },
-      },
-      {
-        src: "/uploads/el-vacio-falling-scene.webp",
-        alt: "El Vacío Escena Caída",
-        caption: {
-          es: "Render de la caída · Partículas de sedimento marino y columna oceánica profunda",
-          en: "Descent render · Marine sediment particles and deep ocean column",
-        },
-      },
-      {
         src: "/uploads/el-vacio-still-gaze.webp",
         alt: "El Vacío Mirada Marioneta",
         caption: {
           es: "Fotograma 0250 · Mirada directa de la marioneta a cámara",
           en: "Frame 0250 · Direct puppet gaze to camera",
+        },
+      },
+      {
+        src: "/uploads/el-vacio-viewport-setup.webp",
+        alt: "El Vacío Setup Blender Panorámico",
+        caption: {
+          es: "Behind The Scenes · Vista panorámica alejada del escenario completo en Blender 5.2 Cycles",
+          en: "Behind The Scenes · Wide pulled-back stage view in Blender 5.2 Cycles",
         },
       },
     ],
