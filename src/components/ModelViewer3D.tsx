@@ -5,6 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Center, useGLTF, ContactShadows } from "@react-three/drei";
 import { RotateCw, Box, RefreshCw, ZoomIn, Palette } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { projectsData } from "@/data/projectsData";
 import { ArButton } from "@/components/ArButton";
 import { useArMode, type ArAssets } from "@/lib/ar";
 
@@ -654,6 +655,24 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
     if (projectId === "afore-personaje-2") return [AFORE_MODELS[1]];
     if (projectId === "afore-personaje-3") return [AFORE_MODELS[2]];
     if (projectId === "afore-personaje-4") return [AFORE_MODELS[3]];
+    if (projectId && projectsData[projectId]) {
+      const proj = projectsData[projectId];
+      return [
+        {
+          id: projectId,
+          name: proj.title,
+          role: proj.role,
+          url: `/models/${projectId}.glb`,
+          originalSize: "Malla 3D Optimizada",
+          optimizedSize: "GLB PBR",
+          isColored: true,
+          ar: {
+            glb: `/models/${projectId}.glb`,
+            usdz: `/models/ar/${projectId}.usdz`,
+          },
+        },
+      ];
+    }
     return AFORE_MODELS;
   }, [projectId]);
 

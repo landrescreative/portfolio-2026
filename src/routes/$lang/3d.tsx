@@ -54,6 +54,7 @@ interface ThreeDModelItem {
   coverImage: string;
   specs: { es: string; en: string };
   previewImages: { src: string; alt: string; caption?: { es: string; en: string } }[];
+  status?: "wip" | "completed";
 }
 
 const THREE_D_MODELS: ThreeDModelItem[] = [
@@ -606,6 +607,12 @@ function ThreeDPortfolioPage() {
         filter: (m: ThreeDModelItem) => m.category === "producto-escena",
         count: THREE_D_MODELS.filter((m) => m.category === "producto-escena").length,
       },
+      {
+        key: "wip",
+        label: tx(lang, "En Progreso (WIP)", "In Progress (WIP)"),
+        filter: (m: ThreeDModelItem) => m.status === "wip",
+        count: THREE_D_MODELS.filter((m) => m.status === "wip").length,
+      },
     ],
     [lang],
   );
@@ -788,6 +795,17 @@ function ThreeDPortfolioPage() {
                       <span className="rounded-full bg-canvas/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-ink backdrop-blur-md shadow-xs">
                         {item.year}
                       </span>
+                      {item.status === "wip" ? (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-300 backdrop-blur-md shadow-xs">
+                          <span className="size-1.5 rounded-full bg-amber-400 animate-pulse" />
+                          <span>{tx(lang, "En Progreso", "In Progress")}</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300 backdrop-blur-md shadow-xs">
+                          <span className="size-1.5 rounded-full bg-emerald-400" />
+                          <span>{tx(lang, "Completado", "Completed")}</span>
+                        </span>
+                      )}
                       <span className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-canvas shadow-xs">
                         <RotateCw className="size-2.5 animate-spin" />
                         <span>3D GLB / Tiempo Real</span>

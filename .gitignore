@@ -33,3 +33,6 @@ _source-images/
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary 3D Pipeline
+temp_pipeline_renders/

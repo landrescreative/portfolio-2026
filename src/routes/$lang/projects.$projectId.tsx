@@ -285,6 +285,18 @@ function ProjectDetailPage() {
             <span className="rounded-full border border-ink/10 bg-canvas px-3.5 py-1 text-xs font-medium text-muted">
               {project.year}
             </span>
+            {project.status === "wip" && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 border border-amber-500/35 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-500">
+                <span className="size-2 rounded-full bg-amber-500 animate-pulse" />
+                <span>{tx(lang, "En Progreso (WIP)", "In Progress (WIP)")}</span>
+              </span>
+            )}
+            {project.status === "completed" && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/35 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-600">
+                <span className="size-2 rounded-full bg-emerald-500" />
+                <span>{tx(lang, "Proyecto Completado", "Completed Project")}</span>
+              </span>
+            )}
           </div>
 
           <h1 className="font-serif text-5xl leading-none tracking-tight text-ink md:text-7xl lg:text-8xl">

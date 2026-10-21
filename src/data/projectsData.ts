@@ -58,6 +58,9 @@ export interface ProjectDetail {
   // Optional Interactive 3D Model Viewer
   has3DViewer?: boolean;
 
+  // Optional Production / Creative Status
+  status?: "wip" | "completed";
+
   // Flexible Image Gallery
   gallery: ProjectMediaImage[];
 }
