@@ -555,6 +555,47 @@ function ProjectDetailPage() {
               </div>
             </div>
           )}
+
+          {/* Optional Studio Collaboration / Co-Production */}
+          {project.collaboration && (
+            <div className="flex flex-col gap-4 border-t border-ink/10 pt-10">
+              <div className="rounded-3xl border border-ink/15 bg-surface/80 p-8 md:p-10 shadow-sm backdrop-blur-sm">
+                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+                  {tx(lang, "Colaboración & Coproducción", "Co-Production & Collaboration")}
+                </span>
+                <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                  {project.collaboration.logo && (
+                    <img
+                      src={project.collaboration.logo}
+                      alt={project.collaboration.name}
+                      className="size-20 rounded-2xl object-cover border border-ink/20 shadow-md shrink-0 bg-ink"
+                    />
+                  )}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <h3 className="font-serif text-2xl font-bold tracking-tight text-ink md:text-3xl">
+                        {project.collaboration.name}
+                      </h3>
+                      {project.collaboration.role && (
+                        <span className="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent">
+                          {typeof project.collaboration.role === "object"
+                            ? project.collaboration.role[lang] || project.collaboration.role.es
+                            : project.collaboration.role}
+                        </span>
+                      )}
+                    </div>
+                    {project.collaboration.description && (
+                      <p className="font-sans text-base font-light leading-relaxed text-ink/80 text-pretty">
+                        {typeof project.collaboration.description === "object"
+                          ? project.collaboration.description[lang] || project.collaboration.description.es
+                          : project.collaboration.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Optional Video Showcase */}
