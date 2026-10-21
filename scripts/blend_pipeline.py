@@ -180,6 +180,47 @@ for obj in target_meshes:
     obj.select_set(True)
 bpy.context.view_layer.objects.active = target_meshes[0]
 
+# Ensure all materials on target meshes have a valid Principled BSDF for GLTF export
+for obj in target_meshes:
+    # If mesh has no material, assign a clean neutral one
+    if len(obj.data.materials) == 0:
+        def_mat = bpy.data.materials.get("DefaultMeshMaterial")
+        if not def_mat:
+            def_mat = bpy.data.materials.new(name="DefaultMeshMaterial")
+            def_mat.use_nodes = True
+            p = def_mat.node_tree.nodes.get("Principled BSDF")
+            if p:
+                p.inputs['Base Color'].default_value = (0.9, 0.9, 0.9, 1.0)
+                p.inputs['Metallic'].default_value = 0.0
+                p.inputs['Roughness'].default_value = 0.4
+        obj.data.materials.append(def_mat)
+
+    for slot in obj.material_slots:
+        m = slot.material
+        if not m:
+            continue
+        if not m.use_nodes:
+            continue
+        tree = m.node_tree
+        has_principled = any(n.type == 'BSDF_PRINCIPLED' for n in tree.nodes)
+        if not has_principled:
+            print(f"[*] Creating Principled BSDF fallback for material {m.name}...")
+            out_node = next((n for n in tree.nodes if n.type == 'OUTPUT_MATERIAL'), None)
+            if out_node:
+                p_node = tree.nodes.new(type='ShaderNodeBsdfPrincipled')
+                p_node.location = (out_node.location.x - 300, out_node.location.y)
+                color = (0.854, 0.460, 0.365, 1.0) if 'skin' in m.name.lower() else (0.8, 0.8, 0.8, 1.0)
+                for n in tree.nodes:
+                    if n.type == 'GROUP' and hasattr(n, 'inputs'):
+                        for inp in n.inputs:
+                            if 'diffuse' in inp.name.lower() and hasattr(inp, 'default_value') and hasattr(inp.default_value, '__len__') and len(inp.default_value) >= 3:
+                                color = tuple(inp.default_value)
+                                break
+                p_node.inputs['Base Color'].default_value = color
+                p_node.inputs['Metallic'].default_value = 0.0
+                p_node.inputs['Roughness'].default_value = 0.55
+                tree.links.new(p_node.outputs['BSDF'], out_node.inputs['Surface'])
+
 # 2. Export GLB directly
 # Blender glTF exporter with export_apply=True bakes modifiers (rest pose) into exported geometry
 bpy.ops.export_scene.gltf(

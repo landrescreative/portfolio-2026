@@ -583,16 +583,33 @@ function SingleModel({
             });
           }
         } else if (finish.isNativeOriginal) {
-          // Keep embedded mesh materials with double-side rendering enabled
-          if (Array.isArray(mesh.material)) {
-            mesh.material.forEach((mat) => {
-              mat.side = THREE.DoubleSide;
-              mat.needsUpdate = true;
-            });
-          } else if (mesh.material) {
-            mesh.material.side = THREE.DoubleSide;
-            mesh.material.needsUpdate = true;
-          }
+          // Keep embedded mesh materials with double-side rendering enabled and PBR safety
+          const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+          mats.forEach((mat) => {
+            if (!mat) return;
+            mat.side = THREE.DoubleSide;
+            if (mat instanceof THREE.MeshStandardMaterial) {
+              const nameLower = (mat.name || "").toLowerCase();
+              const meshNameLower = mesh.name.toLowerCase();
+              const isSkin =
+                nameLower.includes("skin") ||
+                meshNameLower.includes("head") ||
+                meshNameLower.includes("face");
+
+              if (isSkin) {
+                mat.metalness = 0.0;
+                mat.roughness = 0.55;
+                // If skin color was unassigned / white fallback, assign natural warm skin tone
+                if (mat.color.r > 0.92 && mat.color.g > 0.92 && mat.color.b > 0.92) {
+                  mat.color.setRGB(0.854, 0.46, 0.365);
+                }
+              } else if (mat.metalness >= 0.95 && !mat.metalnessMap) {
+                // Prevent missing glTF PBR default from causing pitch-black metallic voids
+                mat.metalness = 0.05;
+              }
+            }
+            mat.needsUpdate = true;
+          });
         } else if (dynamicMatcap) {
           mesh.material = new THREE.MeshMatcapMaterial({
             matcap: dynamicMatcap,
@@ -811,20 +828,24 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
               gl={{ antialias: true, alpha: true }}
               className="h-full w-full cursor-grab active:cursor-grabbing"
             >
-              {/* Studio Lighting Setup */}
-              <ambientLight intensity={0.95} />
+              {/* Studio Lighting Setup with 360° Balanced Fill */}
+              <ambientLight intensity={1.1} />
+              <hemisphereLight intensity={0.75} groundColor="#2a221e" color="#ffffff" />
+              {/* Main key light with soft shadow */}
               <directionalLight
                 position={[5, 8, 5]}
-                intensity={2.3}
+                intensity={2.1}
                 castShadow
                 shadow-mapSize-width={1024}
                 shadow-mapSize-height={1024}
                 shadow-bias={-0.0001}
               />
-              {/* Subtle blue-ish fill light */}
+              {/* Front-left fill light so face/chest are always clearly visible when rotating */}
+              <directionalLight position={[-4, 4, 5]} intensity={1.1} color="#f5f7fa" />
+              {/* Subtle blue-ish fill light from side */}
               <directionalLight position={[-5, 3, -4]} intensity={0.8} color="#9ec0ff" />
               {/* Warm rim light from back */}
-              <directionalLight position={[0, 4, -6]} intensity={1.5} color="#ffbe98" />
+              <directionalLight position={[0, 4, -6]} intensity={1.4} color="#ffbe98" />
 
               <SingleModel
                 key={`${activeModel.id}-${selectedFinish.id}`}
