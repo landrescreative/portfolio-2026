@@ -23,6 +23,20 @@ const PROJECTS_SEO = {
   },
 } as const;
 
+const THREE_D_ORDER = [
+  "escultura-personaje-fantasia",
+  "personaje-eli",
+  "dark-souls-personaje",
+  "art-toy-conejo",
+  "inartiva-studio",
+  "the-old-man-and-the-sea",
+  "veravetalize",
+  "afore-personaje-1",
+  "afore-personaje-2",
+  "afore-personaje-3",
+  "afore-personaje-4",
+];
+
 export const Route = createFileRoute("/$lang/projects/")({
   validateSearch: (search: Record<string, unknown>): ProjectsSearch => {
     return {
@@ -231,7 +245,23 @@ function ProjectsPage() {
             if (activeTab !== "all" && activeTab !== cat.key && !cat.keys.includes(activeTab))
               return null;
 
-            const items = allProjects.filter((item) => cat.keys.includes(item.category));
+            const items = allProjects
+              .filter((item) => cat.keys.includes(item.category))
+              .sort((a, b) => {
+                if (cat.key === "3d") {
+                  const idxA = THREE_D_ORDER.indexOf(a.id);
+                  const idxB = THREE_D_ORDER.indexOf(b.id);
+                  if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                  if (idxA !== -1) return -1;
+                  if (idxB !== -1) return 1;
+                }
+                const yearDiff = (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
+                if (yearDiff !== 0) return yearDiff;
+                // Prefer WIP first within same year
+                if (a.status === "wip" && b.status !== "wip") return -1;
+                if (b.status === "wip" && a.status !== "wip") return 1;
+                return 0;
+              });
 
             if (items.length === 0) return null;
 
@@ -285,8 +315,15 @@ function ProjectsPage() {
                               decoding="async"
                               className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
                             />
-                            <div className="absolute left-4 top-4 rounded-full bg-canvas/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-ink backdrop-blur-md shadow-sm">
-                              {catLabelStr}
+                            <div className="absolute left-4 top-4 flex flex-wrap items-center gap-2">
+                              <div className="rounded-full bg-canvas/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-ink backdrop-blur-md shadow-sm">
+                                {catLabelStr}
+                              </div>
+                              {item.status === "wip" && (
+                                <div className="rounded-full border border-amber-500/40 bg-amber-500/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-300 backdrop-blur-md shadow-sm">
+                                  {tx(lang, "En Progreso (WIP)", "Work in Progress (WIP)")}
+                                </div>
+                              )}
                             </div>
                           </div>
 
