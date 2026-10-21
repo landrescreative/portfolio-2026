@@ -3407,6 +3407,111 @@ export const projectsData: Record<string, ProjectDetail> = {
       },
     ],
   },
+
+  "escultura-personaje-fantasia": {
+    id: "escultura-personaje-fantasia",
+    title: {
+      es: "Escultura Personaje de Fantasía",
+      en: "Fantasy Character Sculpture",
+    },
+    subtitle: {
+      es: "Escultura digital y modelado 3D de criatura fantástica en progreso con cuernos y dentadura orgánica.",
+      en: "Digital sculpture and 3D modeling of a fantasy creature in progress with organic horns and teeth.",
+    },
+    category: "3d",
+    categoryLabel: { es: "3D & Modelado", en: "3D & Modeling" },
+    tag: {
+      es: "Escultura 3D · Criatura & Fantasía (WIP)",
+      en: "3D Sculpture · Creature & Fantasy (WIP)",
+    },
+    status: "wip",
+    client: "Proyecto Personal / Escultura Digital",
+    year: "2026",
+    role: {
+      es: "Escultor Digital & Modelador de Criaturas",
+      en: "Digital Sculptor & Creature Modeler",
+    },
+    coverImage: "/uploads/escultura-personaje-fantasia-perspective.webp",
+    techStack: [
+      "Blender 5.2",
+      "Escultura Digital",
+      "Modelado de Criaturas",
+      "Dyntopo & Quad Remesh",
+      "PBR Shading",
+      "Visor 3D Interactivo",
+    ],
+    overview: {
+      es: "Estudio de diseño y escultura digital de un personaje cómico de fantasía con cuerpo redondeado, cuernos orgánicos, orejas puntiagudas y sonrisa pícara con dientes afilados. Proyecto en desarrollo enfocado en expresión y volumen anatómico estilizado.",
+      en: "Character design and digital sculpting study of a comedic fantasy creature featuring a rounded body, organic horns, pointed ears, and a mischievous toothy grin. Work in progress focused on expression and stylized anatomical volume.",
+    },
+    challenge: {
+      es: "Modelar una criatura corpulenta y amigable pero con rasgos monstruosos (cuernos, dientes cónicos) preservando una expresión carismática e integrada armónicamente.",
+      en: "Sculpting a rotund, friendly creature with monstrous features (horns, conical teeth) while preserving a charismatic and harmoniously integrated expression.",
+    },
+    solution: {
+      es: "Desarrollo escultórico en alta resolución en Blender 5.2 (184k polígonos) combinando mallas modulares para dentadura y cuernos, exportación GLB comprimida con Draco y renders multicámara de estudio.",
+      en: "High-resolution sculpting in Blender 5.2 (184k polygons) combining modular sub-meshes for teeth and horns, Draco-compressed GLB export, and multi-angle studio renders.",
+    },
+    deliverables: {
+      es: [
+        "Escultura 3D digital optimizada en tiempo real (GLB Draco)",
+        "Visor interactivo 3D con rotación 360°",
+        "Renders multicámara de estudio (perspectiva, frontal, lateral y detalle)",
+        "Catálogo en estado 'En Progreso' (WIP)",
+      ],
+      en: [
+        "Real-time optimized 3D digital sculpt (Draco GLB)",
+        "Interactive 3D viewer with 360° rotation",
+        "Multi-camera studio renders (perspective, front, side, and detail)",
+        "Cataloged in 'Work in Progress' (WIP) status",
+      ],
+    },
+    metrics: [
+      { label: { es: "Polígonos", en: "Polygons" }, value: "184k+" },
+      { label: { es: "Estado", en: "Status" }, value: "En Progreso (WIP)" },
+      { label: { es: "Malla GLB", en: "GLB Mesh" }, value: "4.75 MB (Draco)" },
+      { label: { es: "Software", en: "Software" }, value: "Blender 5.2" },
+    ],
+    has3DViewer: true,
+    gallery: [
+      {
+        src: "/uploads/escultura-personaje-fantasia-perspective.webp",
+        alt: "Escultura Personaje Fantasía Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 · Silueta general, cuernos y sonrisa en iluminación de estudio",
+          en: "3/4 Perspective · General silhouette, horns, and grin under studio lighting",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/escultura-personaje-fantasia-front.webp",
+        alt: "Escultura Personaje Fantasía Vista Frontal",
+        caption: {
+          es: "Vista frontal · Proporciones faciales, expresión y dentadura",
+          en: "Front view · Facial proportions, expression, and teeth",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/escultura-personaje-fantasia-side.webp",
+        alt: "Escultura Personaje Fantasía Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Volumen abdominal, arco dorsal y cuernos",
+          en: "Side profile · Abdominal volume, back curve, and horns",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/escultura-personaje-fantasia-detail.webp",
+        alt: "Escultura Personaje Fantasía Detalle Facial",
+        caption: {
+          es: "Detalle cercano · Acabado de superficie, mirada y dientes",
+          en: "Close-up detail · Surface finish, gaze, and teeth",
+        },
+        span: "half",
+      },
+    ],
+  },
 };
 
 export function getProjectById(id: string): ProjectDetail | undefined {

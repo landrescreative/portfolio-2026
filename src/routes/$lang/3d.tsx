@@ -59,6 +59,70 @@ interface ThreeDModelItem {
 
 const THREE_D_MODELS: ThreeDModelItem[] = [
   {
+    id: "escultura-personaje-fantasia",
+    projectId: "escultura-personaje-fantasia",
+    modelId: "escultura-personaje-fantasia",
+    category: "personaje",
+    status: "wip",
+    title: {
+      es: "Escultura Personaje de Fantasía",
+      en: "Fantasy Character Sculpture",
+    },
+    characterName: {
+      es: "Criatura Fantástica · Escultura Digital",
+      en: "Fantasy Creature · Digital Sculpt",
+    },
+    roleBadge: {
+      es: "Escultura 3D (WIP)",
+      en: "3D Sculpture (WIP)",
+    },
+    tag: {
+      es: "Escultura Digital · Criatura Fantasía (WIP)",
+      en: "Digital Sculpture · Fantasy Creature (WIP)",
+    },
+    client: "Proyecto Personal",
+    year: "2026",
+    specs: {
+      es: "184k polígonos · GLB 4.75 MB (Draco) · Escultura Orgánica",
+      en: "184k polygons · 4.75 MB GLB (Draco) · Organic Sculpt",
+    },
+    coverImage: "/uploads/escultura-personaje-fantasia-perspective.webp",
+    previewImages: [
+      {
+        src: "/uploads/escultura-personaje-fantasia-perspective.webp",
+        alt: "Escultura Fantasía Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 · Silueta general e iluminación",
+          en: "3/4 Perspective · General silhouette & lighting",
+        },
+      },
+      {
+        src: "/uploads/escultura-personaje-fantasia-front.webp",
+        alt: "Escultura Fantasía Vista Frontal",
+        caption: {
+          es: "Vista frontal · Expresión y dentadura",
+          en: "Front view · Expression & teeth",
+        },
+      },
+      {
+        src: "/uploads/escultura-personaje-fantasia-side.webp",
+        alt: "Escultura Fantasía Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Volumen y postura",
+          en: "Side profile · Volume & posture",
+        },
+      },
+      {
+        src: "/uploads/escultura-personaje-fantasia-detail.webp",
+        alt: "Escultura Fantasía Detalle Facial",
+        caption: {
+          es: "Detalle de rostro y cuernos",
+          en: "Face & horns close-up detail",
+        },
+      },
+    ],
+  },
+  {
     id: "personaje-eli",
     projectId: "personaje-eli",
     modelId: "personaje-eli",
