@@ -296,30 +296,30 @@ energy_scale = max(1.0, (dim / 2.0) ** 2)
 
 # Key Light
 key_data = bpy.data.lights.new(name="StudioKey", type='AREA')
-key_data.energy = 220 * energy_scale
-key_data.size = dim * 0.7
+key_data.energy = 320 * energy_scale
+key_data.size = dim * 1.0
 key_data.color = (1.0, 0.98, 0.94)
 key_obj = bpy.data.objects.new(name="StudioKey", object_data=key_data)
 scene.collection.objects.link(key_obj)
-key_obj.location = target + fwd * (dim * 1.2) + right * (dim * 1.0) + up * (dim * 0.8)
+key_obj.location = target + fwd * (dim * 1.8) + right * (dim * 1.4) + up * (dim * 1.2)
 
 # Fill Light
 fill_data = bpy.data.lights.new(name="StudioFill", type='AREA')
-fill_data.energy = 90 * energy_scale
-fill_data.size = dim * 0.9
+fill_data.energy = 140 * energy_scale
+fill_data.size = dim * 1.2
 fill_data.color = (0.8, 0.88, 1.0)
 fill_obj = bpy.data.objects.new(name="StudioFill", object_data=fill_data)
 scene.collection.objects.link(fill_obj)
-fill_obj.location = target + fwd * (dim * 0.8) - right * (dim * 1.2) + up * (dim * 0.4)
+fill_obj.location = target + fwd * (dim * 1.2) - right * (dim * 1.8) + up * (dim * 0.6)
 
 # Rim Light
 rim_data = bpy.data.lights.new(name="StudioRim", type='AREA')
-rim_data.energy = 180 * energy_scale
-rim_data.size = dim * 0.6
+rim_data.energy = 260 * energy_scale
+rim_data.size = dim * 0.9
 rim_data.color = (1.0, 0.88, 0.75) if status == "wip" else (0.9, 0.95, 1.0)
 rim_obj = bpy.data.objects.new(name="StudioRim", object_data=rim_data)
 scene.collection.objects.link(rim_obj)
-rim_obj.location = target - fwd * (dim * 1.2) + up * (dim * 0.6)
+rim_obj.location = target - fwd * (dim * 1.8) + up * (dim * 0.9)
 
 # Camera
 cam_data = bpy.data.cameras.new(name="StudioCamera")
@@ -333,13 +333,13 @@ def point_camera(cam, loc, cam_target):
     direction = cam_target - cam.location
     cam.rotation_euler = direction.to_track_quat('-Z', 'Y').to_euler()
 
-# Render Angles
+# Render Angles with comfortable portfolio margins (never cropped or suffocated)
 detail_target = target + up * (dim * 0.22)
 angles = [
-    ("perspective", target + fwd * (dim * 1.35) + right * (dim * 1.0) + up * (dim * 0.45), target),
-    ("front", target + fwd * (dim * 1.6) + up * (dim * 0.05), target),
-    ("side", target + right * (dim * 1.6) + up * (dim * 0.05), target),
-    ("detail", detail_target + fwd * (dim * 0.65) + right * (dim * 0.45) + up * (dim * 0.15), detail_target),
+    ("perspective", target + fwd * (dim * 1.85) + right * (dim * 1.45) + up * (dim * 0.6), target),
+    ("front", target + fwd * (dim * 2.3) + up * (dim * 0.05), target),
+    ("side", target + right * (dim * 2.3) + up * (dim * 0.05), target),
+    ("detail", detail_target + fwd * (dim * 0.95) + right * (dim * 0.65) + up * (dim * 0.22), detail_target),
 ]
 
 for angle_name, cam_loc, cam_target in angles:
