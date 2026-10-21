@@ -59,6 +59,70 @@ interface ThreeDModelItem {
 
 const THREE_D_MODELS: ThreeDModelItem[] = [
   {
+    id: "dark-souls-personaje",
+    projectId: "dark-souls-personaje",
+    modelId: "dark-souls-personaje",
+    category: "personaje",
+    status: "wip",
+    title: {
+      es: "Dark Souls · Personaje 3D",
+      en: "Dark Souls · 3D Character",
+    },
+    characterName: {
+      es: "Escultura en Progreso · Criatura Dark Souls",
+      en: "Work in Progress Sculpt · Dark Souls Creature",
+    },
+    roleBadge: {
+      es: "Escultura Digital (WIP)",
+      en: "Digital Sculpture (WIP)",
+    },
+    tag: {
+      es: "Escultura 3D · High-Poly WIP",
+      en: "3D Sculpture · High-Poly WIP",
+    },
+    client: "Proyecto Personal / Fan Art",
+    year: "2026",
+    specs: {
+      es: "High-Poly 946k vértices · GLB 13.6 MB (Draco) · Estudio de Escultura",
+      en: "High-Poly 946k vertices · 13.6 MB GLB (Draco) · Sculpture Study",
+    },
+    coverImage: "/uploads/dark-souls-personaje-perspective.webp",
+    previewImages: [
+      {
+        src: "/uploads/dark-souls-personaje-perspective.webp",
+        alt: "Dark Souls Personaje Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 · Iluminación de estudio",
+          en: "3/4 Perspective · Studio lighting",
+        },
+      },
+      {
+        src: "/uploads/dark-souls-personaje-front.webp",
+        alt: "Dark Souls Personaje Vista Frontal",
+        caption: {
+          es: "Vista frontal · Volumen y proporciones",
+          en: "Front view · Volume & proportions",
+        },
+      },
+      {
+        src: "/uploads/dark-souls-personaje-side.webp",
+        alt: "Dark Souls Personaje Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Curvatura anatómica",
+          en: "Side profile · Anatomical curvature",
+        },
+      },
+      {
+        src: "/uploads/dark-souls-personaje-detail.webp",
+        alt: "Dark Souls Personaje Detalle de Esculpido",
+        caption: {
+          es: "Detalle cercano de esculpido orgánico",
+          en: "Close-up detail of organic sculpting",
+        },
+      },
+    ],
+  },
+  {
     id: "art-toy-conejo",
     projectId: "art-toy-conejo",
     modelId: "conejo-art-toy",
@@ -589,10 +653,16 @@ function ThreeDPortfolioPage() {
         key: "personajes",
         label: tx(lang, "Personajes & Art Toys", "Characters & Art Toys"),
         filter: (m: ThreeDModelItem) =>
-          m.category === "art-toy" || m.category === "aforeaventura" || m.id === "inartiva-chibi",
+          m.category === "art-toy" ||
+          m.category === "aforeaventura" ||
+          m.category === "personaje" ||
+          m.id === "inartiva-chibi",
         count: THREE_D_MODELS.filter(
           (m) =>
-            m.category === "art-toy" || m.category === "aforeaventura" || m.id === "inartiva-chibi",
+            m.category === "art-toy" ||
+            m.category === "aforeaventura" ||
+            m.category === "personaje" ||
+            m.id === "inartiva-chibi",
         ).length,
       },
       {

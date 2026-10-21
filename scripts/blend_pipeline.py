@@ -94,8 +94,17 @@ res_y = cfg.get("res_y", 800)
 os.makedirs(os.path.dirname(out_glb), exist_ok=True)
 os.makedirs(render_dir, exist_ok=True)
 
-# 1. Select target objects
-bpy.ops.object.select_all(action='DESELECT')
+# 0. Ensure Object Mode
+try:
+    if bpy.context.view_layer.objects.active and bpy.context.view_layer.objects.active.mode != 'OBJECT':
+        bpy.ops.object.mode_set(mode='OBJECT')
+except Exception:
+    pass
+
+# 1. Select target objects without relying on context-sensitive operators
+for obj in bpy.data.objects:
+    obj.select_set(False)
+
 target_meshes = []
 
 if target_object and target_object.lower() != "all":
@@ -146,11 +155,11 @@ min_z, max_z = min(c.z for c in bbox_corners), max(c.z for c in bbox_corners)
 
 center_x = (min_x + max_x) / 2
 center_y = (min_y + max_y) / 2
-height = max_z - min_z
+center_z = (min_z + max_z) / 2
 max_dim = max(max_x - min_x, max_y - min_y, max_z - min_z)
 scale_factor = 2.0 / max_dim if max_dim > 0 else 1.0
 
-# Create root turntable pivot at origin on floor
+# Create root turntable pivot at origin
 turntable = bpy.data.objects.new(name="TurntablePivot", object_data=None)
 bpy.context.scene.collection.objects.link(turntable)
 turntable.location = (0, 0, 0)
@@ -159,23 +168,26 @@ for obj in target_meshes:
     if obj.parent is None:
         obj.location.x -= center_x
         obj.location.y -= center_y
-        obj.location.z -= min_z # rest on ground z=0
+        obj.location.z -= center_z
         obj.scale *= scale_factor
         obj.parent = turntable
 
 bpy.context.view_layer.update()
 
 # 3. Export GLB
-# Temporarily select only target meshes for export
-bpy.ops.object.select_all(action='DESELECT')
+# Select only target meshes for export
+for obj in bpy.data.objects:
+    obj.select_set(False)
 for obj in target_meshes:
     obj.select_set(True)
+bpy.context.view_layer.objects.active = target_meshes[0]
 
 bpy.ops.export_scene.gltf(
     filepath=out_glb,
     export_format='GLB',
     use_selection=True,
     export_apply=True,
+    export_draco_mesh_compression_enable=True,
     export_yup=True
 )
 print(f"Exported GLB: {out_glb}")
@@ -231,12 +243,12 @@ def point_camera(cam, loc, target=(0, 0, 1.0)):
     direction = mathutils.Vector(target) - cam.location
     cam.rotation_euler = direction.to_track_quat('-Z', 'Y').to_euler()
 
-# Render Angles
+# Render Angles centered on (0, 0, 0)
 angles = [
-    ("perspective", (1.9, -2.8, 1.5), (0, 0, 0.95)),
-    ("front", (0.0, -3.2, 1.1), (0, 0, 0.95)),
-    ("side", (3.2, 0.0, 1.1), (0, 0, 0.95)),
-    ("detail", (0.9, -1.6, 1.55), (0, 0, 1.45)),
+    ("perspective", (1.8, -2.6, 1.0), (0, 0, 0)),
+    ("front", (0.0, -3.2, 0.1), (0, 0, 0)),
+    ("side", (3.2, 0.0, 0.1), (0, 0, 0)),
+    ("detail", (0.8, -1.6, 0.4), (0, 0, 0.2)),
 ]
 
 for angle_name, cam_loc, target_loc in angles:
@@ -306,7 +318,7 @@ def process_blend(blend_file, model_id, target_object=None, status="completed", 
         print(res.stderr or res.stdout)
         return False
 
-    print(f"[✓] Modelo 3D exportado exitosamente a: {out_glb}")
+    print(f"[OK] Modelo 3D exportado exitosamente a: {out_glb}")
 
     # Convert renders to WebP
     print("[*] Optimizando renders a formato WebP...")

@@ -3197,6 +3197,111 @@ export const projectsData: Record<string, ProjectDetail> = {
       },
     ],
   },
+
+  "dark-souls-personaje": {
+    id: "dark-souls-personaje",
+    title: {
+      es: "Dark Souls · Personaje 3D",
+      en: "Dark Souls · 3D Character",
+    },
+    subtitle: {
+      es: "Escultura digital y modelado 3D en progreso inspirado en el universo de Dark Souls.",
+      en: "Digital sculpture and 3D character modeling in progress inspired by the Dark Souls universe.",
+    },
+    category: "3d",
+    categoryLabel: { es: "3D & Modelado", en: "3D & Modeling" },
+    tag: {
+      es: "Escultura Digital · Fan Art 3D (WIP)",
+      en: "Digital Sculpture · 3D Fan Art (WIP)",
+    },
+    status: "wip",
+    client: "Proyecto Personal / Fan Art",
+    year: "2026",
+    role: {
+      es: "Escultor Digital & Modelador 3D",
+      en: "Digital Sculptor & 3D Modeler",
+    },
+    coverImage: "/uploads/dark-souls-personaje-perspective.webp",
+    techStack: [
+      "Blender 5.2",
+      "Escultura Digital",
+      "Modelado Orgánico",
+      "High-Poly Sculpt",
+      "Topología & Anatomía",
+      "Visor 3D en Tiempo Real",
+    ],
+    overview: {
+      es: "Estudio de escultura digital y volumen orgánico en fase de desarrollo activo. Modelado en alta resolución con más de 940,000 polígonos, enfocado en proporciones, silueta y peso visual de la criatura.",
+      en: "Digital sculpture study and organic volume in active development. High-resolution modeling with over 940,000 polygons, focusing on silhouette, weight, and creature proportions.",
+    },
+    challenge: {
+      es: "Definir pliegues orgánicos y transiciones anatómicas limpias en una sola malla densa manteniendo una silueta reconocible y expresiva.",
+      en: "Defining organic folds and smooth anatomical transitions across a dense single mesh while maintaining a distinct, expressive silhouette.",
+    },
+    solution: {
+      es: "Modelado escultórico progresivo en Blender con control riguroso de densidad poligonal y renderizado de estudio multi-ángulo para evaluar volúmenes con luz rasante.",
+      en: "Progressive sculpting in Blender with careful polygon distribution and multi-angle studio rendering to evaluate surface volumes under raking light.",
+    },
+    deliverables: {
+      es: [
+        "Escultura digital en alta resolución (946k polígonos)",
+        "Malla 3D Web GLB en tiempo real para inspección 360°",
+        "Estudio de iluminación y renderizado multi-ángulo",
+        "Proceso documentado en estado 'En Progreso'",
+      ],
+      en: [
+        "High-resolution digital sculpt (946k polygons)",
+        "Real-time Web GLB 3D mesh for 360° inspection",
+        "Studio lighting study and multi-angle renders",
+        "Documented work in progress process",
+      ],
+    },
+    metrics: [
+      { label: { es: "Polígonos", en: "Polygons" }, value: "946k+" },
+      { label: { es: "Estado", en: "Status" }, value: "En Progreso (WIP)" },
+      { label: { es: "Malla GLB", en: "GLB Mesh" }, value: "13.6 MB (Draco)" },
+      { label: { es: "Software", en: "Software" }, value: "Blender 5.2" },
+    ],
+    has3DViewer: true,
+    gallery: [
+      {
+        src: "/uploads/dark-souls-personaje-perspective.webp",
+        alt: "Dark Souls Personaje Perspectiva 3D",
+        caption: {
+          es: "Perspectiva 3/4 · Silueta principal e iluminación rasante de estudio",
+          en: "3/4 Perspective · Main silhouette and raking studio lighting",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/dark-souls-personaje-front.webp",
+        alt: "Dark Souls Personaje Vista Frontal",
+        caption: {
+          es: "Vista frontal · Simetría y proporciones del volumen",
+          en: "Front view · Volume symmetry and proportions",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/dark-souls-personaje-side.webp",
+        alt: "Dark Souls Personaje Perfil Lateral",
+        caption: {
+          es: "Perfil lateral · Arco de curvatura y postura",
+          en: "Side profile · Curvature arc and stance",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/dark-souls-personaje-detail.webp",
+        alt: "Dark Souls Personaje Detalle de Superficie",
+        caption: {
+          es: "Detalle de superficie · Transición de pliegues en alta densidad",
+          en: "Surface detail · High-density fold transitions",
+        },
+        span: "half",
+      },
+    ],
+  },
 };
 
 export function getProjectById(id: string): ProjectDetail | undefined {
