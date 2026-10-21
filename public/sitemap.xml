@@ -281,6 +281,20 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.landrescreative.com/es/projects/the-old-man-and-the-sea" />
   </url>
   <url>
+    <loc>https://www.landrescreative.com/es/projects/el-vacio</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.landrescreative.com/es/projects/el-vacio" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.landrescreative.com/en/projects/el-vacio" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.landrescreative.com/es/projects/el-vacio" />
+  </url>
+  <url>
+    <loc>https://www.landrescreative.com/en/projects/el-vacio</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.landrescreative.com/es/projects/el-vacio" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.landrescreative.com/en/projects/el-vacio" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.landrescreative.com/es/projects/el-vacio" />
+  </url>
+  <url>
     <loc>https://www.landrescreative.com/es/projects/reflejos-vfx</loc>
     <lastmod>2026-10-21</lastmod>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.landrescreative.com/es/projects/reflejos-vfx" />

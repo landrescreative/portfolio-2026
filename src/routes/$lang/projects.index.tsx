@@ -27,6 +27,7 @@ const THREE_D_ORDER = [
   "escultura-personaje-fantasia",
   "personaje-eli",
   "dark-souls-personaje",
+  "el-vacio",
   "art-toy-conejo",
   "inartiva-studio",
   "the-old-man-and-the-sea",

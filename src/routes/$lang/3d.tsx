@@ -251,6 +251,86 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
     ],
   },
   {
+    id: "el-vacio",
+    projectId: "el-vacio",
+    modelId: "el-vacio",
+    category: "producto-escena",
+    status: "completed",
+    title: {
+      es: "El Vacío · Integración Stop-Motion & 3D",
+      en: "El Vacío (The Void) · Stop-Motion & 3D Integration",
+    },
+    characterName: {
+      es: "Marioneta Stop-Motion en Entorno CGI Submarino",
+      en: "Stop-Motion Puppet in Underwater CGI Scene",
+    },
+    roleBadge: {
+      es: "VFX & Stop-Motion",
+      en: "VFX & Stop-Motion",
+    },
+    tag: {
+      es: "VFX · Stop-Motion + 3D · Colaboración con Fractal",
+      en: "VFX · Stop-Motion + 3D · Collaboration with Fractal",
+    },
+    client: "Fractal (Productora Audiovisual)",
+    year: "2025",
+    specs: {
+      es: "Blender 5.2 Cycles · 146 frames compuestos · Proyección 3D Cards & Cáusticas",
+      en: "Blender 5.2 Cycles · 146 composited frames · 3D Card Projections & Caustics",
+    },
+    coverImage: "/uploads/el-vacio-hero.webp",
+    previewImages: [
+      {
+        src: "/uploads/el-vacio-hero.webp",
+        alt: "El Vacío Portada",
+        caption: {
+          es: "Fotograma 0215 · Despertar en el lecho submarino",
+          en: "Frame 0215 · Awakening on the seabed",
+        },
+      },
+      {
+        src: "/uploads/el-vacio-still-slumber.webp",
+        alt: "El Vacío Letargo",
+        caption: {
+          es: "Fotograma 0140 · Letargo abisal y cáusticas reflectantes",
+          en: "Frame 0140 · Slumber in the deep abyss and reflective caustics",
+        },
+      },
+      {
+        src: "/uploads/el-vacio-still-lightbeam.webp",
+        alt: "El Vacío Haz de Luz",
+        caption: {
+          es: "Fotograma 0190 · Haz de luz cenital volumétrico",
+          en: "Frame 0190 · Penetrating volumetric light beam",
+        },
+      },
+      {
+        src: "/uploads/el-vacio-viewport-setup.webp",
+        alt: "El Vacío Setup Blender",
+        caption: {
+          es: "Setup técnico en Blender 5.2 · Tarjetas de proyección, cámara cenital y geometría de escena",
+          en: "Blender 5.2 technical setup · Projection cards, overhead camera, and scene geometry",
+        },
+      },
+      {
+        src: "/uploads/el-vacio-falling-scene.webp",
+        alt: "El Vacío Escena Caída",
+        caption: {
+          es: "Render de la caída · Partículas de sedimento marino y columna oceánica profunda",
+          en: "Descent render · Marine sediment particles and deep ocean column",
+        },
+      },
+      {
+        src: "/uploads/el-vacio-still-gaze.webp",
+        alt: "El Vacío Mirada Marioneta",
+        caption: {
+          es: "Fotograma 0250 · Mirada directa de la marioneta a cámara",
+          en: "Frame 0250 · Direct puppet gaze to camera",
+        },
+      },
+    ],
+  },
+  {
     id: "art-toy-conejo",
     projectId: "art-toy-conejo",
     modelId: "conejo-art-toy",
