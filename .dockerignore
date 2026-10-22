@@ -1,0 +1,27 @@
+# Keep the build context small: this file is what makes the Dockerfile fast.
+# Without it the context was ~2.3 GB (public 484 MB + .vercel 488 MB + .git 435 MB
+# + node_modules 405 MB + .output 237 MB + _source-images 236 MB).
+
+.git
+.github
+.vercel
+.wrangler
+.tanstack
+.lovable
+.vscode
+.idea
+
+node_modules
+.output
+
+_source-images
+temp_pipeline_renders
+temp_composed_frames
+temp_turntable_frames
+
+.agents
+blend-to-portfolio
+
+*.log
+npm-debug.log*
+.DS_Store
