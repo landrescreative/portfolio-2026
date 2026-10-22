@@ -193,7 +193,9 @@ export default defineConfig({
     server: { entry: "server" },
   },
   nitro: {
-    preset: "vercel",
+    // node-server: el despliegue es un VPS (Coolify), no Vercel.
+    // Con "vercel" la salida va a .vercel/output y el build pack no la encuentra.
+    preset: "node-server",
     // Nitro v3 supports `inlineDynamicImports` (and the Lovable wrapper forwards
     // any extra keys into the Nitro config), but it narrows its typed option
     // surface. Assert through the narrow type to keep the flag without `any`.
