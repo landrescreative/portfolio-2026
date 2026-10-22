@@ -9,6 +9,7 @@ and integrating them into the portfolio with status (WIP vs Completed).
 import os
 import sys
 import json
+import datetime
 import argparse
 import subprocess
 import shutil
@@ -19,6 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 PUBLIC_MODELS = BASE_DIR / "public" / "models"
 PUBLIC_UPLOADS = BASE_DIR / "public" / "uploads"
 TEMP_DIR = BASE_DIR / "temp_pipeline_renders"
+
+# Visual Evolution History Archive paths (Google Drive with Documents junction)
+ARCHIVE_GDRIVE_DIR = Path(r"G:\Mi unidad\Proyectos_3D & Modelado\Portfolio_Evolution")
+ARCHIVE_DOCS_DIR = Path(os.path.expanduser(r"~\Documents\Portfolio_Evolution"))
 
 DEFAULT_BLENDER_PATHS = [
     r"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe",
@@ -376,7 +381,73 @@ def inspect_blend(blend_file):
         print("Error en inspección:", res.stderr)
         return None
 
-def process_blend(blend_file, model_id, target_object=None, status="completed", category="personaje", title=None, samples=32, rest_pose=False, include_prefix=None, exclude_prefix=None):
+
+def archive_evolution(model_id, blend_file, status, rendered_files, title=None, notes=None):
+    """
+    Archives timestamped renders and metadata in the Portfolio Evolution history
+    folder (in Google Drive and accessible via Documents).
+    """
+    try:
+        archive_root = ARCHIVE_GDRIVE_DIR if ARCHIVE_GDRIVE_DIR.parent.exists() else ARCHIVE_DOCS_DIR
+        archive_root.mkdir(parents=True, exist_ok=True)
+
+        proj_dir = archive_root / model_id
+        proj_dir.mkdir(parents=True, exist_ok=True)
+
+        now = datetime.datetime.now()
+        now_str = now.strftime("%Y-%m-%d_%H%M")
+        ver_dir = proj_dir / f"{now_str}_{status}"
+        ver_dir.mkdir(parents=True, exist_ok=True)
+
+        copied = []
+        for f in rendered_files:
+            fpath = Path(f)
+            if fpath.exists():
+                dst = ver_dir / fpath.name
+                shutil.copy2(fpath, dst)
+                copied.append(fpath.name)
+
+        meta = {
+            "id": model_id,
+            "title": title or model_id.replace("-", " ").title(),
+            "status": status,
+            "timestamp": now.isoformat(),
+            "blend_source": str(blend_file),
+            "notes": notes or f"Actualización de modelo en estado '{status}'",
+            "archived_renders": copied
+        }
+        with open(ver_dir / "version_meta.json", "w", encoding="utf-8") as meta_f:
+            json.dump(meta, meta_f, indent=2, ensure_ascii=False)
+
+        hist_md = proj_dir / "evolution_history.md"
+        date_display = now.strftime("%Y-%m-%d %H:%M")
+        notes_display = notes or f"Actualización de modelo {status}"
+        entry = (
+            f"\n## Versión: {now_str} [{status.upper()}]\n"
+            f"- **Fecha**: {date_display}\n"
+            f"- **Archivo Origen**: `{blend_file}`\n"
+            f"- **Estado**: `{status}`\n"
+            f"- **Notas**: {notes_display}\n"
+            f"- **Capturas Archivadas**: {len(copied)}\n"
+        )
+        for img in copied:
+            entry += f"  - `{img}`\n"
+
+        if hist_md.exists():
+            with open(hist_md, "a", encoding="utf-8") as hf:
+                hf.write(entry)
+        else:
+            header = f"# Historial de Evolución: {title or model_id}\n"
+            with open(hist_md, "w", encoding="utf-8") as hf:
+                hf.write(header + entry)
+
+        print(f"[ARCHIVE] Capturas guardadas en el historial de evolución:\n          -> {ver_dir}")
+        return ver_dir
+    except Exception as e:
+        print(f"[ARCHIVE WARNING] No se pudo archivar la evolución: {e}")
+        return None
+
+def process_blend(blend_file, model_id, target_object=None, status="completed", category="personaje", title=None, samples=32, rest_pose=False, include_prefix=None, exclude_prefix=None, notes=None):
     blender_bin = find_blender()
     PUBLIC_MODELS.mkdir(parents=True, exist_ok=True)
     PUBLIC_UPLOADS.mkdir(parents=True, exist_ok=True)
@@ -426,6 +497,16 @@ def process_blend(blend_file, model_id, target_object=None, status="completed", 
             rendered_files.append(webp_path)
             print(f"  [+] Generado: {webp_path.name} ({os.path.getsize(webp_path)} bytes)")
 
+    # Archive renders to Evolution History
+    archive_evolution(
+        model_id=model_id,
+        blend_file=blend_file,
+        status=status,
+        rendered_files=rendered_files,
+        title=title,
+        notes=notes
+    )
+
     # Clean up temp
     try:
         shutil.rmtree(render_temp)
@@ -464,6 +545,7 @@ def main():
     parser.add_argument("--rest-pose", action="store_true", help="Fuerza armaduras a Rest Pose (T-Pose / pose default)")
     parser.add_argument("--include-prefix", help="Prefijo(s) de objetos a incluir separados por comas (ej. Cube)")
     parser.add_argument("--exclude-prefix", help="Prefijo(s) de objetos a excluir separados por comas (ej. Plane,Text)")
+    parser.add_argument("--notes", help="Notas descriptivas del cambio para el historial de evolución")
 
     args = parser.parse_args()
 
@@ -485,7 +567,8 @@ def main():
         samples=args.samples,
         rest_pose=args.rest_pose,
         include_prefix=args.include_prefix,
-        exclude_prefix=args.exclude_prefix
+        exclude_prefix=args.exclude_prefix,
+        notes=args.notes
     )
 
 if __name__ == "__main__":
