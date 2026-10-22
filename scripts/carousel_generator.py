@@ -9,25 +9,24 @@ Standard Style:
     * Texture: Cyber Tech Studio Grid (fine 80px lines with smooth radial vignette)
     * Accent: Orange Warm (#ff7319) - Official brand highlight
     * Typography: Bebas Neue (Monumental Titles), Space Grotesk (Subtitles / Technical), Inter (Body & Micro UI)
-- Flow Structure:
+- Unified Bookend Architecture:
     * Slide 1 (Cover):
-        - Micro tag pill ("● 3D CREATURE STUDY" / "● 3D PROJECT")
+        - Micro tag pill ("● 3D CREATURE STUDY")
         - Monumental Headline (Bebas Neue in Orange Warm)
         - Subtitle (Space Grotesk in Crisp White)
         - Concise description (Inter in Soft Slate)
-        - 3D Model grounded at bottom, zero overlap
+        - 3D Model grounded at bottom
         - Footer: @landrescreative + "desliza  →"
-    * Slides 2, 3, 4 (Visual Showcases):
-        - Pure, high-impact 3D render at maximum scale
-        - Studio Cyber Grid backdrop
+    * Slides 2, 3, 4 (Showcases):
+        - Pure, high-impact 3D render at maximum scale on Cyber Tech Grid
         - Clean footer: @landrescreative + "desliza  →"
-    * Slide 5 (Outro & Web CTA):
-        - Micro pill: "● INTERACTIVE 3D WEB"
-        - Headline: "Explora el Modelo 3D"
-        - Body note inviting real-time orbit inspection
-        - Big brand URL: landrescreative.com
-        - Project subtitle
-        - Creator signature divider: LANDRES · @landrescreative
+    * Slide 5 (Outro / CTA - Mirrored to Slide 1):
+        - Micro tag pill ("● INTERACTIVE 3D WEB")
+        - Monumental Headline ("EXPLORA EN 3D" or "LANDRES 3D" in Bebas Neue Orange Warm)
+        - Subtitle ("LANDRESCREATIVE.COM" in Space Grotesk Crisp White)
+        - Concise description (Inter in Soft Slate: "Interactúa, rota e inspecciona el modelo...")
+        - 3D Model grounded at bottom in heroic pose
+        - Footer: @landrescreative + "visita la web  →"
 """
 
 import os
@@ -85,7 +84,7 @@ class OfficialCarouselGenerator:
             "url_sub": ImageFont.truetype(FONT_INTER, 18),
         }
 
-    def create_cyber_grid_canvas(self, handle="@landrescreative", is_last_slide=False):
+    def create_cyber_grid_canvas(self, handle="@landrescreative", is_last_slide=False, right_cue="desliza  →"):
         """Creates the official Cyber Tech Grid background with smooth radial falloff."""
         img = Image.new("RGBA", (CANVAS_WIDTH, CANVAS_HEIGHT), self.t["colors"]["bg_dark"])
         draw = ImageDraw.Draw(img)
@@ -111,7 +110,7 @@ class OfficialCarouselGenerator:
         for y in range(60, CANVAS_HEIGHT, step):
             gdraw.line([(0, y), (CANVAS_WIDTH, y)], fill=line_color, width=1)
 
-        # Radial mask: grid is clear near center and gently dissolves outward
+        # Radial mask
         mask = Image.new("L", (CANVAS_WIDTH, CANVAS_HEIGHT), 255)
         mdraw = ImageDraw.Draw(mask)
         center_x, center_y = CANVAS_WIDTH // 2, 700
@@ -129,10 +128,9 @@ class OfficialCarouselGenerator:
 
         draw.text((mx, fy), handle, fill=self.t["colors"]["text_secondary"], font=self.fonts["handle"])
 
-        if not is_last_slide:
-            draw.text((CANVAS_WIDTH - mx - 90, fy), "desliza  →", fill=accent, font=self.fonts["cue"])
-        else:
-            draw.text((CANVAS_WIDTH - mx - 180, fy), "landrescreative.com", fill=accent, font=self.fonts["handle"])
+        cue_bbox = self.fonts["cue"].getbbox(right_cue)
+        cue_w = cue_bbox[2] - cue_bbox[0]
+        draw.text((CANVAS_WIDTH - mx - cue_w, fy), right_cue, fill=accent, font=self.fonts["cue"])
 
         return img
 
@@ -180,7 +178,7 @@ class OfficialCarouselGenerator:
         return lines
 
     def render_cover_slide(self, slide_cfg, handle="@landrescreative"):
-        img = self.create_cyber_grid_canvas(handle=handle, is_last_slide=False)
+        img = self.create_cyber_grid_canvas(handle=handle, is_last_slide=False, right_cue="desliza  →")
         draw = ImageDraw.Draw(img)
 
         mx = self.t["layout"]["margin_x"]
@@ -217,64 +215,46 @@ class OfficialCarouselGenerator:
         return img
 
     def render_showcase_slide(self, slide_cfg, handle="@landrescreative"):
-        img = self.create_cyber_grid_canvas(handle=handle, is_last_slide=False)
+        img = self.create_cyber_grid_canvas(handle=handle, is_last_slide=False, right_cue="desliza  →")
         if "image" in slide_cfg:
-            # Full vertical canvas space for pure artwork
             self.place_sculpt(img, slide_cfg["image"], target_box=(80, 80, 1000, 1220), align_center=True)
         return img
 
     def render_outro_slide(self, slide_cfg, handle="@landrescreative", website="landrescreative.com"):
-        img = self.create_cyber_grid_canvas(handle=handle, is_last_slide=True)
+        """Mirrors the exact monumental typography & layout of Slide 1 for perfect bookend symmetry."""
+        img = self.create_cyber_grid_canvas(handle=handle, is_last_slide=True, right_cue="visita la web  →")
         draw = ImageDraw.Draw(img)
 
         mx = self.t["layout"]["margin_x"]
+        top_y = self.t["layout"]["content_top"]
         accent = self.t["colors"]["accent_orange"]
-        sy = 330
 
-        # Pill tag
-        draw.rounded_rectangle([(mx, sy), (mx + 210, sy + 28)], radius=14, fill=self.t["colors"]["pill_bg"], outline=self.t["colors"]["pill_border"], width=1)
-        draw.ellipse([(mx + 12, sy + 11), (mx + 18, sy + 17)], fill=accent)
-        draw.text((mx + 28, sy + 5), "INTERACTIVE 3D WEB", fill=self.t["colors"]["text_secondary"], font=self.fonts["pill"])
+        # 1. Pill tag
+        tag_text = slide_cfg.get("tag", "INTERACTIVE 3D WEB")
+        draw.rounded_rectangle([(mx, top_y), (mx + 200, top_y + 28)], radius=14, fill=self.t["colors"]["pill_bg"], outline=self.t["colors"]["pill_border"], width=1)
+        draw.ellipse([(mx + 12, top_y + 11), (mx + 18, top_y + 17)], fill=accent)
+        draw.text((mx + 28, top_y + 5), tag_text, fill=self.t["colors"]["text_secondary"], font=self.fonts["pill"])
 
-        sy += 50
-        title = slide_cfg.get("title", "Explora el Modelo 3D")
-        draw.text((mx, sy), title, fill=self.t["colors"]["text_primary"], font=self.fonts["title_hero"])
+        # 2. Monumental Headline (Bebas Neue)
+        title = slide_cfg.get("title", "EXPLORA EN 3D")
+        draw.text((mx, top_y + 40), title, fill=accent, font=self.fonts["title_mega"])
 
-        desc = slide_cfg.get("description", "Puedes orbitar, hacer zoom e inspeccionar la malla interactiva en tiempo real en mi portafolio web oficial:")
-        desc_lines = self.wrap_text(desc, self.fonts["desc_medium"], 820)
-        cy = sy + 85
-        for l in desc_lines:
-            draw.text((mx, cy), l, fill=self.t["colors"]["text_secondary"], font=self.fonts["desc_medium"])
-            cy += 36
+        # 3. Subtitle (Space Grotesk) - Highlighting website
+        subtitle = slide_cfg.get("subtitle", "LANDRESCREATIVE.COM")
+        draw.text((mx, top_y + 205), subtitle, fill=self.t["colors"]["text_primary"], font=self.fonts["title_sub"])
 
-        cy += 45
-        # Big official website link
-        draw.text((mx, cy), website, fill=accent, font=self.fonts["url_big"])
-        cy += 58
-        proj_label = slide_cfg.get("project_label", "Dark Souls · Personaje 3D (WIP)")
-        draw.text((mx, cy), proj_label, fill=self.t["colors"]["text_faint"], font=self.fonts["url_sub"])
+        # 4. Description (Inter)
+        desc = slide_cfg.get("description", "Interactúa, rota e inspecciona la malla y topología en tiempo real en mi portafolio oficial.")
+        if desc:
+            lines = self.wrap_text(desc, self.fonts["desc"], CANVAS_WIDTH - (mx * 2))
+            cy = top_y + 258
+            for l in lines:
+                draw.text((mx, cy), l, fill=self.t["colors"]["text_secondary"], font=self.fonts["desc"])
+                cy += 30
 
-        # Creator signature divider
-        cy += 130
-        draw.line([(mx, cy), (CANVAS_WIDTH - mx, cy)], fill=self.t["colors"]["hairline"], width=1)
-        cy += 35
-        draw.text((mx, cy), "LANDRES", fill=self.t["colors"]["text_primary"], font=self.fonts["title_card"])
-        cy += 48
-        draw.text((mx, cy), handle, fill=accent, font=self.fonts["desc_medium"])
-
-        # Faded artistic 3D silhouette in background right
-        if "image" in slide_cfg and os.path.exists(slide_cfg["image"]):
-            src = Image.open(slide_cfg["image"]).convert("RGBA")
-            bbox = src.getbbox()
-            if bbox:
-                src = src.crop(bbox)
-            sw, sh = src.size
-            scale = 500 / sh
-            nw, nh = int(sw * scale), int(sh * scale)
-            src_res = src.resize((nw, nh), Image.Resampling.LANCZOS)
-            alpha = src_res.split()[3].point(lambda p: int(p * 0.16))
-            src_res.putalpha(alpha)
-            img.paste(src_res, (CANVAS_WIDTH - nw - 30, CANVAS_HEIGHT - nh - 110), src_res)
+        # 5. Sculpt placed grounded (hero pose)
+        if "image" in slide_cfg:
+            self.place_sculpt(img, slide_cfg["image"], target_box=(80, top_y + 300, 1000, 1220), align_center=False)
 
         return img
 
@@ -287,7 +267,7 @@ def generate_full_carousel(config):
     slides = config["slides"]
     total = len(slides)
 
-    print(f"Generating Official Standard Carousel ({total} slides)...")
+    print(f"Generating Harmonized Standard Carousel ({total} slides)...")
 
     for i, s in enumerate(slides, start=1):
         stype = s.get("type", "showcase")
@@ -317,7 +297,7 @@ def generate_full_carousel(config):
 
         print(f"  [OK] Exported {fname}")
 
-    print("\nOfficial Carousel Generation Complete!")
+    print("\nHarmonized Carousel Generation Complete!")
 
 
 if __name__ == "__main__":
@@ -355,9 +335,10 @@ if __name__ == "__main__":
             {
                 "type": "outro",
                 "filename": "slide_05_web_cta.png",
-                "title": "Explora el Modelo 3D",
-                "description": "Puedes orbitar, hacer zoom e inspeccionar la malla interactiva en tiempo real en mi portafolio web oficial:",
-                "project_label": "Dark Souls · Personaje 3D (WIP)",
+                "tag": "INTERACTIVE 3D WEB",
+                "title": "EXPLORA EN 3D",
+                "subtitle": "LANDRESCREATIVE.COM",
+                "description": "Interactúa, rota e inspecciona la malla y topología en tiempo real en mi portafolio oficial.",
                 "image": os.path.join(CACHE_DIR, "shot_hero_34.png"),
             }
         ]
