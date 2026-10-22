@@ -45,6 +45,29 @@ Portfolio_Evolution/
 
 ---
 
+## Instagram Social Carousel Automation (Cyber Tech Grid Standard)
+
+When the user asks to create, update, or generate social media publications or Instagram carousels for any 3D model, use the official standard design engine:
+- **Engine Script:** `scripts/carousel_generator.py`
+- **Output Destination:**
+  - Google Drive: `G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Instagram Posts\<Project Name>\`
+  - Portfolio Local: `public/uploads/instagram/<model-id>/`
+- **Official Brand Style (Pre-Approved Standard):**
+  - **Dimensions:** 1080 × 1350 px (Instagram portrait 4:5 vertical)
+  - **Background:** Studio Obsidian Dark with Cyber Tech Grid (`TOKENS["grid"]` step=80, radial fade mask)
+  - **Colors:** Deep Charcoal (`#08090c`), Official Warm Orange Accent (`#ff7319`), Crisp White (`#ffffff`), Muted Slate (`#a5aab9`)
+  - **Typography:**
+    - Mega Headline: `Bebas Neue` (condensed monumental font in Orange Warm `#ff7319`)
+    - Subtitle / Technical: `Space Grotesk` (crisp white)
+    - Body / Details / Footers: `Inter`
+  - **Structure:**
+    1. **Slide 1 (Cover):** Micro pill tag ("● 3D CREATURE STUDY" / "● 3D PROJECT"), Monumental title, Subtitle, concise description, grounded 3D model.
+    2. **Slides 2, 3, 4 (Showcases):** Pure 3D art on Cyber Tech Grid without text clutter.
+    3. **Slide 5 (Outro):** Micro pill ("● INTERACTIVE 3D WEB"), CTA headline, live official URL `landrescreative.com`, project tag, creator signature `LANDRES` · `@landrescreative`.
+
+
+---
+
 ## Workflow Steps
 
 ### Step 1: Identify Parameters
