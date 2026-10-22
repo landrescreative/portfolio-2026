@@ -36,8 +36,8 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 CANVAS_WIDTH = 1080
 CANVAS_HEIGHT = 1350
 
-# Fonts directory
-FONTS_DIR = os.path.join(os.path.dirname(__file__), "assets", "fonts")
+# Fonts directory inside skill assets
+FONTS_DIR = os.path.join(os.path.dirname(__file__), "..", "assets", "fonts")
 FONT_BEBAS = os.path.join(FONTS_DIR, "BebasNeue.ttf")
 FONT_SPACE = os.path.join(FONTS_DIR, "SpaceGrotesk.ttf")
 FONT_INTER = os.path.join(FONTS_DIR, "Inter.ttf")

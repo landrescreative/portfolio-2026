@@ -47,11 +47,11 @@ Portfolio_Evolution/
 
 ## Instagram Social Carousel Automation (Cyber Tech Grid Standard)
 
-When the user asks to create, update, or generate social media publications or Instagram carousels for any 3D model, use the official standard design engine:
-- **Engine Script:** `scripts/carousel_generator.py`
+When the user asks to create, update, or generate social media publications or Instagram carousels for any 3D model, use the skill's internal automation engine:
+- **Engine Script:** `.agents/skills/blend-to-portfolio/scripts/carousel_generator.py`
 - **Output Destination:**
-  - Google Drive: `G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Instagram Posts\<Project Name>\`
-  - Portfolio Local: `public/uploads/instagram/<model-id>/`
+  - **Google Drive (Primary deliverable):** `G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Instagram Posts\<Project Name>\`
+  - *(Note: Social media images are exported directly to Google Drive so they never bloat the portfolio repository).*
 - **Official Brand Style (Pre-Approved Standard):**
   - **Dimensions:** 1080 × 1350 px (Instagram portrait 4:5 vertical)
   - **Background:** Studio Obsidian Dark with Cyber Tech Grid (`TOKENS["grid"]` step=80, radial fade mask)
