@@ -47,11 +47,28 @@ Portfolio_Evolution/
 
 ## Instagram Social Carousel Automation (Cyber Tech Grid Standard)
 
-When the user asks to create, update, or generate social media publications or Instagram carousels for any 3D model, use the skill's internal automation engine:
-- **Engine Script:** `.agents/skills/blend-to-portfolio/scripts/carousel_generator.py`
-- **Output Destination:**
-  - **Google Drive (Primary deliverable):** `G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Instagram Posts\<Project Name>\`
-  - *(Note: Social media images are exported directly to Google Drive so they never bloat the portfolio repository).*
+When the user asks to create, update, or generate social media publications, turntables, or covers for any 3D model, use the skill's internal automation engine:
+- **Engine Scripts (Self-Contained inside Skill):**
+  - Carousel: `.agents/skills/blend-to-portfolio/scripts/carousel_generator.py`
+  - Turntable Video (Reels/Shorts): `.agents/skills/blend-to-portfolio/scripts/compile_turntable_video.py`
+  - Portfolio Covers (Behance / ArtStation / LinkedIn): `.agents/skills/blend-to-portfolio/scripts/generate_portfolio_covers.py`
+- **Output Destinations:**
+  - **Instagram Carousel & Video:** `G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Instagram Posts\<Project Name>\`
+  - **Portadas & Banners:** `G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Portadas y Banners\<Project Name>\`
+  - *(Note: All social media files and videos are delivered directly to Google Drive so the web repository stays lightweight and clean).*
+
+### Deliverables included in Social Production:
+1. **Carrusel de 5 Diapositivas (1080 × 1350 px · 4:5):**
+   - Slide 01: Apertura con titular monumental (Bebas Neue en Naranja `#ff7319`), subtítulo y modelo anclado.
+   - Slides 02-04: Exhibición pura a pantalla completa sobre Cyber Tech Grid.
+   - Slide 05: Cierre simétrico con enlace a `landrescreative.com`.
+2. **Turntable 360° en Video Vertical (1080 × 1920 px · 9:16):**
+   - Animación orbital en Blender Cycles GPU a 30fps compilada con FFmpeg en MP4 con el fondo oficial y branding.
+3. **Archivo de Copy y Hashtags (`caption_instagram.txt`):**
+   - Texto de post con storytelling, llamada a la acción y bloques de hashtags especializados de arte 3D.
+4. **Portadas Multi-plataforma:**
+   - **ArtStation / Behance:** `1920 × 1080 px` (16:9 apaisado).
+   - **LinkedIn / Twitter Header:** `1584 × 396 px` (banner horizontal).
 - **Official Brand Style (Pre-Approved Standard):**
   - **Dimensions:** 1080 × 1350 px (Instagram portrait 4:5 vertical)
   - **Background:** Studio Obsidian Dark with Cyber Tech Grid (`TOKENS["grid"]` step=80, radial fade mask)
