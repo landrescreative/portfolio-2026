@@ -305,7 +305,7 @@ if __name__ == "__main__":
     config = {
         "handle": "@landrescreative",
         "website": "landrescreative.com",
-        "output_gdrive": r"G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Instagram Posts\Dark Souls Personaje",
+        "output_gdrive": r"G:\Mi unidad\Proyectos 3D\Dark Souls Personaje\01_Instagram_Post",
         "output_local": r"public\uploads\instagram\dark-souls",
         "slides": [
             {

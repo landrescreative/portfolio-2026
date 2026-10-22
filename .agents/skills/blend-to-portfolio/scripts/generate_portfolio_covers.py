@@ -13,7 +13,7 @@ import os
 import math
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-GDRIVE_DIR = r"G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Portadas y Banners\Dark Souls Personaje"
+GDRIVE_DIR = r"G:\Mi unidad\Proyectos 3D\Dark Souls Personaje\03_Portadas_Banners"
 os.makedirs(GDRIVE_DIR, exist_ok=True)
 
 HERO_RENDER = r"scripts/assets/renders_cache/dark-souls/shot_hero_34.png"

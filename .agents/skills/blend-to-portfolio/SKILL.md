@@ -45,6 +45,40 @@ Portfolio_Evolution/
 
 ---
 
+## Unified 3D Projects Architecture (Google Drive)
+
+All 3D models and their associated social, interactive, and portfolio assets must be organized exclusively inside the root folder **`G:\Mi unidad\Proyectos 3D\`**.
+
+### Directory Structure per 3D Project:
+```
+G:\Mi unidad\Proyectos 3D\
+└── <Nombre del Proyecto 3D>/              (e.g., "Dark Souls Personaje", "Personaje Eli", "El Vacio")
+    ├── 01_Instagram_Post/                 <- 5 slides (1080x1350 4:5 PNG/WebP) + caption_instagram.txt
+    ├── 02_Video_Turntable/                <- Vertical 360° video (1080x1920 9:16 MP4 @ 24fps)
+    ├── 03_Portadas_Banners/               <- ArtStation (1920x1080) & LinkedIn (1584x396) covers
+    └── 04_Evolution_Snapshots/            <- Visual milestone history & evolution_history.md
+```
+
+---
+
+## Strict Rendering & Studio Specifications (GPU Only & No Clipping)
+
+1. **Strict GPU Acceleration (No CPU Hijacking):**
+   - Cycles backend must be explicitly configured to **`OPTIX`** (preferred on RTX GPUs) or **`CUDA`**.
+   - **Crucial:** The CPU device (`AMD Ryzen / Intel`) must be **explicitly disabled** (`device.use = False`) and the GPU device explicitly enabled (`device.use = True`) to prevent maxing out the user's CPU and freezing their system.
+
+2. **Adaptive Framing (Zero Clipping on 360° Rotation):**
+   - Before placing the camera, calculate the object's **bounding sphere radius** from all vertices.
+   - At 75mm focal length (vertical 1080 × 1920 / 9:16), distance must be calculated dynamically so the entire bounding sphere occupies only ~55% to 60% of vertical height.
+   - **Rule:** The mesh must NEVER clip the frame edges at any point of its 360-degree rotation.
+
+3. **Cinematic Cadence & Rotation Speed:**
+   - **Framerate:** Strictly **24 fps** (cinematic motion blur / film standard, eliminating harsh 60fps jitter).
+   - **Duration:** Exactly **120 frames = 5.0 seconds** per complete 360° turn.
+   - Creates a majestic, slow, elegant turntable where every detail, muscle fold, and shader nuance can be examined comfortably.
+
+---
+
 ## Instagram Social Carousel Automation (Cyber Tech Grid Standard)
 
 When the user asks to create, update, or generate social media publications, turntables, or covers for any 3D model, use the skill's internal automation engine:
@@ -52,10 +86,8 @@ When the user asks to create, update, or generate social media publications, tur
   - Carousel: `.agents/skills/blend-to-portfolio/scripts/carousel_generator.py`
   - Turntable Video (Reels/Shorts): `.agents/skills/blend-to-portfolio/scripts/compile_turntable_video.py`
   - Portfolio Covers (Behance / ArtStation / LinkedIn): `.agents/skills/blend-to-portfolio/scripts/generate_portfolio_covers.py`
-- **Output Destinations:**
-  - **Instagram Carousel & Video:** `G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Instagram Posts\<Project Name>\`
-  - **Portadas & Banners:** `G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Portadas y Banners\<Project Name>\`
-  - *(Note: All social media files and videos are delivered directly to Google Drive so the web repository stays lightweight and clean).*
+- **Output Destination:**
+  - `G:\Mi unidad\Proyectos 3D\<Nombre del Proyecto 3D>\` (Organized neatly across `01_Instagram_Post`, `02_Video_Turntable`, `03_Portadas_Banners`, `04_Evolution_Snapshots`).
 
 ### Deliverables included in Social Production:
 1. **Carrusel de 5 Diapositivas (1080 × 1350 px · 4:5):**

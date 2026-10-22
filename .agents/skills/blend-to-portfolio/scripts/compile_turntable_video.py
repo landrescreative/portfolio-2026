@@ -1,11 +1,10 @@
 """
-compile_turntable_video.py
+.agents/skills/blend-to-portfolio/scripts/compile_turntable_video.py
 Composites rendered turntable frames with the official Cyber Tech Grid background
 and branding overlays, then compiles them into an ultra-smooth vertical MP4 (1080x1920, 9:16)
 using FFmpeg.
-
 Outputs directly to:
-G:\\Mi unidad\\Personal y Marca\\LANDRES (Marca Personal)\\Instagram Posts\\Dark Souls Personaje\\turntable_360_vertical.mp4
+G:\\Mi unidad\\Proyectos 3D\\<Project Name>\\02_Video_Turntable\\turntable_360_vertical.mp4
 """
 
 import os
@@ -15,14 +14,21 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 CANVAS_WIDTH = 1080
 CANVAS_HEIGHT = 1920
+FPS = 24
 
-FRAMES_DIR = r"temp_turntable_frames"
-COMPOSED_FRAMES_DIR = r"temp_composed_frames"
+FRAMES_DIR = r"C:\Users\snipe\Coding\blend-art-code-main\temp_turntable_frames"
+COMPOSED_FRAMES_DIR = r"C:\Users\snipe\Coding\blend-art-code-main\temp_composed_frames"
 os.makedirs(COMPOSED_FRAMES_DIR, exist_ok=True)
 
-OUT_GDRIVE = r"G:\Mi unidad\Personal y Marca\LANDRES (Marca Personal)\Instagram Posts\Dark Souls Personaje\turntable_360_vertical.mp4"
+PROJECT_NAME = "Dark Souls Personaje"
+GDRIVE_3D_ROOT = r"G:\Mi unidad\Proyectos 3D"
+PROJECT_DIR = os.path.join(GDRIVE_3D_ROOT, PROJECT_NAME)
+VIDEO_DIR = os.path.join(PROJECT_DIR, "02_Video_Turntable")
+os.makedirs(VIDEO_DIR, exist_ok=True)
 
-FONTS_DIR = r".agents/skills/blend-to-portfolio/assets/fonts"
+OUT_GDRIVE = os.path.join(VIDEO_DIR, "turntable_360_vertical.mp4")
+
+FONTS_DIR = os.path.join(os.path.dirname(__file__), "..", "assets", "fonts")
 FONT_BEBAS = os.path.join(FONTS_DIR, "BebasNeue.ttf")
 FONT_SPACE = os.path.join(FONTS_DIR, "SpaceGrotesk.ttf")
 FONT_INTER = os.path.join(FONTS_DIR, "Inter.ttf")
@@ -66,7 +72,7 @@ def build_cyber_grid_backdrop():
 
     # Static Overlays (Header & Footer)
     mx = 84
-    top_y = 100
+    top_y = 110
     # Pill tag
     draw.rounded_rectangle([(mx, top_y), (mx + 210, top_y + 30)], radius=15, fill=(18, 20, 26, 230), outline=(45, 48, 62), width=1)
     draw.ellipse([(mx + 12, top_y + 12), (mx + 18, top_y + 18)], fill=C_ACCENT_ORANGE)
@@ -101,13 +107,11 @@ def compose_all_frames():
         out_name = os.path.join(COMPOSED_FRAMES_DIR, f"comp_{i:04d}.png")
         rgb.save(out_name, "PNG")
 
-    print("All frames composited! Running FFmpeg...")
+    print(f"All {total} frames composited! Compiling MP4 with FFmpeg at {FPS} fps...")
 
-    # Compile with FFmpeg (looping 3 times = 6 seconds smooth Reel)
-    # H.264 format, yuv420p for universal Instagram/iPhone compatibility
     cmd = [
         "ffmpeg", "-y",
-        "-r", "30",
+        "-r", str(FPS),
         "-i", os.path.join(COMPOSED_FRAMES_DIR, "comp_%04d.png"),
         "-c:v", "libx264",
         "-pix_fmt", "yuv420p",
