@@ -36,4 +36,15 @@ _source-images/
 
 # Temporary 3D Pipeline
 temp_pipeline_renders/
+temp_composed_frames/
+temp_turntable_frames/
+
+# Agent tooling / skills — the web repo only receives models, renders and catalog data
+.agents/
+blend-to-portfolio/
+
+# Social exports are produced outside the repo
 public/uploads/instagram/
+
+# Python cache
+__pycache__/

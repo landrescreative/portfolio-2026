@@ -66,7 +66,12 @@ La skill está sincronizada e instalada en:
   - Carrusel de Instagram (5 slides) generado en `01_Instagram_Post`.
   - Copy y hashtags oficial generado en `caption_instagram.txt`.
   - Portadas generadas en `03_Portadas_Banners`.
-  - El render de turntable en GPU OptiX (120 frames a 24fps) está en proceso de finalización.
+  - **Turntable terminado**: `02_Video_Turntable\turntable_360_vertical.mp4` (1080x1920, 24fps, 120 frames, 5.000 s). Renderizado con el limpiador lento; existe una segunda versión idéntica y 30x más rápida en `_benchmark_optix\turntable_360_vertical_optix.mp4`.
+  - Frames crudos en `02_Video_Turntable\_frames\` (versión lenta) y `_benchmark_optix\frames\` (versión OptiX).
+- **Pipeline corregido el 2026-10-22** (documentado en `SKILL.md`):
+  - El `denoiser` por defecto (OpenImageDenoise) era el 96% del tiempo de render: 21,2 s por frame contra 0,6 s con OptiX. Ahora se fuerza `OPTIX`.
+  - Encuadre por extents reales del bbox (58% de alto / 84% de ancho), no por la diagonal de la esfera delimitadora.
+  - Los frames viven dentro del proyecto, no en el repo, y se renderizan con `render_turntable_resumable.py` (chunks de 12 con reintento).
 - **Próximos proyectos listos para procesar:**
   - Personaje "Eli" (`C:\Users\snipe\Desktop\Eli Eli\*.blend`).
   - Proyecto "El Vacío".
