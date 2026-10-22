@@ -63,9 +63,10 @@ G:\Mi unidad\Proyectos 3D\
 
 ## Strict Rendering & Studio Specifications (GPU Only & No Clipping)
 
-1. **Strict GPU Acceleration (No CPU Hijacking):**
-   - Cycles backend must be explicitly configured to **`OPTIX`** (preferred on RTX GPUs) or **`CUDA`**.
-   - **Crucial:** The CPU device (`AMD Ryzen / Intel`) must be **explicitly disabled** (`device.use = False`) and the GPU device explicitly enabled (`device.use = True`) to prevent maxing out the user's CPU and freezing their system.
+1. **Strict GPU Acceleration & Low CPU Footprint:**
+   - Cycles backend must be explicitly configured to **`OPTIX`** (preferred on NVIDIA RTX GPUs) or **`CUDA`**.
+   - **Crucial 1:** The CPU device (`AMD Ryzen / Intel`) must be **explicitly disabled** (`device.use = False`) and the GPU device explicitly enabled (`device.use = True`).
+   - **Crucial 2 (Prevent 100% CPU lockup):** By default, Blender spawns threads for all CPU cores (`AUTO`) during BVH building, ray-tracing prep, and PNG compression. Set `scene.render.threads_mode = 'FIXED'` and `scene.render.threads = 2`. This guarantees the CPU stays relaxed (low usage and cool temperatures) while the GPU RTX handles 100% of the heavy raytracing load.
 
 2. **Adaptive Framing (Zero Clipping on 360° Rotation):**
    - Before placing the camera, calculate the object's **bounding sphere radius** from all vertices.

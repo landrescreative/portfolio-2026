@@ -16,7 +16,7 @@ CANVAS_WIDTH = 1080
 CANVAS_HEIGHT = 1920
 FPS = 24
 
-FRAMES_DIR = r"C:\Users\snipe\Coding\blend-art-code-main\temp_turntable_frames"
+FRAMES_DIR = r"G:\Mi unidad\Proyectos 3D\Dark Souls Personaje\02_Video_Turntable\_frames"
 COMPOSED_FRAMES_DIR = r"C:\Users\snipe\Coding\blend-art-code-main\temp_composed_frames"
 os.makedirs(COMPOSED_FRAMES_DIR, exist_ok=True)
 

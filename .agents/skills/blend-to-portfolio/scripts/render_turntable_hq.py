@@ -28,15 +28,26 @@ os.makedirs(VIDEO_DIR, exist_ok=True)
 
 OUT_VIDEO_PATH = os.path.join(VIDEO_DIR, "turntable_360_vertical.mp4")
 
-TEMP_FRAMES_DIR = r"C:\Users\snipe\Coding\blend-art-code-main\temp_turntable_frames"
-TEMP_COMP_DIR = r"C:\Users\snipe\Coding\blend-art-code-main\temp_composed_frames"
+# Frames live INSIDE the project folder so a repo/temp clean can never destroy a render
+TEMP_FRAMES_DIR = os.path.join(VIDEO_DIR, "_frames")
 os.makedirs(TEMP_FRAMES_DIR, exist_ok=True)
-os.makedirs(TEMP_COMP_DIR, exist_ok=True)
 
-# 1. ENFORCE GPU ACCELERATION
+# Optional frame range: -- --start 0 --end 1 (renders only that slice, for QA)
+_args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+def _arg(flag, default):
+    return int(_args[_args.index(flag) + 1]) if flag in _args else default
+
+FRAME_START = _arg("--start", 0)
+FRAME_END = _arg("--end", TOTAL_FRAMES)
+
+# 1. ENFORCE GPU ACCELERATION & PREVENT CPU 100% SPIKES
 scene = bpy.context.scene
 scene.render.engine = 'CYCLES'
 cprefs = bpy.context.preferences.addons['cycles'].preferences
+
+# Limit CPU preprocessing threads so CPU stays low and system stays completely responsive
+scene.render.threads_mode = 'FIXED'
+scene.render.threads = 2
 
 # Select OPTIX if available, else CUDA
 for backend in ['OPTIX', 'CUDA']:
@@ -117,21 +128,31 @@ cam_obj = bpy.data.objects.new("TurntableCam", cam_data)
 bpy.context.collection.objects.link(cam_obj)
 scene.camera = cam_obj
 
-# Calculate vertical FOV in radians
-sensor_height = cam_data.sensor_height
-fov_v = 2 * math.atan((sensor_height / 2.0) / cam_data.lens)
-# Distance required so bounding sphere occupies only ~60% of vertical height (leaving safe margins)
-safe_target_height = radius_sphere * 2.0 / 0.55
-camera_distance = (safe_target_height / 2.0) / math.tan(fov_v / 2.0)
+# Calculate FOV in radians.
+# sensor_fit is fixed to VERTICAL so the 75mm lens always reads the same on a 9:16 frame.
+cam_data.sensor_fit = 'VERTICAL'
+aspect = CANVAS_WIDTH / CANVAS_HEIGHT
+fov_v = 2 * math.atan((cam_data.sensor_height / 2.0) / cam_data.lens)
+fov_h = 2 * math.atan(math.tan(fov_v / 2.0) * aspect)
 
-print(f"Calculated Safe Camera Distance: {camera_distance:.2f} (prevents all clipping)")
+# Honor the real bbox extents instead of the diagonal radius (the diagonal inflates the
+# subject distance and shrinks the model). Vertical fit = 58% of frame height,
+# horizontal fit = 84% of frame width at the worst rotation angle.
+half_height = size.z / 2.0
+radial_half = max(math.hypot(c.x - center.x, c.y - center.y) for c in bbox_corners)
 
-cam_height = center.z + radius_sphere * 0.15
-target_lookat = center + mathutils.Vector((0, 0, radius_sphere * 0.05))
+distance_v = (2.0 * half_height) / (0.58 * 2.0 * math.tan(fov_v / 2.0))
+distance_h = radial_half / (0.84 * math.tan(fov_h / 2.0))
+camera_distance = max(distance_v, distance_h, 0.1)
 
-print(f"Rendering {TOTAL_FRAMES} frames on GPU...")
+print(f"Vertical distance: {distance_v:.2f} | Horizontal distance: {distance_h:.2f} -> using {camera_distance:.2f}")
 
-for i in range(TOTAL_FRAMES):
+cam_height = center.z + radius_sphere * 0.12
+target_lookat = center
+
+print(f"Rendering frames {FRAME_START}-{FRAME_END - 1} of {TOTAL_FRAMES} on GPU...")
+
+for i in range(FRAME_START, FRAME_END):
     angle = (i / TOTAL_FRAMES) * 2 * math.pi
     cam_x = center.x + camera_distance * math.sin(angle)
     cam_y = center.y - camera_distance * math.cos(angle)

@@ -47,9 +47,10 @@ La skill está sincronizada e instalada en:
 ---
 
 ## 4. REGLAS CRÍTICAS DE RENDERIZADO EN BLENDER
-1. **GPU Estricta (Cycles OptiX):**
+1. **GPU Estricta (Cycles OptiX) & Control de Hilos de CPU:**
    - Usar `OPTIX` (tarjeta NVIDIA GeForce RTX 2070 SUPER).
-   - **IMPORTANTE:** Desactivar explícitamente la CPU (`AMD Ryzen 5 3600`) poniendo `device.use = False` para que la CPU no se vaya al 100% y congele la máquina.
+   - **IMPORTANTE 1:** Desactivar explícitamente la CPU (`AMD Ryzen 5 3600`) poniendo `device.use = False` en Cycles preferences.
+   - **IMPORTANTE 2 (Evitar CPU al 100%):** Blender por defecto usa todos los núcleos para la preparación de geometría y compresión PNG (`scene.render.threads_mode = 'AUTO'`). Debe fijarse siempre a `scene.render.threads_mode = 'FIXED'` y `scene.render.threads = 2`. Con esto la CPU se mantiene fría y relajada, dejando que la GPU RTX trabaje al 100% sin ralentizar Windows.
 2. **Cero Recorte de Malla (Adaptive Bounding Sphere):**
    - Calcular el radio de la esfera delimitadora de la geometría completa.
    - En encuadre vertical 9:16 (lente 75mm), posicionar la cámara para que el modelo ocupe sólo el ~55-60% del alto vertical.
