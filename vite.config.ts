@@ -188,14 +188,19 @@ function localSavePlugin() {
   };
 }
 
+// Two deploy targets share this config:
+//   - Vercel reads the Build Output API from `.vercel/output` → preset "vercel".
+//   - Coolify/Docker runs `node .output/server/index.mjs` → preset "node-server".
+// Vercel sets VERCEL=1 during the build, so pick the preset per environment.
+// Hardcoding either one breaks the other target.
+const isVercel = process.env.VERCEL === "1";
+
 export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
   nitro: {
-    // node-server: el despliegue es un VPS (Coolify), no Vercel.
-    // Con "vercel" la salida va a .vercel/output y el build pack no la encuentra.
-    preset: "node-server",
+    preset: isVercel ? "vercel" : "node-server",
     // Nitro v3 supports `inlineDynamicImports` (and the Lovable wrapper forwards
     // any extra keys into the Nitro config), but it narrows its typed option
     // surface. Assert through the narrow type to keep the flag without `any`.
