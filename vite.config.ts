@@ -42,6 +42,8 @@ function localSavePlugin() {
               ".webp": "image/webp",
               ".svg": "image/svg+xml",
               ".gif": "image/gif",
+              ".mp4": "video/mp4",
+              ".webm": "video/webm",
             };
             res.setHeader("Content-Type", mimeTypes[ext] || "application/octet-stream");
             return fs.createReadStream(filePath).pipe(res);

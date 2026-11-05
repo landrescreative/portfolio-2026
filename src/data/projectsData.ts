@@ -1157,7 +1157,7 @@ export const projectsData: Record<string, ProjectDetail> = {
       },
     },
     video: {
-      mp4Url: "/uploads/el-vacio-sequence.mp4",
+      mp4Url: "/uploads/el-vacio-prueba-01.mp4",
       poster: "/uploads/el-vacio-hero.webp",
       title: {
         es: "Secuencia Cinematográfica · El Despertar en el Abismo",
