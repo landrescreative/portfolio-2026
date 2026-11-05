@@ -634,7 +634,9 @@ function SingleModel({
 
   useFrame((_, delta) => {
     if (autoRotate && modelRef.current) {
-      modelRef.current.rotation.y += delta * 0.45;
+      // A room scan seen from inside needs a calmer spin than a turntable.
+      const speed = modelId === "el-vacio" ? 0.12 : 0.45;
+      modelRef.current.rotation.y += delta * speed;
     }
   });
 
@@ -647,23 +649,12 @@ function SingleModel({
   );
 }
 
-// --- El Vacío scan framing -----------------------------------------------
-// The scan is normalized to 1.8 units and the set is open at the top, so the
-// camera looks into it from 50° above the horizon. Narrow viewports (mobile)
-// push the camera back so the room never gets cropped horizontally while the
-// model spins.
-const SCAN_TILT = THREE.MathUtils.degToRad(50);
-const SCAN_BASE_DISTANCE = 2.7;
-const SCAN_HORIZONTAL_FIT = 1.05;
-// The scan's front wall reaches further than its visual mass, so aiming a bit
-// below the bounding-box centre keeps the room balanced inside the canvas.
-const SCAN_TARGET_Y = -0.12;
-
-function scanCameraDistance(aspect: number, fov: number) {
-  const halfVertical = THREE.MathUtils.degToRad(fov) / 2;
-  const halfHorizontal = Math.atan(Math.tan(halfVertical) * aspect);
-  return Math.max(SCAN_BASE_DISTANCE, SCAN_HORIZONTAL_FIT / Math.tan(halfHorizontal));
-}
+// --- El Vacío scan camera ------------------------------------------------
+// The scan is a floor-level interior: the camera sits inside the open set,
+// near the floor and close to its centre (so no furniture clips through it),
+// looking towards the back wall as the room slowly spins.
+const SCAN_CAMERA: [number, number, number] = [0, -0.32, 0.32];
+const SCAN_TARGET: [number, number, number] = [0, -0.12, -0.55];
 
 function ScanCameraRig({
   controlsRef,
@@ -675,16 +666,15 @@ function ScanCameraRig({
 
   useEffect(() => {
     if (!(camera instanceof THREE.PerspectiveCamera)) return;
-    const distance = scanCameraDistance(size.width / size.height, camera.fov);
-    camera.position.set(
-      0,
-      Math.sin(SCAN_TILT) * distance,
-      Math.cos(SCAN_TILT) * distance,
-    );
-    camera.lookAt(0, SCAN_TARGET_Y, 0);
+    // Portrait canvases need a wider lens to show more than one wall.
+    const aspect = size.width / size.height;
+    const fov = aspect < 1.1 ? 60 : 42;
+    camera.fov = fov;
+    camera.position.set(...SCAN_CAMERA);
+    camera.lookAt(...SCAN_TARGET);
     camera.updateProjectionMatrix();
     if (controlsRef.current) {
-      controlsRef.current.target.set(0, SCAN_TARGET_Y, 0);
+      controlsRef.current.target.set(...SCAN_TARGET);
       controlsRef.current.update();
       controlsRef.current.saveState();
     }
@@ -756,11 +746,10 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
 
   const activeModel = modelList[selectedModelIdx] || modelList[0];
 
-  // The El Vacío scan is an open-top miniature set: the default eye-level
-  // camera would only show the exterior walls, so look down into the room.
-  // The scan camera is fitted to the canvas below (ScanCameraRig).
+  // The El Vacío scan is an interior: the camera sits inside the open set,
+  // near the floor, so the room wraps around the viewer.
   const cameraPosition: [number, number, number] =
-    activeModel?.id === "el-vacio" ? [0, 2.068, 1.736] : [0, 0.3, 3.6];
+    activeModel?.id === "el-vacio" ? SCAN_CAMERA : [0, 0.3, 3.6];
 
   // Available finishes: if Inartiva chibi, provide neon toon glow presets
   const availableFinishes = useMemo(() => {
@@ -929,9 +918,9 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
               <OrbitControls
                 ref={controlsRef}
                 enablePan={false}
-                minDistance={1.4}
+                minDistance={activeModel.id === "el-vacio" ? 0.6 : 1.4}
                 maxDistance={6.0}
-                target={activeModel.id === "el-vacio" ? [0, SCAN_TARGET_Y, 0] : [0, 0, 0]}
+                target={activeModel.id === "el-vacio" ? SCAN_TARGET : [0, 0, 0]}
                 dampingFactor={0.06}
               />
             </Canvas>
