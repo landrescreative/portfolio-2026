@@ -653,7 +653,7 @@ function SingleModel({
 // The scan is a floor-level interior: the camera sits inside the open set,
 // near the floor and close to its centre (so no furniture clips through it),
 // looking towards the back wall as the room slowly spins.
-const SCAN_CAMERA: [number, number, number] = [0, -0.32, 0.32];
+const SCAN_CAMERA: [number, number, number] = [0, -0.32, 0.5];
 const SCAN_TARGET: [number, number, number] = [0, -0.12, -0.55];
 
 function ScanCameraRig({
