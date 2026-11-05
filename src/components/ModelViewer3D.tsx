@@ -674,19 +674,28 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
     if (projectId === "afore-personaje-4") return [AFORE_MODELS[3]];
     if (projectId && projectsData[projectId]) {
       const proj = projectsData[projectId];
+      const isScan = projectId === "el-vacio";
       return [
         {
           id: projectId,
-          name: proj.title,
-          role: proj.role,
+          name: isScan
+            ? {
+                es: "Sala del anciano · Escaneo 3D",
+                en: "Old Man's Room · 3D Scan",
+              }
+            : proj.title,
+          role: isScan
+            ? {
+                es: "Fotogrametría del set stop-motion",
+                en: "Stop-motion set photogrammetry",
+              }
+            : proj.role,
           url: `/models/${projectId}.glb`,
           originalSize: "Malla 3D Optimizada",
           optimizedSize: "GLB PBR",
           isColored: true,
-          ar: {
-            glb: `/models/${projectId}.glb`,
-            usdz: `/models/ar/${projectId}.usdz`,
-          },
+          // No native AR assets are shipped for the generic projects, so the
+          // Quick Look / Scene Viewer button is intentionally left out.
         },
       ];
     }
@@ -700,6 +709,12 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
   const [selectedModelIdx, setSelectedModelIdx] = useState(0);
 
   const activeModel = modelList[selectedModelIdx] || modelList[0];
+
+  // The El Vacío scan is an open-top miniature set: the default eye-level
+  // camera would only show the exterior walls, so look down from above to
+  // reveal the room. Framing assumes the scan is normalized to ~1.8 units.
+  const cameraPosition: [number, number, number] =
+    activeModel?.id === "el-vacio" ? [0, 3.0, 2.1] : [0, 0.3, 3.6];
 
   // Available finishes: if Inartiva chibi, provide neon toon glow presets
   const availableFinishes = useMemo(() => {
@@ -824,7 +839,7 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
           <Suspense fallback={<LoaderIndicator />}>
             <Canvas
               shadows
-              camera={{ position: [0, 0.3, 3.6], fov: 42 }}
+              camera={{ position: cameraPosition, fov: 42 }}
               gl={{ antialias: true, alpha: true }}
               className="h-full w-full cursor-grab active:cursor-grabbing"
             >

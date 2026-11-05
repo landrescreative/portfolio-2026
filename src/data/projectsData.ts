@@ -1125,6 +1125,7 @@ export const projectsData: Record<string, ProjectDetail> = {
       en: "VFX, Lighting & 3D Environment Director",
     },
     status: "completed",
+    has3DViewer: true,
     coverImage: "/uploads/el-vacio-hero.webp",
     techStack: [
       "Blender 5.2",
