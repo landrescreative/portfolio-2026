@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo, Suspense } from "react";
-import type { ComponentRef } from "react";
+import type { ComponentRef, RefObject } from "react";
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Center, useGLTF, ContactShadows } from "@react-three/drei";
 import { RotateCw, Box, RefreshCw, ZoomIn, Palette } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
@@ -647,6 +647,52 @@ function SingleModel({
   );
 }
 
+// --- El Vacío scan framing -----------------------------------------------
+// The scan is normalized to 1.8 units and the set is open at the top, so the
+// camera looks into it from 50° above the horizon. Narrow viewports (mobile)
+// push the camera back so the room never gets cropped horizontally while the
+// model spins.
+const SCAN_TILT = THREE.MathUtils.degToRad(50);
+const SCAN_BASE_DISTANCE = 3.35;
+const SCAN_HORIZONTAL_FIT = 1.2;
+// The scan's front wall reaches further than its visual mass, so aiming a bit
+// below the bounding-box centre keeps the room balanced inside the canvas.
+const SCAN_TARGET_Y = -0.12;
+
+function scanCameraDistance(aspect: number, fov: number) {
+  const halfVertical = THREE.MathUtils.degToRad(fov) / 2;
+  const halfHorizontal = Math.atan(Math.tan(halfVertical) * aspect);
+  return Math.max(SCAN_BASE_DISTANCE, SCAN_HORIZONTAL_FIT / Math.tan(halfHorizontal));
+}
+
+function ScanCameraRig({
+  controlsRef,
+}: {
+  controlsRef: RefObject<ComponentRef<typeof OrbitControls> | null>;
+}) {
+  const camera = useThree((state) => state.camera);
+  const size = useThree((state) => state.size);
+
+  useEffect(() => {
+    if (!(camera instanceof THREE.PerspectiveCamera)) return;
+    const distance = scanCameraDistance(size.width / size.height, camera.fov);
+    camera.position.set(
+      0,
+      Math.sin(SCAN_TILT) * distance,
+      Math.cos(SCAN_TILT) * distance,
+    );
+    camera.lookAt(0, SCAN_TARGET_Y, 0);
+    camera.updateProjectionMatrix();
+    if (controlsRef.current) {
+      controlsRef.current.target.set(0, SCAN_TARGET_Y, 0);
+      controlsRef.current.update();
+      controlsRef.current.saveState();
+    }
+  }, [camera, size.width, size.height, controlsRef]);
+
+  return null;
+}
+
 function LoaderIndicator() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#121316] z-20">
@@ -711,10 +757,10 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
   const activeModel = modelList[selectedModelIdx] || modelList[0];
 
   // The El Vacío scan is an open-top miniature set: the default eye-level
-  // camera would only show the exterior walls, so look down from above to
-  // reveal the room. Framing assumes the scan is normalized to ~1.8 units.
+  // camera would only show the exterior walls, so look down into the room.
+  // The scan camera is fitted to the canvas below (ScanCameraRig).
   const cameraPosition: [number, number, number] =
-    activeModel?.id === "el-vacio" ? [0, 3.0, 2.1] : [0, 0.3, 3.6];
+    activeModel?.id === "el-vacio" ? [0, 2.566, 2.153] : [0, 0.3, 3.6];
 
   // Available finishes: if Inartiva chibi, provide neon toon glow presets
   const availableFinishes = useMemo(() => {
@@ -873,12 +919,14 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
               {/* Soft Contact Shadows on Floor */}
               <ContactShadows position={[0, -1.15, 0]} opacity={0.7} scale={4} blur={2} far={3} />
 
+              {activeModel.id === "el-vacio" && <ScanCameraRig controlsRef={controlsRef} />}
+
               <OrbitControls
                 ref={controlsRef}
                 enablePan={false}
                 minDistance={1.4}
                 maxDistance={6.0}
-                target={[0, 0, 0]}
+                target={activeModel.id === "el-vacio" ? [0, SCAN_TARGET_Y, 0] : [0, 0, 0]}
                 dampingFactor={0.06}
               />
             </Canvas>
