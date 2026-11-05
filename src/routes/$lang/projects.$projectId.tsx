@@ -450,12 +450,12 @@ function ProjectDetailPage() {
         )}
 
         {/* Story Sections: Overview, Challenge, Solution */}
-        <section className="reveal mb-24 max-w-5xl flex flex-col gap-14">
+        <section className="reveal mb-24 flex flex-col gap-14">
           <div className="flex flex-col gap-5">
             <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
               {sectionLabel(overviewNumber)} / {staticTexts.overviewLabel}
             </h2>
-            <p className="font-sans text-xl font-light leading-relaxed text-ink/95 md:text-2xl text-pretty">
+            <p className="max-w-5xl font-sans text-xl font-light leading-relaxed text-ink/95 md:text-2xl text-pretty">
               {overviewText}
             </p>
           </div>
@@ -465,7 +465,7 @@ function ProjectDetailPage() {
               <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
                 {sectionLabel(challengeNumber)} / {staticTexts.challengeLabel}
               </h2>
-              <p className="font-sans text-lg font-light leading-relaxed text-ink/85 md:text-xl text-pretty">
+              <p className="max-w-5xl font-sans text-lg font-light leading-relaxed text-ink/85 md:text-xl text-pretty">
                 {challengeText}
               </p>
             </div>
@@ -476,7 +476,7 @@ function ProjectDetailPage() {
               <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
                 {sectionLabel(solutionNumber)} / {staticTexts.solutionLabel}
               </h2>
-              <p className="font-sans text-lg font-light leading-relaxed text-ink/85 md:text-xl text-pretty">
+              <p className="max-w-5xl font-sans text-lg font-light leading-relaxed text-ink/85 md:text-xl text-pretty">
                 {solutionText}
               </p>
             </div>
