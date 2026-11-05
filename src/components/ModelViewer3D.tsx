@@ -653,8 +653,8 @@ function SingleModel({
 // push the camera back so the room never gets cropped horizontally while the
 // model spins.
 const SCAN_TILT = THREE.MathUtils.degToRad(50);
-const SCAN_BASE_DISTANCE = 3.35;
-const SCAN_HORIZONTAL_FIT = 1.2;
+const SCAN_BASE_DISTANCE = 2.7;
+const SCAN_HORIZONTAL_FIT = 1.05;
 // The scan's front wall reaches further than its visual mass, so aiming a bit
 // below the bounding-box centre keeps the room balanced inside the canvas.
 const SCAN_TARGET_Y = -0.12;
@@ -760,7 +760,7 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
   // camera would only show the exterior walls, so look down into the room.
   // The scan camera is fitted to the canvas below (ScanCameraRig).
   const cameraPosition: [number, number, number] =
-    activeModel?.id === "el-vacio" ? [0, 2.566, 2.153] : [0, 0.3, 3.6];
+    activeModel?.id === "el-vacio" ? [0, 2.068, 1.736] : [0, 0.3, 3.6];
 
   // Available finishes: if Inartiva chibi, provide neon toon glow presets
   const availableFinishes = useMemo(() => {
@@ -834,6 +834,11 @@ export function ModelViewer3D({ projectId }: { projectId?: string }) {
     <section className="mb-24 flex flex-col gap-6 opacity-100">
       {/* Main 3D Canvas Box */}
       <div className="relative h-[560px] w-full overflow-hidden rounded-3xl border border-ink/10 bg-gradient-to-b from-[#18191c] to-[#0e0f11] shadow-2xl">
+        {/* The scan fills the frame, so a soft top scrim keeps the title legible. */}
+        {activeModel.id === "el-vacio" && (
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-28 bg-gradient-to-b from-black/70 via-black/25 to-transparent" />
+        )}
+
         {/* Floating Quick Controls (Top-Right) */}
         <div className="absolute right-4 top-4 z-10 flex items-center gap-2 rounded-full border border-white/10 bg-black/60 p-1.5 backdrop-blur-md">
           <button
