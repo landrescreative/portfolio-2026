@@ -22,8 +22,8 @@ export interface ProjectDetail {
 
   // Case Study Story Sections
   overview: { es: string; en: string };
-  challenge: { es: string; en: string };
-  solution: { es: string; en: string };
+  challenge?: { es: string; en: string };
+  solution?: { es: string; en: string };
 
   // Optional Deliverables Checklist
   deliverables?: { es: string[]; en: string[] };
@@ -1137,32 +1137,6 @@ export const projectsData: Record<string, ProjectDetail> = {
     overview: {
       es: "«El Vacío» es una pieza cinematográfica desarrollada en estrecha colaboración con la productora audiovisual Fractal, donde se fusiona la artesanía tangible del stop-motion tradicional con entornos digitales tridimensionales creados en Blender. El proyecto aborda la travesía y caída abisal de un anciano hacia las profundidades del océano, integrando placas de metraje con green screen directamente en el espacio 3D de Cycles mediante tarjetas de proyección geométrica para generar reflejos, refracciones y sombras hiperrealistas.",
       en: "«El Vacío» (The Void) is a cinematic piece produced in close collaboration with audiovisual studio Fractal, marrying the physical craft of traditional stop-motion puppetry with 3D CGI environments in Blender. The story follows an old man's descent into an oceanic abyss, integrating green-screen footage plates onto 3D projection cards in Cycles to achieve realistic floor reflections, volumetric light beams, and refractive caustics.",
-    },
-    challenge: {
-      es: "El principal reto técnico consistió en armonizar dos mundos opuestos: una marioneta física articulada rodada en set sobre ciclorama verde por Fractal y un escenario submarino 3D procedural en Blender Cycles. Era imperativo neutralizar la contaminación verde (green spill) en los bordes de la marioneta, sincronizar el grano óptico analógico y asegurar que tanto la caída en la columna de agua como el reposo en el suelo marino interactuaran con cáusticas y luz volumétrica de forma fotorrealista.",
-      en: "The primary technical challenge was uniting two disparate worlds: a physical articulated puppet filmed on a green-screen stage by Fractal and a procedural 3D underwater environment in Blender Cycles. This demanded suppressing green light spill around the puppet contours, matching analog camera grain, and ensuring both the abyss descent and seabed resting phase naturally interacted with caustics and volumetric light shafts.",
-    },
-    solution: {
-      es: "Diseñamos un pipeline de tarjetas de proyección 3D vinculadas a la cámara en Blender Cycles. La secuencia de video con transparencia fue proyectada en tarjetas con shaders difusos y emisivos calibrados para recibir sombras y refracciones de la simulación de agua. Modelamos la secuencia completa en dos grandes arcos: el descenso libre del anciano entre partículas de sedimento y haces de luz cenitales, y el despertar en el lecho marino con cáusticas reflectantes. Completamos el proceso con un pase de corrección de color y denoiser en Cycles.",
-      en: "We engineered a 3D camera projection card workflow in Blender Cycles. The alpha-keyed footage sequence was projected onto geometry cards with calibrated diffuse and emissive shaders to catch real-time shadows and ocean water refractions. We split the pipeline into two core narrative acts: the old man's abyss freefall amidst suspended marine sediment and light shafts, and the awakening on the reflective seabed. A multi-pass color grading and Cycles denoiser harmonized the entire piece.",
-    },
-    deliverables: {
-      es: [
-        "Colaboración y dirección técnica de VFX con la productora Fractal",
-        "Pipeline de integración Stop-Motion / CGI y tarjetas de proyección 3D",
-        "Simulación de la secuencia de caída abisal y partículas de sedimento",
-        "Setup de iluminación volumétrica submarina y cáusticas procedimentales",
-        "Composición de metraje green screen y eliminación de green spill",
-        "Masterización de fotogramas clave y secuencias en alta definición",
-      ],
-      en: [
-        "Technical VFX direction and co-production with Fractal studio",
-        "Stop-Motion / CGI integration pipeline with 3D projection cards",
-        "Abyss freefall simulation with underwater marine sediment particles",
-        "Volumetric underwater light shafts and procedural ocean caustics",
-        "Green screen compositing, edge despill, and color harmonizing",
-        "High-definition keyframe and sequence mastering",
-      ],
     },
     metrics: [
       { label: { es: "Fotogramas Compuestos", en: "Composited Frames" }, value: "146+" },

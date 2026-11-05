@@ -249,17 +249,31 @@ function ProjectDetailPage() {
     typeof project.overview === "object"
       ? project.overview[lang] || project.overview.es
       : project.overview;
-  const challengeText =
-    typeof project.challenge === "object"
+  const challengeText = project.challenge
+    ? typeof project.challenge === "object"
       ? project.challenge[lang] || project.challenge.es
-      : project.challenge;
-  const solutionText =
-    typeof project.solution === "object"
+      : project.challenge
+    : undefined;
+  const solutionText = project.solution
+    ? typeof project.solution === "object"
       ? project.solution[lang] || project.solution.es
-      : project.solution;
+      : project.solution
+    : undefined;
   const deliverables = project.deliverables
     ? project.deliverables[lang] || project.deliverables.es
     : [];
+
+  // Sections are numbered only when they actually render, so projects without
+  // challenge/solution/deliverables don't leave gaps in the sequence.
+  let sectionNumber = 1;
+  const overviewNumber = sectionNumber++;
+  const challengeNumber = challengeText ? sectionNumber++ : null;
+  const solutionNumber = solutionText ? sectionNumber++ : null;
+  const deliverablesNumber = deliverables.length > 0 ? sectionNumber++ : null;
+  const metricsNumber =
+    project.metrics && project.metrics.length > 0 ? sectionNumber++ : null;
+  const sectionLabel = (value: number | null) =>
+    value === null ? "" : String(value).padStart(2, "0");
 
   return (
     <main className="grain bg-canvas text-ink pt-28 md:pt-36">
@@ -438,36 +452,40 @@ function ProjectDetailPage() {
         <section className="reveal mb-24 max-w-5xl flex flex-col gap-14">
           <div className="flex flex-col gap-5">
             <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-              01 / {staticTexts.overviewLabel}
+              {sectionLabel(overviewNumber)} / {staticTexts.overviewLabel}
             </h2>
             <p className="font-sans text-xl font-light leading-relaxed text-ink/95 md:text-2xl text-pretty">
               {overviewText}
             </p>
           </div>
 
-          <div className="flex flex-col gap-5 border-t border-ink/10 pt-12">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-              02 / {staticTexts.challengeLabel}
-            </h2>
-            <p className="font-sans text-lg font-light leading-relaxed text-ink/85 md:text-xl text-pretty">
-              {challengeText}
-            </p>
-          </div>
+          {challengeText && (
+            <div className="flex flex-col gap-5 border-t border-ink/10 pt-12">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+                {sectionLabel(challengeNumber)} / {staticTexts.challengeLabel}
+              </h2>
+              <p className="font-sans text-lg font-light leading-relaxed text-ink/85 md:text-xl text-pretty">
+                {challengeText}
+              </p>
+            </div>
+          )}
 
-          <div className="flex flex-col gap-5 border-t border-ink/10 pt-12">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-              03 / {staticTexts.solutionLabel}
-            </h2>
-            <p className="font-sans text-lg font-light leading-relaxed text-ink/85 md:text-xl text-pretty">
-              {solutionText}
-            </p>
-          </div>
+          {solutionText && (
+            <div className="flex flex-col gap-5 border-t border-ink/10 pt-12">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+                {sectionLabel(solutionNumber)} / {staticTexts.solutionLabel}
+              </h2>
+              <p className="font-sans text-lg font-light leading-relaxed text-ink/85 md:text-xl text-pretty">
+                {solutionText}
+              </p>
+            </div>
+          )}
 
           {/* Optional Deliverables Checklist */}
           {deliverables.length > 0 && (
             <div className="flex flex-col gap-6 border-t border-ink/10 pt-12">
               <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-                04 / {staticTexts.deliverablesLabel}
+                {sectionLabel(deliverablesNumber)} / {staticTexts.deliverablesLabel}
               </h2>
               <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2">
                 {deliverables.map((item, idx) => (
@@ -489,7 +507,7 @@ function ProjectDetailPage() {
           {project.metrics && project.metrics.length > 0 && (
             <div className="flex flex-col gap-5 border-t border-ink/10 pt-10">
               <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-                05 / {staticTexts.metricsLabel}
+                {sectionLabel(metricsNumber)} / {staticTexts.metricsLabel}
               </h2>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 pt-2">
                 {project.metrics.map((metric, idx) => {
