@@ -1166,83 +1166,56 @@ export const projectsData: Record<string, ProjectDetail> = {
     },
     gallery: [
       {
-        src: "/uploads/el-vacio-hero.webp",
-        alt: "El Vacío - Fotograma Principal Despertar",
+        src: "/uploads/el-vacio-ae-01-descent-profile.webp",
+        alt: "El Vacío - Perfil del anciano durante el descenso",
         caption: {
-          es: "Fotograma 0215 · El despertar del personaje sobre el lecho marino reflectante con cáusticas procedimentales",
-          en: "Frame 0215 · Character awakening on the reflective seabed with procedural caustics",
+          es: "Integración final · 00:02 — Perfil del anciano en caída: la marioneta física compuesta sobre la columna de agua y los haces de luz 3D",
+          en: "Final composite · 00:02 — Profile of the old man falling: practical puppet composited into the 3D water column and light shafts",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/el-vacio-ae-02-descent-release.webp",
+        alt: "El Vacío - Apertura de brazos en el descenso abisal",
+        caption: {
+          es: "Integración final · 00:03 — Apertura de brazos durante la caída, con el croma integrado en la iluminación volumétrica de Cycles",
+          en: "Final composite · 00:03 — Arms opening mid-fall, with the green-screen plate integrated into Cycles volumetric lighting",
+        },
+        span: "half",
+      },
+      {
+        src: "/uploads/el-vacio-ae-03-surface-break.webp",
+        alt: "El Vacío - Cruce de la superficie con reflejos",
+        caption: {
+          es: "Integración final · 00:10 — Cruce de la superficie: reflejos y refracciones del agua sobre la marioneta compuesta",
+          en: "Final composite · 00:10 — Surface break: water reflections and refractions over the composited puppet",
         },
         span: "full",
       },
       {
-        src: "/uploads/el-vacio-falling-01-surface.webp",
-        alt: "El Vacío - Inicio de la Caída en Superficie",
+        src: "/uploads/el-vacio-ae-04-seabed-arrival.webp",
+        alt: "El Vacío - Llegada al lecho marino",
         caption: {
-          es: "La Caída · Fotograma 0015: Inicio del descenso del anciano desde la superficie oceánica hacia el abismo",
-          en: "The Descent · Frame 0015: Beginning of the old man's freefall from the ocean surface into the deep abyss",
+          es: "Integración final · 00:13 — Llegada al lecho marino: contacto, sombra y cáusticas sobre el suelo reflectante",
+          en: "Final composite · 00:13 — Seabed arrival: contact, shadow and caustics across the reflective floor",
         },
         span: "half",
       },
       {
-        src: "/uploads/el-vacio-falling-02-descent.webp",
-        alt: "El Vacío - Descenso en Columna de Agua",
+        src: "/uploads/el-vacio-ae-05-seabed-lightfield.webp",
+        alt: "El Vacío - Campo de luces sobre el fondo abisal",
         caption: {
-          es: "La Caída · Fotograma 0035: Descenso a través de la masa de agua y turbulencia de partículas marinas",
-          en: "The Descent · Frame 0035: Sinking through the water mass and floating marine sediment turbulence",
+          es: "Integración final · 00:15 — Campo de luces y sedimentos alrededor de la marioneta en reposo",
+          en: "Final composite · 00:15 — Field of lights and sediment drifting around the resting puppet",
         },
         span: "half",
       },
       {
-        src: "/uploads/el-vacio-falling-03-godrays.webp",
-        alt: "El Vacío - Caída con Haces de Luz Cenital",
+        src: "/uploads/el-vacio-ae-06-seabed-rest.webp",
+        alt: "El Vacío - Plano final en el fondo abisal",
         caption: {
-          es: "La Caída · Fotograma 0110: Haces de luz volumétrica submarina (god rays) cruzando la silueta de la marioneta",
-          en: "The Descent · Frame 0110: Volumetric underwater god rays cutting through water across the puppet silhouette",
-        },
-        span: "half",
-      },
-      {
-        src: "/uploads/el-vacio-falling-04-abyss.webp",
-        alt: "El Vacío - Ingreso a la Penumbra Abisal",
-        caption: {
-          es: "La Caída · Fotograma 0138: Transición hacia la oscuridad profunda de la fosa marina",
-          en: "The Descent · Frame 0138: Transition into the deep oceanic trench gloom before reaching the ocean floor",
-        },
-        span: "half",
-      },
-      {
-        src: "/uploads/el-vacio-falling-05-seabed.webp",
-        alt: "El Vacío - Aproximación al Lecho Marino",
-        caption: {
-          es: "La Caída · Fotograma 0165: Descenso final y primeras reflexiones sobre el lecho marino antes de posarse",
-          en: "The Descent · Frame 0165: Final descent and initial caustics reflecting across the seabed prior to landing",
-        },
-        span: "full",
-      },
-      {
-        src: "/uploads/el-vacio-still-slumber.webp",
-        alt: "El Vacío - Letargo en el Fondo Marino",
-        caption: {
-          es: "El Fondo · Fotograma 0140: Estado de reposo y letargo bajo la atmósfera abisal y cáusticas",
-          en: "The Seabed · Frame 0140: Slumber in the deep oceanic abyss beneath caustics",
-        },
-        span: "half",
-      },
-      {
-        src: "/uploads/el-vacio-still-lightbeam.webp",
-        alt: "El Vacío - Haz de Luz Cenital",
-        caption: {
-          es: "El Fondo · Fotograma 0190: Entrada del haz de luz cenital volumétrico que despierta a la marioneta",
-          en: "The Seabed · Frame 0190: Penetrating overhead volumetric light beam awakening the puppet",
-        },
-        span: "half",
-      },
-      {
-        src: "/uploads/el-vacio-still-gaze.webp",
-        alt: "El Vacío - Mirada a Cámara",
-        caption: {
-          es: "Expresividad · Fotograma 0250: Mirada directa de la marioneta a cámara, evidenciando la textura artesanal física y la atmósfera 3D",
-          en: "Expressiveness · Frame 0250: Direct puppet gaze to camera, highlighting handcrafted physical texture alongside 3D atmosphere",
+          es: "Integración final · 00:17 — Plano final: el anciano en reposo bajo la luz del abismo",
+          en: "Final composite · 00:17 — Final shot: the old man resting in the abyss light",
         },
         span: "full",
       },
