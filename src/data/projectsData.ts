@@ -69,6 +69,10 @@ export interface ProjectDetail {
   // Optional Interactive 3D Model Viewer
   has3DViewer?: boolean;
 
+  // Hides the "Private Project" label when the piece has no public live URL
+  // but is not a private showcase (e.g. a commissioned film).
+  hidePrivateLabel?: boolean;
+
   // Optional Production / Creative Status
   status?: "wip" | "completed";
 
@@ -1119,13 +1123,14 @@ export const projectsData: Record<string, ProjectDetail> = {
     },
     client: "Fractal · Productora Audiovisual",
     clientLogo: "/uploads/fractal-logo.webp",
-    year: "2025",
+    year: "2026",
     role: {
       es: "Director de VFX, Iluminación & Entornos 3D",
       en: "VFX, Lighting & 3D Environment Director",
     },
     status: "completed",
     has3DViewer: true,
+    hidePrivateLabel: true,
     coverImage: "/uploads/el-vacio-hero.webp",
     techStack: [
       "Blender 5.2",

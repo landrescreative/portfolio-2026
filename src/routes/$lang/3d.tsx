@@ -273,7 +273,7 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
       en: "VFX · Stop-Motion + 3D · Collaboration with Fractal",
     },
     client: "Fractal (Productora Audiovisual)",
-    year: "2025",
+    year: "2026",
     specs: {
       es: "Blender 5.2 Cycles · 146 frames compuestos · Proyección 3D Cards · Escaneo de la sala del anciano",
       en: "Blender 5.2 Cycles · 146 composited frames · 3D Card Projections · Old man's room scan",

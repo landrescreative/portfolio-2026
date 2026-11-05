@@ -389,11 +389,11 @@ function ProjectDetailPage() {
                   <span>{staticTexts.liveSite}</span>
                   <ExternalLink className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
-              ) : (
+              ) : !project.hidePrivateLabel ? (
                 <span className="text-xs uppercase tracking-widest text-muted italic">
                   {staticTexts.privateProject}
                 </span>
-              )}
+              ) : null}
             </div>
           </div>
         </header>
