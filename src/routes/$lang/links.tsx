@@ -125,8 +125,8 @@ function LinkBioPage() {
     },
     {
       name: "Instagram",
-      label: "@landrescreative",
-      href: "https://instagram.com/landrescreative",
+      label: "@landresdigital",
+      href: "https://instagram.com/landresdigital",
       icon: Instagram,
       tile: "bg-[linear-gradient(45deg,#F58529,#DD2B7F,#8134AF)]",
       ring: "hover:border-[#DD2B7F]",

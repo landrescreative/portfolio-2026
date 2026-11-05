@@ -350,7 +350,7 @@ export function servicesJsonLd(lang: Locale): Record<string, unknown> {
       ],
       sameAs: [
         "https://behance.net/luishernandez303",
-        "https://instagram.com/landrescreative",
+        "https://instagram.com/landresdigital",
         "https://linkedin.com/in/landrescreative",
         "https://github.com/landrescreative",
       ],

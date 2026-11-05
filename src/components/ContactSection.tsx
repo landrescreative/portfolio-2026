@@ -4,7 +4,7 @@ import { ContactForm } from "@/components/ContactForm";
 
 const SOCIAL_LINKS = [
   { name: "Behance", href: "https://behance.net/luishernandez303", icon: Layers },
-  { name: "Instagram", href: "https://instagram.com/landrescreative", icon: Instagram },
+  { name: "Instagram", href: "https://instagram.com/landresdigital", icon: Instagram },
   { name: "LinkedIn", href: "https://linkedin.com/in/landrescreative", icon: Linkedin },
   { name: "GitHub", href: "https://github.com/landrescreative", icon: Github },
 ];

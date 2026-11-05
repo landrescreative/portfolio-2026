@@ -1264,15 +1264,6 @@ export const projectsData: Record<string, ProjectDetail> = {
         span: "half",
       },
       {
-        src: "/uploads/el-vacio-viewport-setup.webp",
-        alt: "El Vacío - Vista Panorámica del Escenario 3D en Blender",
-        caption: {
-          es: "Behind The Scenes · Vista panorámica y alejada del escenario completo en Blender 5.2 Cycles: muestra la cámara de rodaje, el plano de proyección 3D con la marioneta en croma, el suelo reflectante infinito y los puntos de luz",
-          en: "Behind The Scenes · Wide pulled-back stage view in Blender 5.2 Cycles: showing filming camera, 3D projection card with keyed puppet, infinite reflective ocean floor, and spotlight rig",
-        },
-        span: "full",
-      },
-      {
         src: "/uploads/el-vacio-still-gaze.webp",
         alt: "El Vacío - Mirada a Cámara",
         caption: {

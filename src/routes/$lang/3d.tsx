@@ -328,14 +328,6 @@ const THREE_D_MODELS: ThreeDModelItem[] = [
           en: "Frame 0250 · Direct puppet gaze to camera",
         },
       },
-      {
-        src: "/uploads/el-vacio-viewport-setup.webp",
-        alt: "El Vacío Setup Blender Panorámico",
-        caption: {
-          es: "Behind The Scenes · Vista panorámica alejada del escenario completo en Blender 5.2 Cycles",
-          en: "Behind The Scenes · Wide pulled-back stage view in Blender 5.2 Cycles",
-        },
-      },
     ],
   },
   {
