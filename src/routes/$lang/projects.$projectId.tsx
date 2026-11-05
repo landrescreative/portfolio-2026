@@ -20,6 +20,7 @@ import {
   Maximize2,
   Sparkles,
   RefreshCw,
+  Instagram,
 } from "lucide-react";
 import { ContactSection } from "@/components/ContactSection";
 import { SafeBoundary } from "@/components/SafeBoundary";
@@ -576,20 +577,24 @@ function ProjectDetailPage() {
 
           {/* Optional Studio Collaboration / Co-Production */}
           {project.collaboration && (
-            <div className="flex flex-col gap-4 border-t border-ink/10 pt-10">
-              <div className="rounded-3xl border border-ink/15 bg-surface/80 p-8 md:p-10 shadow-sm backdrop-blur-sm">
-                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-                  {tx(lang, "Colaboración & Coproducción", "Co-Production & Collaboration")}
-                </span>
-                <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <div className="relative overflow-hidden rounded-3xl border border-accent/25 bg-accent/[0.04] p-8 shadow-md md:p-10">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full bg-accent/20 blur-3xl"
+              />
+              <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
                   {project.collaboration.logo && (
                     <img
                       src={project.collaboration.logo}
                       alt={project.collaboration.name}
-                      className="size-20 rounded-2xl object-cover border border-ink/20 shadow-md shrink-0 bg-ink"
+                      className="size-20 shrink-0 rounded-2xl border border-ink/20 bg-ink object-cover shadow-md"
                     />
                   )}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3">
+                    <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+                      {tx(lang, "Colaboración & Coproducción", "Co-Production & Collaboration")}
+                    </span>
                     <div className="flex flex-wrap items-center gap-3">
                       <h3 className="font-serif text-2xl font-bold tracking-tight text-ink md:text-3xl">
                         {project.collaboration.name}
@@ -603,14 +608,38 @@ function ProjectDetailPage() {
                       )}
                     </div>
                     {project.collaboration.description && (
-                      <p className="font-sans text-base font-light leading-relaxed text-ink/80 text-pretty">
+                      <p className="max-w-3xl font-sans text-base font-light leading-relaxed text-ink/80 text-pretty">
                         {typeof project.collaboration.description === "object"
-                          ? project.collaboration.description[lang] || project.collaboration.description.es
+                          ? project.collaboration.description[lang] ||
+                            project.collaboration.description.es
                           : project.collaboration.description}
                       </p>
                     )}
                   </div>
                 </div>
+
+                {project.collaboration.instagram && (
+                  <a
+                    href={project.collaboration.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex shrink-0 items-center gap-3 rounded-2xl bg-ink px-5 py-4 text-canvas shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+                    aria-label={`Instagram ${project.collaboration.handle || project.collaboration.name}`}
+                  >
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(45deg,#F58529,#DD2B7F,#8134AF)] text-white">
+                      <Instagram className="size-4" />
+                    </span>
+                    <span className="flex flex-col leading-tight">
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-canvas/60">
+                        Instagram
+                      </span>
+                      <span className="font-serif text-base font-semibold">
+                        {project.collaboration.handle || project.collaboration.name}
+                      </span>
+                    </span>
+                    <ExternalLink className="size-4 text-canvas/50 transition-colors group-hover:text-accent" />
+                  </a>
+                )}
               </div>
             </div>
           )}

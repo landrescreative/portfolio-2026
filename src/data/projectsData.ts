@@ -47,6 +47,8 @@ export interface ProjectDetail {
     logo?: string;
     role?: { es: string; en: string };
     description?: { es: string; en: string };
+    instagram?: string;
+    handle?: string;
   };
 
   // Optional Project Context & Engagement
@@ -1145,16 +1147,18 @@ export const projectsData: Record<string, ProjectDetail> = {
       { label: { es: "Pipeline Híbrido", en: "Hybrid Pipeline" }, value: "Stop-Motion + 3D" },
     ],
     collaboration: {
-      name: "Fractal · Productora Audiovisual",
+      name: "Fractal",
       logo: "/uploads/fractal-logo.webp",
       role: {
         es: "Coproducción & Marioneta Stop-Motion",
         en: "Co-Production & Stop-Motion Puppetry",
       },
       description: {
-        es: "Producción cinematográfica desarrollada en colaboración conjunta con Fractal. Fractal lideró el diseño físico de la marioneta tradicional, indumentaria y el rodaje en set sobre ciclorama verde. LANDRES dirigió la integración de VFX, la proyección de placas sobre tarjetas 3D, la simulación de fluidos oceánicos y la iluminación volumétrica en Blender 5.2 Cycles.",
-        en: "Cinematic production developed in joint collaboration with Fractal. Fractal led physical traditional puppet design, costuming, and live-action green-screen stage filming. LANDRES directed VFX integration, 3D card projections, ocean fluid simulations, and volumetric lighting in Blender 5.2 Cycles.",
+        es: "Productora audiovisual que une lo artístico y lo humano para crear proyectos con identidad y visión a futuro. Fractal lideró el diseño físico de la marioneta tradicional, la indumentaria y el rodaje en set sobre ciclorama verde; LANDRES dirigió la integración de VFX, la proyección de placas sobre tarjetas 3D, la simulación de fluidos oceánicos y la iluminación volumétrica en Blender 5.2 Cycles.",
+        en: "An audiovisual production company that blends the artistic and the human to craft projects with identity and a forward-looking vision. Fractal led the puppet's physical design, costuming and green-screen stage shoot; LANDRES directed VFX integration, 3D card projections, ocean fluid simulations and volumetric lighting in Blender 5.2 Cycles.",
       },
+      instagram: "https://www.instagram.com/fractal_productora7/",
+      handle: "@fractal_productora7",
     },
     video: {
       mp4Url: "/uploads/el-vacio-prueba-01.mp4",
@@ -1216,15 +1220,6 @@ export const projectsData: Record<string, ProjectDetail> = {
         caption: {
           es: "Integración final · 00:17 — Plano final: el anciano en reposo bajo la luz del abismo",
           en: "Final composite · 00:17 — Final shot: the old man resting in the abyss light",
-        },
-        span: "full",
-      },
-      {
-        src: "/uploads/fractal-logo.webp",
-        alt: "Fractal - Productora Audiovisual",
-        caption: {
-          es: "Colaboración con Fractal · Imagotipo de la productora audiovisual responsable de la marioneta física y rodaje de «El Vacío»",
-          en: "Collaboration with Fractal · Visual mark of the audiovisual production studio responsible for the physical puppet and filming of «El Vacío»",
         },
         span: "full",
       },
